@@ -1,0 +1,77 @@
+@startuml
+title MEDORA -- Overall Use-Case Model
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5F4
+  BorderColor #087E8B
+  ArrowColor #5B6770
+}
+skinparam actor {
+  BorderColor #173B57
+}
+
+actor Patient as patient
+actor Receptionist as reception
+actor Nurse as nurse
+actor Doctor as doctor
+actor "Technician /\nService Staff" as technician
+actor "Pharmacist /\nMedicine Staff" as pharmacist
+actor Cashier as cashier
+actor "Clinic Manager" as manager
+actor "System Administrator" as admin
+actor Auditor as auditor
+
+rectangle "MEDORA: Integrated Clinic Management and EMR System" {
+  usecase "Authenticate and\nmanage session" as UCAuth
+  usecase "Manage patient\nrecord" as UCPatient
+  usecase "Manage appointments,\ncheck-in and queue" as UCAppointment
+  usecase "Document examination\nand clinical record" as UCExam
+  usecase "Create prescription\nand medication record" as UCPrescription
+  usecase "Order and execute\nservices / procedures" as UCService
+  usecase "Invoice and\nrecord payment" as UCBilling
+  usecase "View dashboard\nand reports" as UCReporting
+  usecase "Administer users, roles\nand master data" as UCAdmin
+  usecase "Review audit trail" as UCAudit
+  usecase "Manage patient portal\nrequests" as UCPortal
+}
+
+patient --> UCPortal
+reception --> UCAuth
+reception --> UCPatient
+reception --> UCAppointment
+nurse --> UCAuth
+nurse --> UCPatient
+nurse --> UCExam
+doctor --> UCAuth
+doctor --> UCPatient
+doctor --> UCExam
+doctor --> UCPrescription
+doctor --> UCService
+technician --> UCAuth
+technician --> UCService
+pharmacist --> UCAuth
+pharmacist --> UCPrescription
+cashier --> UCAuth
+cashier --> UCBilling
+manager --> UCReporting
+manager --> UCAdmin
+admin --> UCAuth
+admin --> UCAdmin
+admin --> UCAudit
+auditor --> UCAudit
+
+UCPortal .> UCAppointment : <<include>>
+UCExam .> UCPatient : <<include>>
+UCPrescription .> UCExam : <<extend>>
+UCService .> UCExam : <<extend>>
+UCBilling .> UCService : <<include>>
+UCAdmin .> UCAuth : <<include>>
+UCAudit .> UCAuth : <<include>>
+
+note bottom of UCPortal
+  Patient portal is a phased capability.
+  It is outside the internal MVP dependency.
+end note
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+title MEDORA -- Appointment, Check-in and Queue Use Cases
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5F4
+  BorderColor #087E8B
+}
+
+actor Patient as patient
+actor Receptionist as reception
+actor "Clinic Manager" as manager
+actor Doctor as doctor
+
+rectangle "Appointment and Queue Management" {
+  usecase "View availability" as availability
+  usecase "Book appointment" as book
+  usecase "Confirm appointment" as confirm
+  usecase "Reschedule appointment" as reschedule
+  usecase "Cancel appointment" as cancel
+  usecase "Record no-show" as noshow
+  usecase "Check working schedule\nand resource conflicts" as conflicts
+  usecase "Check in patient" as checkin
+  usecase "Register walk-in\npatient" as walkin
+  usecase "Create encounter and\nassign queue" as queue
+  usecase "View role-scoped queue" as viewQueue
+  usecase "Notify appointment\nchange" as notify
+}
+
+patient --> book
+patient --> reschedule
+patient --> cancel
+reception --> availability
+reception --> book
+reception --> confirm
+reception --> reschedule
+reception --> cancel
+reception --> noshow
+reception --> checkin
+reception --> walkin
+reception --> viewQueue
+doctor --> viewQueue
+manager --> availability
+manager --> viewQueue
+
+book .> availability : <<include>>
+book .> conflicts : <<include>>
+reschedule .> conflicts : <<include>>
+reschedule .> notify : <<include>>
+cancel .> notify : <<include>>
+checkin .> queue : <<include>>
+walkin .> queue : <<include>>
+noshow .> confirm : <<extend>>
+
+note bottom of conflicts
+  Booking is rejected when a required
+  doctor, room or resource conflicts.
+end note
+@enduml

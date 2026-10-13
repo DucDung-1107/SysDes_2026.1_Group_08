@@ -1,0 +1,53 @@
+@startuml
+title MEDORA -- Medical Examination and Encounter Use Cases
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5F4
+  BorderColor #087E8B
+}
+
+actor Nurse as nurse
+actor Doctor as doctor
+actor "Technician /\nService Staff" as technician
+
+rectangle "Medical Examination and Encounter" {
+  usecase "Open assigned\nencounter" as open
+  usecase "Review permitted\nclinical history" as review
+  usecase "Record vital signs\nand screening" as vitals
+  usecase "Document clinical\nexamination note" as note
+  usecase "Record symptoms\nand diagnosis" as diagnosis
+  usecase "Save draft" as draft
+  usecase "Sign clinical note" as sign
+  usecase "Amend signed\nclinical note" as amend
+  usecase "Create service or\nprocedure order" as order
+  usecase "Record service\nresult" as result
+  usecase "Complete encounter\nand follow-up plan" as close
+  usecase "Validate mandatory\nfields and encounter state" as validate
+}
+
+nurse --> open
+nurse --> vitals
+doctor --> open
+doctor --> review
+doctor --> note
+doctor --> diagnosis
+doctor --> sign
+doctor --> amend
+doctor --> order
+doctor --> close
+technician --> result
+
+open .> review : <<include>>
+note .> draft : <<extend>>
+sign .> validate : <<include>>
+amend .> sign : <<extend>>
+close .> validate : <<include>>
+result .> order : <<include>>
+
+note bottom of amend
+  An amendment retains the signed original,
+  reason, actor and timestamp.
+end note
+@enduml

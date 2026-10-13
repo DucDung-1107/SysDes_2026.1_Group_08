@@ -1,0 +1,49 @@
+@startuml
+title MEDORA -- Administration, Reporting and Governance Use Cases
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5F4
+  BorderColor #087E8B
+}
+
+actor "System Administrator" as admin
+actor "Clinic Manager" as manager
+actor Auditor as auditor
+
+rectangle "Administration, Reporting and Governance" {
+  usecase "Manage user accounts\nand account status" as users
+  usecase "Assign roles, permissions\nand facility scope" as roles
+  usecase "Manage clinical and\noperational catalogues" as catalogue
+  usecase "Configure rooms, resources\nand staff schedules" as resource
+  usecase "Configure notification\ntemplates and channels" as notify
+  usecase "View operational\ndashboard" as dashboard
+  usecase "Generate scoped report\nand controlled export" as report
+  usecase "Review audit log" as audit
+  usecase "Filter audit events by\nactor, time and entity" as filter
+  usecase "Revoke session or\ndisable account" as revoke
+}
+
+admin --> users
+admin --> roles
+admin --> catalogue
+admin --> resource
+admin --> notify
+admin --> audit
+admin --> revoke
+manager --> dashboard
+manager --> report
+manager --> resource
+auditor --> audit
+
+roles .> users : <<include>>
+revoke .> users : <<include>>
+report .> dashboard : <<extend>>
+audit .> filter : <<include>>
+
+note bottom of roles
+  Authorization is enforced by the backend;
+  hiding a user-interface control is insufficient.
+end note
+@enduml

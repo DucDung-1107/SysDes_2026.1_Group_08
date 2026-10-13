@@ -1,0 +1,47 @@
+@startuml
+title MEDORA -- Billing and Payment Use Cases
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5F4
+  BorderColor #087E8B
+}
+
+actor Cashier as cashier
+actor "Clinic Manager" as manager
+actor "Authorized Finance\nStaff" as finance
+
+rectangle "Billing and Payment" {
+  usecase "Create invoice from\neligible services" as invoice
+  usecase "Apply effective\nservice price" as price
+  usecase "Apply authorized\ndiscount" as discount
+  usecase "Record payment" as payment
+  usecase "Issue receipt" as receipt
+  usecase "Record refund or\nadjustment" as refund
+  usecase "Provide refund\nreason and approval" as refundApproval
+  usecase "View invoice and\npayment status" as status
+  usecase "Manage services\nand price list" as priceList
+  usecase "View revenue\nreport" as revenue
+}
+
+cashier --> invoice
+cashier --> payment
+cashier --> receipt
+cashier --> status
+finance --> refund
+manager --> priceList
+manager --> revenue
+
+invoice .> price : <<include>>
+discount .> invoice : <<extend>>
+payment .> receipt : <<include>>
+refund .> refundApproval : <<include>>
+revenue .> status : <<include>>
+priceList .> price : <<include>>
+
+note bottom of invoice
+  Clinical information remains unchanged
+  by billing and payment actions.
+end note
+@enduml

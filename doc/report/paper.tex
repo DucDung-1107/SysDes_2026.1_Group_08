@@ -3,7 +3,7 @@
 % ==================================================
 % PACKAGES
 % ==================================================
-\usepackage[numbers]{natbib}
+\usepackage[authoryear,semicolon,square]{natbib}
 \usepackage{graphicx}
 \usepackage{svg}
 \usepackage{subcaption}
@@ -47,6 +47,7 @@
 \usepackage{multirow}
 \usepackage[most]{tcolorbox}
 \usepackage{listings}
+\usepackage{xurl}
 % Hyperref được nạp sau các package tạo float/longtable để patch anchor đúng cách.
 \usepackage[hypertexnames=false]{hyperref}
 
@@ -343,22 +344,133 @@
 \pagestyle{fancy}
 \setlength{\headheight}{15pt}
 \fancyhf{}
-\fancyhead[L]{\color{VinBlue}\small\textbf{Beyond the Haze}}
-\fancyhead[R]{\color{VinBlue}\small\textbf{Project Charter}}
+\fancyhead[L]{\color{VinBlue}\small\textbf{MEDORA}}
+\fancyhead[R]{\color{VinBlue}\small\textbf{GROUP 08}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.6pt}
 \renewcommand{\footrulewidth}{0pt}
 
 \tableofcontents
-\clearpage
 
 \section{Introduction and Problem Definition}
 
 \subsection{Background and Existing System}
+Healthcare delivery is becoming a coordination problem as much as a clinical one. Across countries, providers are expected to offer safer, more continuous and more patient-centred care while dealing with rising demand, constrained staff capacity and increasingly complex information flows. The World Health Organization (WHO) estimates that approximately one in ten patients is harmed during health care and that more than half of this harm is preventable; medication-related harm accounts for a substantial share of the preventable cases \citep{WHO2023Safety}. These figures do not imply that software can replace clinical judgement. They do, however, show why reliable identification, complete records, clear hand-offs and traceable actions are system-level concerns rather than administrative details.
+
+Digital health is therefore moving from a collection of isolated applications towards an integrated operating capability. The WHO describes digital health as a means of aligning organizational, human and technological resources around better health outcomes, not simply as the deployment of another application \citep{WHO2021Digital}. Yet digitalisation can reproduce the same fragmentation when applications are implemented as disconnected, supply-driven tools; WHO identifies integration over isolation, data governance and protection of privacy as essential conditions for useful digital transformation \citep{WHO2021DataGovernance,WHO2024DigitalTransformation}. In a clinic, this distinction is important: an appointment calendar, a patient database and a billing screen may each work in isolation while the overall journey still depends on repeated data entry, informal communication and manual reconciliation. The result is a fragile process in which a patient can be correctly registered in one place but remain invisible to the next person who must act.
+
+The persistence of legacy workflows is not unique to one country. The OECD reports that 75\% of global fax traffic is used for medical services and that evidence-based innovations can take as long as 17 years to become routine practice, illustrating the distance between available technology and dependable day-to-day adoption \citep{OECD2023DigitalHealth}. For a small clinic, the implication is practical: the priority is not to buy the most sophisticated technology, but to design a coherent system that staff can use consistently and that can exchange trustworthy data when the organization grows.
+
+The Vietnamese context makes this challenge particularly tangible. Viet Nam entered the ageing phase in 2011; people aged 60 and over represented 11.9\% of the population in 2019, and this share is projected to exceed 25\% by 2050 \citep{UNFPA2021Ageing}. An ageing population increases the need for repeated visits, longitudinal clinical histories and coordination across services. At the point of care, operational friction is already measurable. In a study of 7,931 outpatient visits at Thong Nhat Hospital, the mean total waiting time was 104.1 minutes, with departments handling roughly 150--250 patients per day while clinic capacity and staffing remained comparatively stable \citep{Nguyen2018Waiting}. A separate study across Vietnamese health facilities reported average waits of 32.58 minutes at district hospitals and 11.58 minutes at commune health centres before patients met clinical staff \citep{Nguyen2020Outpatient}. These are not merely comfort issues: long queues consume staff time, obscure workload, increase opportunities for transcription errors and weaken patients' confidence in the service.
+
 \subsection{Problem Statement and Motivation}
+The need for an electronic medical-record system is visible in three connected indicators. First, outpatient flow is slow: a study of 7,931 visits at a Vietnamese national hospital reported a mean total waiting time of 104.1 minutes, while departments handled approximately 150--250 patients per day without proportional capacity growth \citep{Nguyen2018Waiting}. A broader study reported average waits of 32.58 minutes at district hospitals and 11.58 minutes at commune health centres before patients met clinical staff \citep{Nguyen2020Outpatient}. Second, patient-safety risk remains material: the WHO estimates that one in ten patients is harmed in health care and that more than half of this harm is preventable \citep{WHO2023Safety}. Third, medication errors alone are estimated to cost about US\$42 billion globally each year \citep{WHO2017Medication}.
+
+These figures do not prove that every clinic has the same performance. They establish why the workflow deserves system-level attention. When identity, appointments, clinical notes, orders and payment are split across paper forms, spreadsheets or isolated applications, the following problems become likely:
+
+\begin{itemize}[leftmargin=1.4em]
+    \item duplicate patient records and repeated demographic entry;
+    \item appointment, room or staff conflicts that are discovered too late;
+    \item incomplete visibility of allergies, previous encounters, current medication or open orders;
+    \item unclear responsibility when an order moves from prescription to execution;
+    \item silent overwriting of signed information and weak evidence of who changed it; and
+    \item limited management visibility into waiting, workload, service progress and payment status.
+\end{itemize}
+
+WHO identifies fragmented data governance and weak exchange mechanisms as barriers to timely, high-quality use of health data \citep{WHO2021DataGovernance}. MEDORA addresses this coordination gap by providing one patient identity, one encounter context and explicit workflow states across authorized roles. Its ``smart'' behaviour is deliberately bounded: the system applies rules, warnings, validation and audit trails at the right step, while diagnosis and treatment decisions remain with qualified clinicians.
+
+The architecture is part of the motivation. Separating presentation, application rules, domain entities and persistence prevents a new screen from bypassing clinical or access-control rules. Explicit services and state transitions make double-booking prevention, signed-record amendment, authorization and auditability testable. The result is a system that is safer to operate today and easier to extend tomorrow, rather than a set of screens that merely digitizes existing fragmentation.
+
 \subsection{Project Objectives and Success Criteria}
+This project proposes MEDORA, an integrated clinic-management and electronic medical-record system for a clinic or small healthcare facility. Its objective is to turn a fragmented sequence of tasks into a controlled, observable and reusable workflow. The project pursues five linked outcomes:
+
+\begin{itemize}[leftmargin=1.4em]
+    \item one stable patient identity and one longitudinal record across visits;
+    \item coordinated appointments, queues, rooms and staff;
+    \item structured support for examination, diagnosis, prescriptions and service orders;
+    \item auditable handling of sensitive changes and role-based access to health data; and
+    \item operational dashboards and reports that support evidence-based management.
+\end{itemize}
+
+Success is specified using SMART criteria so that the prototype can be evaluated without overstating clinical impact. During the final test cycle, against a documented baseline workload, MEDORA will:
+
+\begin{itemize}[leftmargin=1.4em]
+    \item reduce median registration-to-completion time by at least 25\% for the representative outpatient scenario;
+    \item accept zero double-bookings for the same doctor, room or constrained resource across 100\% of the concurrency test cases;
+    \item achieve at least 95\% completion of configured mandatory encounter fields across the tested completed visits;
+    \item record an actor, timestamp, action and affected entity for 100\% of tested sensitive events, including clinical amendments, prescription changes, exports and permission changes; and
+    \item demonstrate that 100\% of negative authorization test cases are rejected at the API/server boundary, while the principal happy-path workflow completes successfully in the agreed test environment.
+\end{itemize}
+
+Each target is specific to a defined workflow, measurable through test evidence, achievable for the course-project scope, relevant to the stated pain points and time-bound to the final evaluation cycle. The figures are prototype acceptance targets, not claims of production performance; a real deployment would first establish a site-specific baseline and then revalidate them with clinical and operational stakeholders.
+
 \subsection{System Scope, Assumptions, and Constraints}
+The scope of MEDORA is defined around the work that a clinic must coordinate every day, rather than around a list of screens. It is an internal web system for a clinic or small healthcare facility, accessed primarily from reception desks, consultation rooms, treatment rooms and management workstations, with tablet support where the workflow allows it. The system assumes one organization may contain several specialties, doctors, rooms, services and staff members; a multi-branch deployment is an extension of the same model rather than a different product.
+
+The in-scope journey begins when a receptionist searches for an existing patient or creates a new patient record. It continues through appointment booking or walk-in reception, check-in, queue assignment and preliminary screening. During the encounter, authorized clinical staff can review history, allergies and current medication; nurses can record vital signs; doctors can document the reason for visit, symptoms, examination findings, assessment and diagnosis; and doctors can create prescriptions, procedure orders or service requests. The workflow then coordinates the room, staff and time required to perform an order, records who performed it and what result was produced, and ends with a clinical summary, follow-up instructions and basic invoicing or payment status.
+
+For clarity, the core workflow can be read as five stages:
+\begin{enumerate}[leftmargin=1.6em]
+    \item patient identity, appointment or walk-in reception, check-in and queue assignment;
+    \item screening, consultation and structured clinical documentation;
+    \item prescription, procedure or service ordering with safety and permission checks;
+    \item scheduling, resource allocation, execution and result recording; and
+    \item encounter closure, follow-up instructions, billing and payment status.
+\end{enumerate}
+
+The operational scope is supported by a second set of capabilities. Administrators configure users, roles, specialties, rooms, services, medicines, diagnoses, schedules and notification templates. Managers monitor queues, room occupancy, appointment status, service progress, revenue and exception cases through dashboards and reports. Authorized auditors can search access and change history. The system distinguishes a prescription from the later act of dispensing or administering a medicine, an order from its execution, and an invoice from its payment or refund; this distinction prevents the database from implying that a planned action has already happened.
+
+The principal actors and their boundaries are explicit. Receptionists manage identity, appointments, check-in and queues but cannot change clinical decisions. Nurses record screening and care activities within their assignment. Doctors own examination, diagnosis, prescription, orders and encounter closure. Technicians perform assigned services and record results without gaining unrestricted access to unrelated clinical information. Pharmacists or authorized medicine staff review and dispense prescriptions. Cashiers manage charges, payments and refunds without editing clinical content. Clinic managers supervise operations and reports, while system administrators manage accounts and configuration. Patients are outside the internal MVP workflow; a patient portal for booking and viewing released documents is reserved for a later phase.
+
+Several boundaries are deliberate. The MVP does not autonomously diagnose or recommend treatment, replace professional judgement, or silently override a clinical warning. It does not assume national health-data interoperability, insurance settlement, electronic invoicing, advanced pharmacy inventory, LIS/RIS/PACS integration or a production-grade patient portal. These may be connected through later APIs after their data contracts, legal basis and operational ownership are confirmed. The system also does not make a legal claim of HIPAA, ISO 27001 or any local certification. Before real deployment, the clinic and its legal and information-security advisers must approve retention periods, consent, correction procedures, backup, incident response and applicable medical-record regulations.
+
+The constraints shape the design. Health information is sensitive, so every read, create, edit, sign, cancel, export and print action must be evaluated against role, scope and current workflow state on the server. A signed note is not overwritten; a correction is represented as an amendment linked to the original, with actor, timestamp, reason and before/after information where appropriate. Network failure must not be reported as success, concurrent users must not create the same booking twice, and completed records must remain available for audit. These assumptions make the scope realistic for a system-design project while preserving the properties required of a credible clinical information system.
+
 \subsection{Proposed Solution and System Overview}
+MEDORA is a clinic operating system built around one shared patient and encounter record, not a collection of unrelated modules. Its central unit of work is the outpatient encounter. A Patient may have many Appointments and Encounters; an Encounter is the controlled context for clinical notes, vital signs, diagnoses, prescriptions and procedure orders; an order may consume a scheduled ResourceBooking and later receive an execution result; and an Invoice and Payment record the financial consequence without changing the clinical history. Attachments, notifications and AuditLogs are linked to the relevant business object rather than stored as anonymous files or messages.
+
+Table~\ref{tab:product-definition} defines the product by capability. Each row states the function, its primary users and the operational value it is expected to create. This makes the product boundary concrete before the report describes its technical realization: MEDORA is an internal clinic-management and electronic medical-record product that coordinates people, information, resources and decisions throughout an outpatient episode.
+
+\begingroup
+    \renewcommand{\arraystretch}{1.25}
+    \small
+    \setlength{\LTleft}{0pt}
+    \setlength{\LTright}{0pt}
+\begin{longtable}{@{}>{\bfseries\raggedright\arraybackslash}p{0.19\textwidth}p{0.18\textwidth}p{0.34\textwidth}p{0.23\textwidth}@{}}
+    \caption{MEDORA product definition and value proposition}\label{tab:product-definition}\\
+        \toprule
+        Function & Primary users & What the system does & Value delivered \\
+        \midrule
+    \endfirsthead
+    \toprule
+    Function & Primary users & What the system does & Value delivered \\
+    \midrule
+    \endhead
+        Patient identity and record management & Receptionists, nurses, doctors, auditors & Search and register patients, detect possible duplicates, maintain a stable internal medical-record number, and connect demographic data, history, allergies, documents and encounters to the same patient. & Reduces duplicate records and repeated data entry; gives staff a reliable longitudinal view; improves patient identification before clinical actions. \\
+        Appointment, schedule and queue management & Receptionists, patients (future portal), managers & Create, confirm, reschedule or cancel appointments; check provider schedules; check in walk-in patients; assign queue status; and record no-show or cancellation reasons. & Makes demand and workload visible; reduces waiting caused by informal coordination; gives patients and staff a clear next step. \\
+        Clinical examination and EMR & Nurses and doctors & Record screening, vital signs, reason for visit, symptoms, history, examination findings, assessment, diagnosis, care plan and follow-up instructions within an encounter. & Preserves clinical continuity; reduces missing context at hand-off; supports complete and structured documentation without replacing professional judgement. \\
+        Prescription and medication safety & Doctors, pharmacists or authorized medicine staff & Select medicines from an approved catalogue, record dose and directions, check available allergy or configured contraindication data, issue prescriptions, and maintain amendment and dispensing history. & Separates prescribing from dispensing or administration; makes warnings and overrides visible; reduces avoidable transcription and medication-process errors. \\
+        Procedure, service and resource coordination & Doctors, coordinators, nurses and technicians & Create service orders; find compatible time slots; reserve rooms, staff and required resources; obtain consent where configured; track progress; and record the performer, time and result. & Prevents double-booking; reduces idle rooms and staff conflicts; connects a clinical order to its actual execution and outcome. \\
+        Billing and payment status & Cashiers, managers and authorized finance staff & Calculate basic charges from configured services, issue invoices, record payments or refunds, and preserve the transaction history without editing the clinical record. & Separates financial accountability from clinical authority; improves reconciliation; gives managers a trustworthy view of service and payment status. \\
+        Administration and role-based access & System administrators, managers and auditors & Manage accounts, roles, permissions, facility scope, specialties, rooms, services, medicines, diagnoses, schedules and configurable workflow rules. & Applies least privilege consistently; makes the system adaptable to the clinic; reduces the risk of unauthorized clinical or financial changes. \\
+        Dashboards, reports and audit trail & Managers, operations staff and authorized auditors & Show queue, waiting, appointment, room, service, completion, revenue and exception indicators; allow controlled export; and record sensitive reads, changes, approvals and overrides. & Converts daily activity into evidence for decisions; supports investigation and accountability; enables the success criteria to be measured. \\
+        Attachments and notifications & Assigned staff, managers and patients (future portal) & Store document metadata, permissions and integrity information; send configured operational notifications without exposing unnecessary clinical detail. & Keeps supporting documents linked to the correct encounter; reduces lost follow-up; limits privacy exposure in communication channels. \\
+        \bottomrule
+\end{longtable}
+\endgroup
+
+The solution uses four cooperating layers:
+
+\begin{itemize}[leftmargin=1.4em]
+    \item \textbf{Presentation:} role-specific workspaces for reception, nursing, consultation, service execution, cashier operations and management.
+    \item \textbf{Application:} use cases such as registration, booking, check-in, consultation, prescription, service scheduling, result recording, encounter closure and payment.
+    \item \textbf{Domain:} rules for availability, permissions, state transitions, signed-record amendments and clinical warnings.
+    \item \textbf{Data:} persistent patient, encounter, order, resource, invoice and audit entities with integrity constraints and history.
+\end{itemize}
+
+The core flow is simple: identify the patient, create or activate an encounter, perform screening and consultation, issue a prescription or service order, allocate the required resources, record execution, close the encounter and update payment status. Each step is represented by an explicit state and an accountable actor. This prevents the database from treating a planned order as completed or a signed note as silently editable.
+
+Security is enforced as part of the solution rather than added to the interface afterwards. MEDORA applies role-based least privilege, checks authorization at the backend, protects attachments through metadata and permissions, and records sensitive reads, changes, approvals and overrides in the audit trail. The modular design keeps the MVP focused while leaving controlled extension points for a patient portal, laboratory or imaging adapters, inventory and interoperability services.
 
 \section{Business Analysis and Domain Modeling}
 
@@ -371,7 +483,66 @@
 
 \subsection{Functional Decomposition and Package Structure}
 \subsection{Actors and Overall Use Case Model}
+MEDORA has ten primary actor groups: Patient (through the phased portal), Receptionist, Nurse, Doctor, Technician or Service Staff, Pharmacist or Medicine Staff, Cashier, Clinic Manager, System Administrator and Auditor. The overall model below establishes their system boundary and assigns each group only the capabilities required for its work. The decomposition follows established hospital-management UML examples \citep{SoftwareIdeas2024HospitalUML,Saipraveen2026SmartHospital}, but its actors, workflow states and access boundaries are derived from MEDORA's own requirements.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=0.88\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png}
+    \caption{Overall use-case model of MEDORA}
+    \label{fig:overall-use-case-model}
+\end{figure}
+
 \subsection{Use Case Diagrams by Functional Group}
+The functional diagrams decompose the overall model into business-sized areas. They make the responsible actor, the core use case and the important reusable or conditional behaviour explicit. The PlantUML sources are maintained beside the rendered figures in the corresponding asset folders.
+
+\subsubsection{Patient Management}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png}
+    \caption{Patient-management use cases}
+    \label{fig:use-case-patient-management}
+\end{figure}
+
+\subsubsection{Appointment, Check-in and Queue Management}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png}
+    \caption{Appointment, check-in and queue-management use cases}
+    \label{fig:use-case-appointment}
+\end{figure}
+
+\subsubsection{Medical Examination and Encounter Management}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png}
+    \caption{Medical-examination and encounter use cases}
+    \label{fig:use-case-medical-examination}
+\end{figure}
+
+\subsubsection{Prescription and Medication Safety}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png}
+    \caption{Prescription and medication-safety use cases}
+    \label{fig:use-case-prescription}
+\end{figure}
+
+\subsubsection{Billing and Payment}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png}
+    \caption{Billing and payment use cases}
+    \label{fig:use-case-billing}
+\end{figure}
+
+\subsubsection{Administration, Reporting and Governance}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png}
+    \caption{Administration, reporting and governance use cases}
+    \label{fig:use-case-administration}
+\end{figure}
+
 \subsection{Detailed Use Case Specifications}
 \subsection{Functional Requirements}
 \subsection{Non-functional Requirements}
@@ -441,7 +612,13 @@
 \section{API Specifications and Data Schemas}
 \section{Detailed Test Cases and Execution Results}
 
-\bibliographystyle{IEEEtran}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\renewcommand{\refname}{References}
+\setlength{\bibsep}{0.45\baselineskip}
+\renewcommand{\bibfont}{\small\raggedright}
+\bibliographystyle{plainnat}
 \bibliography{references}
 
 \end{document}

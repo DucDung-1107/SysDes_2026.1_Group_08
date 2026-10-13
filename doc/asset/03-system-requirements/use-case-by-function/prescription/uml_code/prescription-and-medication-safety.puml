@@ -1,0 +1,47 @@
+@startuml
+title MEDORA -- Prescription and Medication Safety Use Cases
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5F4
+  BorderColor #087E8B
+}
+
+actor Doctor as doctor
+actor "Pharmacist /\nMedicine Staff" as pharmacist
+actor "Clinic Manager" as manager
+
+rectangle "Prescription and Medication Safety" {
+  usecase "Search approved\nmedicine catalogue" as medicine
+  usecase "Create prescription\ndraft" as draft
+  usecase "Add prescription\nitem and directions" as item
+  usecase "Check allergy, interaction\nor contraindication rule" as warning
+  usecase "Override warning\nwith reason" as override
+  usecase "Sign and issue\nprescription" as issue
+  usecase "Print / export\nprescription" as print
+  usecase "Amend or cancel\nprescription" as amend
+  usecase "Record dispensing or\nmedication administration" as administer
+  usecase "Manage medicine\ncatalogue and rules" as catalogue
+}
+
+doctor --> draft
+doctor --> issue
+doctor --> amend
+doctor --> print
+pharmacist --> administer
+manager --> catalogue
+
+draft .> medicine : <<include>>
+draft .> item : <<include>>
+item .> warning : <<include>>
+override .> warning : <<extend>>
+issue .> warning : <<include>>
+administer .> issue : <<include>>
+catalogue .> medicine : <<include>>
+
+note bottom of warning
+  Alerts support clinical judgement.
+  They do not make treatment decisions.
+end note
+@enduml
