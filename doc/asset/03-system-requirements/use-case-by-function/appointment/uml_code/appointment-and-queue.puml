@@ -1,60 +1,45 @@
 @startuml
-title MEDORA -- Appointment, Check-in and Queue Use Cases
+title MEDORA -- Appointment Management Use Cases
 left to right direction
 skinparam shadowing false
-skinparam packageStyle rectangle
-skinparam usecase {
-  BackgroundColor #EEF5F4
-  BorderColor #087E8B
-}
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
 
 actor Patient as patient
 actor Receptionist as reception
-actor "Clinic Manager" as manager
-actor Doctor as doctor
 
-rectangle "Appointment and Queue Management" {
-  usecase "View availability" as availability
-  usecase "Book appointment" as book
-  usecase "Confirm appointment" as confirm
-  usecase "Reschedule appointment" as reschedule
-  usecase "Cancel appointment" as cancel
-  usecase "Record no-show" as noshow
-  usecase "Check working schedule\nand resource conflicts" as conflicts
-  usecase "Check in patient" as checkin
-  usecase "Register walk-in\npatient" as walkin
-  usecase "Create encounter and\nassign queue" as queue
-  usecase "View role-scoped queue" as viewQueue
-  usecase "Notify appointment\nchange" as notify
+rectangle "Appointment Management" {
+  usecase "UC-020\nView Availability" as availability
+  usecase "UC-021\nBook Appointment" as book
+  usecase "UC-022\nConfirm Appointment" as confirm
+  usecase "UC-023\nReschedule Appointment" as reschedule
+  usecase "UC-024\nCancel Appointment" as cancel
+  usecase "UC-025\nMark No-show" as noshow
+  usecase "UC-026\nCheck Appointment\nAvailability" as validate
 }
 
-patient --> book
-patient --> reschedule
-patient --> cancel
-reception --> availability
-reception --> book
-reception --> confirm
-reception --> reschedule
-reception --> cancel
-reception --> noshow
-reception --> checkin
-reception --> walkin
-reception --> viewQueue
-doctor --> viewQueue
-manager --> availability
-manager --> viewQueue
+patient -- book : phase 2
+reception -- availability
+reception -- book
+reception -- confirm
+reception -- reschedule
+reception -- cancel
+reception -- noshow
 
-book .> availability : <<include>>
-book .> conflicts : <<include>>
-reschedule .> conflicts : <<include>>
-reschedule .> notify : <<include>>
-cancel .> notify : <<include>>
-checkin .> queue : <<include>>
-walkin .> queue : <<include>>
-noshow .> confirm : <<extend>>
+book .> validate : <<include>>
+reschedule .> validate : <<include>>
 
-note bottom of conflicts
-  Booking is rejected when a required
-  doctor, room or resource conflicts.
+note bottom of validate
+  FR-005 and FR-017: booking and rescheduling reject
+  conflicts in required provider, room or resource availability.
 end note
 @enduml

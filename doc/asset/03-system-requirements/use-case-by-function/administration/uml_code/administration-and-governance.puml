@@ -2,48 +2,53 @@
 title MEDORA -- Administration, Reporting and Governance Use Cases
 left to right direction
 skinparam shadowing false
-skinparam packageStyle rectangle
-skinparam usecase {
-  BackgroundColor #EEF5F4
-  BorderColor #087E8B
-}
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
 
 actor "System Administrator" as admin
 actor "Clinic Manager" as manager
 actor Auditor as auditor
 
 rectangle "Administration, Reporting and Governance" {
-  usecase "Manage user accounts\nand account status" as users
-  usecase "Assign roles, permissions\nand facility scope" as roles
-  usecase "Manage clinical and\noperational catalogues" as catalogue
-  usecase "Configure rooms, resources\nand staff schedules" as resource
-  usecase "Configure notification\ntemplates and channels" as notify
-  usecase "View operational\ndashboard" as dashboard
-  usecase "Generate scoped report\nand controlled export" as report
-  usecase "Review audit log" as audit
-  usecase "Filter audit events by\nactor, time and entity" as filter
-  usecase "Revoke session or\ndisable account" as revoke
+  usecase "UC-070\nManage User Accounts\nand Account Status" as users
+  usecase "UC-071\nAssign Roles, Permissions\nand Facility Scope" as roles
+  usecase "UC-072\nConfigure Clinical and\nOperational Catalogues" as catalogue
+  usecase "UC-073\nConfigure Rooms, Resources\nand Staff Schedules" as resource
+  usecase "UC-074\nConfigure Notification\nTemplates and Channels" as notify
+  usecase "UC-075\nView Operational\nDashboard" as dashboard
+  usecase "UC-076\nGenerate Scoped Report\nand Controlled Export" as report
+  usecase "UC-077\nReview Audit Log" as audit
+  usecase "UC-078\nFilter Audit Events" as filter
+  usecase "UC-079\nRevoke Session or\nDisable Account" as revoke
 }
 
-admin --> users
-admin --> roles
-admin --> catalogue
-admin --> resource
-admin --> notify
-admin --> audit
-admin --> revoke
-manager --> dashboard
-manager --> report
-manager --> resource
-auditor --> audit
+admin -- users
+admin -- roles
+admin -- catalogue
+admin -- resource
+admin -- notify
+admin -- audit
+admin -- revoke
+manager -- dashboard
+manager -- report
+manager -- resource
+auditor -- audit
 
 roles .> users : <<include>>
 revoke .> users : <<include>>
-report .> dashboard : <<extend>>
-audit .> filter : <<include>>
+filter .> audit : <<extend>>
 
 note bottom of roles
-  Authorization is enforced by the backend;
-  hiding a user-interface control is insufficient.
+  FR-002 and NFR-06: enforce authorization in the backend;
+  hiding an interface control is not sufficient.
 end note
 @enduml

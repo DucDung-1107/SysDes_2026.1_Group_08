@@ -1,0 +1,32 @@
+@startuml
+title MEDORA -- Service Order and Execution Use Cases
+left to right direction
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
+
+actor Doctor as doctor
+actor "Technician /\nService Staff" as technician
+
+rectangle "Service Order and Execution Management" {
+  usecase "UC-039\nCreate Service\nor Procedure Order" as order
+  usecase "UC-040\nRecord Service\nResult" as result
+}
+
+doctor -- order
+technician -- result
+
+note bottom of result
+  FR-018: only assigned and authorized staff may record
+  the performer, time, status and result of a service.
+end note
+@enduml

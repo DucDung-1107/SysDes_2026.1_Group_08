@@ -2,11 +2,18 @@
 title MEDORA -- Patient Management Use Cases
 left to right direction
 skinparam shadowing false
-skinparam packageStyle rectangle
-skinparam usecase {
-  BackgroundColor #EEF5F4
-  BorderColor #087E8B
-}
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
+skinparam RectangleFontColor #163A5F
 
 actor Receptionist as reception
 actor Nurse as nurse
@@ -15,40 +22,38 @@ actor "Authorized Registrar" as registrar
 actor Auditor as auditor
 
 rectangle "Patient Management" {
-  usecase "Search patient" as search
-  usecase "Register patient" as register
-  usecase "Detect possible\nduplicate" as duplicate
-  usecase "View longitudinal\nhealth record" as timeline
-  usecase "Update permitted\nadministrative data" as update
-  usecase "Record allergy and\npatient history" as history
-  usecase "Upload / view\nattachments" as attachment
-  usecase "Request duplicate\nrecord merge" as mergeRequest
-  usecase "Approve and perform\nrecord merge" as merge
-  usecase "Review patient-related\naudit events" as audit
+  usecase "UC-010\nSearch Patient" as search
+  usecase "UC-011\nRegister Patient" as register
+  usecase "UC-012\nUpdate Patient\nAdministrative Data" as update
+  usecase "UC-013\nView Longitudinal\nHealth Record" as timeline
+  usecase "UC-014\nRecord Allergy\nand History" as history
+  usecase "UC-015\nManage Attachment" as attachment
+  usecase "UC-016\nRequest Record Merge" as mergeRequest
+  usecase "UC-017\nPerform Record Merge" as merge
+  usecase "UC-018\nDetect Possible\nDuplicate" as duplicate
+  usecase "UC-019\nReview Patient\nAudit Events" as audit
 }
 
-reception --> search
-reception --> register
-reception --> update
-reception --> mergeRequest
-nurse --> search
-nurse --> timeline
-nurse --> history
-doctor --> search
-doctor --> timeline
-doctor --> history
-doctor --> attachment
-registrar --> merge
-auditor --> audit
+reception -- search
+reception -- register
+reception -- update
+reception -- mergeRequest
+nurse -- search
+nurse -- timeline
+nurse -- history
+doctor -- search
+doctor -- timeline
+doctor -- history
+doctor -- attachment
+registrar -- merge
+auditor -- audit
 
 register .> duplicate : <<include>>
 mergeRequest .> search : <<include>>
 merge .> mergeRequest : <<include>>
-timeline .> search : <<include>>
-audit .> timeline : <<extend>>
 
 note bottom of merge
-  A merge preserves source records,
-  approver, reason and audit history.
+  FR-004: preserve source records, approver,
+  reason and audit history after a merge.
 end note
 @enduml

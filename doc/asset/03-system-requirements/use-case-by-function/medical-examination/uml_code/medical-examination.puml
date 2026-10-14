@@ -1,53 +1,38 @@
 @startuml
-title MEDORA -- Medical Examination and Encounter Use Cases
+title MEDORA -- Screening and Consultation Use Cases
 left to right direction
 skinparam shadowing false
-skinparam packageStyle rectangle
-skinparam usecase {
-  BackgroundColor #EEF5F4
-  BorderColor #087E8B
-}
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
 
 actor Nurse as nurse
 actor Doctor as doctor
-actor "Technician /\nService Staff" as technician
 
-rectangle "Medical Examination and Encounter" {
-  usecase "Open assigned\nencounter" as open
-  usecase "Review permitted\nclinical history" as review
-  usecase "Record vital signs\nand screening" as vitals
-  usecase "Document clinical\nexamination note" as note
-  usecase "Record symptoms\nand diagnosis" as diagnosis
-  usecase "Save draft" as draft
-  usecase "Sign clinical note" as sign
-  usecase "Amend signed\nclinical note" as amend
-  usecase "Create service or\nprocedure order" as order
-  usecase "Record service\nresult" as result
-  usecase "Complete encounter\nand follow-up plan" as close
-  usecase "Validate mandatory\nfields and encounter state" as validate
+rectangle "Screening and Consultation Management" {
+  usecase "UC-031\nOpen Assigned\nEncounter" as open
+  usecase "UC-032\nReview Permitted\nClinical History" as review
+  usecase "UC-033\nRecord Vital Signs\nand Screening" as vitals
+  usecase "UC-034\nDocument Clinical\nExamination Note" as note
+  usecase "UC-035\nRecord Symptoms\nand Diagnosis" as diagnosis
 }
 
-nurse --> open
-nurse --> vitals
-doctor --> open
-doctor --> review
-doctor --> note
-doctor --> diagnosis
-doctor --> sign
-doctor --> amend
-doctor --> order
-doctor --> close
-technician --> result
-
-open .> review : <<include>>
-note .> draft : <<extend>>
-sign .> validate : <<include>>
-amend .> sign : <<extend>>
-close .> validate : <<include>>
-result .> order : <<include>>
-
-note bottom of amend
-  An amendment retains the signed original,
-  reason, actor and timestamp.
+nurse -- open
+nurse -- vitals
+doctor -- open
+doctor -- review
+doctor -- note
+doctor -- diagnosis
+note bottom of diagnosis
+  FR-007 and FR-010: each recorded value or diagnosis is
+  linked to the encounter, actor and capture time.
 end note
 @enduml

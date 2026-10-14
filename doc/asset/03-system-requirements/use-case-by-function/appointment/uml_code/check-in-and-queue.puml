@@ -1,0 +1,38 @@
+@startuml
+title MEDORA -- Check-in and Queue Use Cases
+left to right direction
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
+
+actor Receptionist as reception
+actor Nurse as nurse
+
+rectangle "Check-in and Queue Management" {
+  usecase "UC-027\nCheck In Patient" as checkin
+  usecase "UC-028\nRegister Walk-in\nPatient" as walkin
+  usecase "UC-029\nCreate Encounter\nand Assign Queue" as queue
+  usecase "UC-030\nView Role-scoped\nQueue" as viewQueue
+}
+
+reception -- checkin
+reception -- walkin
+reception -- viewQueue
+nurse -- viewQueue
+
+checkin .> queue : <<include>>
+
+note bottom of queue
+  FR-006: one active encounter is allowed only when it
+  satisfies the facility's configured queue rule.
+end note
+@enduml

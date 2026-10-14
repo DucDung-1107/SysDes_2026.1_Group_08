@@ -2,46 +2,51 @@
 title MEDORA -- Prescription and Medication Safety Use Cases
 left to right direction
 skinparam shadowing false
-skinparam packageStyle rectangle
-skinparam usecase {
-  BackgroundColor #EEF5F4
-  BorderColor #087E8B
-}
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
 
 actor Doctor as doctor
 actor "Pharmacist /\nMedicine Staff" as pharmacist
 actor "Clinic Manager" as manager
 
 rectangle "Prescription and Medication Safety" {
-  usecase "Search approved\nmedicine catalogue" as medicine
-  usecase "Create prescription\ndraft" as draft
-  usecase "Add prescription\nitem and directions" as item
-  usecase "Check allergy, interaction\nor contraindication rule" as warning
-  usecase "Override warning\nwith reason" as override
-  usecase "Sign and issue\nprescription" as issue
-  usecase "Print / export\nprescription" as print
-  usecase "Amend or cancel\nprescription" as amend
-  usecase "Record dispensing or\nmedication administration" as administer
-  usecase "Manage medicine\ncatalogue and rules" as catalogue
+  usecase "UC-043\nCreate Prescription\nDraft" as draft
+  usecase "UC-044\nAdd Medicine\nand Directions" as item
+  usecase "UC-045\nSearch Approved\nMedicine Catalogue" as medicine
+  usecase "UC-046\nCheck Medication\nSafety Rules" as warning
+  usecase "UC-047\nOverride Safety\nWarning with Reason" as override
+  usecase "UC-048\nValidate and Issue\nPrescription" as issue
+  usecase "UC-049\nPrint or Export\nPrescription" as print
+  usecase "UC-050\nAmend or Cancel\nPrescription" as amend
+  usecase "UC-051\nRecord Dispensing\nor Administration" as administer
+  usecase "UC-052\nManage Medicine\nCatalogue and Rules" as catalogue
 }
 
-doctor --> draft
-doctor --> issue
-doctor --> amend
-doctor --> print
-pharmacist --> administer
-manager --> catalogue
+doctor -- draft
+doctor -- issue
+doctor -- print
+doctor -- amend
+doctor -- override
+pharmacist -- administer
+manager -- catalogue
 
-draft .> medicine : <<include>>
 draft .> item : <<include>>
+item .> medicine : <<include>>
 item .> warning : <<include>>
-override .> warning : <<extend>>
+override .> issue : <<extend>>
 issue .> warning : <<include>>
-administer .> issue : <<include>>
-catalogue .> medicine : <<include>>
 
 note bottom of warning
-  Alerts support clinical judgement.
-  They do not make treatment decisions.
+  FR-011: alerts inform clinicians and do not
+  autonomously diagnose or decide treatment.
 end note
 @enduml

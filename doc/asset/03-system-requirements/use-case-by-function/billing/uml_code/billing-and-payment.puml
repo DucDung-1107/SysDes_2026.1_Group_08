@@ -2,46 +2,51 @@
 title MEDORA -- Billing and Payment Use Cases
 left to right direction
 skinparam shadowing false
-skinparam packageStyle rectangle
-skinparam usecase {
-  BackgroundColor #EEF5F4
-  BorderColor #087E8B
-}
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
 
 actor Cashier as cashier
-actor "Clinic Manager" as manager
 actor "Authorized Finance\nStaff" as finance
+actor "Clinic Manager" as manager
 
 rectangle "Billing and Payment" {
-  usecase "Create invoice from\neligible services" as invoice
-  usecase "Apply effective\nservice price" as price
-  usecase "Apply authorized\ndiscount" as discount
-  usecase "Record payment" as payment
-  usecase "Issue receipt" as receipt
-  usecase "Record refund or\nadjustment" as refund
-  usecase "Provide refund\nreason and approval" as refundApproval
-  usecase "View invoice and\npayment status" as status
-  usecase "Manage services\nand price list" as priceList
-  usecase "View revenue\nreport" as revenue
+  usecase "UC-060\nCreate Invoice\nfrom Eligible Items" as invoice
+  usecase "UC-061\nApply Effective\nService Price" as price
+  usecase "UC-062\nApply Authorized\nDiscount" as discount
+  usecase "UC-063\nRecord Payment" as payment
+  usecase "UC-064\nIssue Receipt" as receipt
+  usecase "UC-065\nRecord Refund\nor Adjustment" as refund
+  usecase "UC-066\nRecord Refund\nReason and Approval" as refundApproval
+  usecase "UC-067\nView Invoice and\nPayment Status" as status
+  usecase "UC-068\nManage Service\nand Price List" as priceList
+  usecase "UC-069\nView Revenue\nReport" as revenue
 }
 
-cashier --> invoice
-cashier --> payment
-cashier --> receipt
-cashier --> status
-finance --> refund
-manager --> priceList
-manager --> revenue
+cashier -- invoice
+cashier -- payment
+cashier -- receipt
+cashier -- status
+finance -- refund
+finance -- discount
+manager -- priceList
+manager -- revenue
 
 invoice .> price : <<include>>
 discount .> invoice : <<extend>>
 payment .> receipt : <<include>>
 refund .> refundApproval : <<include>>
-revenue .> status : <<include>>
-priceList .> price : <<include>>
 
 note bottom of invoice
-  Clinical information remains unchanged
-  by billing and payment actions.
+  FR-023: billing records do not edit clinical data;
+  refunds and adjustments retain a reason and audit history.
 end note
 @enduml
