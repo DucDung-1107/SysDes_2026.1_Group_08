@@ -1,0 +1,42 @@
+@startuml
+title MEDORA -- Book Appointment (System Sequence)
+skinparam shadowing false
+skinparam dpi 192
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 16
+skinparam titleFontSize 20
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam ArrowColor #2563A6
+skinparam sequence {
+  ParticipantBackgroundColor #EAF3FB
+  ParticipantBorderColor #163A5F
+  ParticipantFontColor #183247
+  LifeLineBorderColor #2563A6
+  LifeLineBackgroundColor #F5F9FE
+}
+actor Receptionist
+participant "MEDORA System" as System
+
+Receptionist -> System: Book appointment(patient, service, provider, slot)
+activate System
+alt Invalid identity, permission, or scope
+  System --> Receptionist: Reject request; no appointment created
+else Request is valid
+  alt Slot unavailable or conflicting
+    System --> Receptionist: Return alternatives; create no booking
+  else Slot available
+    System --> Receptionist: Return appointment reference and status
+  end
+end
+deactivate System
+note over Receptionist, System
+  Patient portal booking is Phase 2. Availability must be rechecked
+  at commit time; rejected requests reserve no resources.
+end note
+@enduml

@@ -1,0 +1,45 @@
+@startuml
+title MEDORA -- Schedule and Execute Service Order (System Sequence)
+skinparam shadowing false
+skinparam dpi 192
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 16
+skinparam titleFontSize 20
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam ArrowColor #2563A6
+skinparam sequence {
+  ParticipantBackgroundColor #EAF3FB
+  ParticipantBorderColor #163A5F
+  ParticipantFontColor #183247
+  LifeLineBorderColor #2563A6
+  LifeLineBackgroundColor #F5F9FE
+}
+actor Doctor
+actor "Service Staff" as Staff
+participant "MEDORA System" as System
+
+Doctor -> System: Create service order(encounter, service, priority)
+activate System
+System --> Doctor: Return order reference
+Doctor -> System: Request schedule and resource allocation
+alt No valid allocation available
+  System --> Doctor: Keep order pending; commit no booking
+else Valid allocation available
+  System --> Doctor: Return scheduled order and allocation
+  Staff -> System: Start assigned service order
+  System --> Staff: Confirm service started or reject invalid assignment
+  Staff -> System: Record outcome and completion
+  alt Required result is incomplete
+    System --> Staff: Keep order incomplete; request correction
+  else Required result is valid
+    System --> Staff: Return completed status
+  end
+end
+deactivate System
+@enduml

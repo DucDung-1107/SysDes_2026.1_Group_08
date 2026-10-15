@@ -1,0 +1,36 @@
+@startuml
+title MEDORA -- Encounter Lifecycle
+skinparam shadowing false
+skinparam dpi 192
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 18
+skinparam titleFontSize 22
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam ArrowColor #2563A6
+skinparam state {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+  FontSize 18
+  ArrowColor #2563A6
+}
+[*] --> New : check-in accepted
+New --> Waiting : queue assigned
+Waiting --> InConsultation : clinician starts encounter [authorized]
+InConsultation --> AwaitingService : required service order pending
+AwaitingService --> InConsultation : required result reviewed
+InConsultation --> AwaitingClosure : clinical plan complete
+AwaitingClosure --> Completed : required summary signed [checklist satisfied]
+AwaitingClosure --> InConsultation : missing requirement corrected
+note right of Completed
+  Completion is a controlled clinical transition, not deletion.
+  Invoice settlement remains a separate financial lifecycle.
+end note
+Completed --> [*]
+@enduml

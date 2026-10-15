@@ -1,0 +1,36 @@
+@startuml
+title MEDORA -- Clinical Note Version Lifecycle
+skinparam shadowing false
+skinparam dpi 192
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 18
+skinparam titleFontSize 22
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam ArrowColor #2563A6
+skinparam state {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+  FontSize 18
+  ArrowColor #2563A6
+}
+[*] --> Draft : create note
+Draft --> Draft : save changes
+Draft --> Signed : sign [required fields valid and actor authorized]
+Signed --> AmendmentDraft : request correction [reason supplied and authorized]
+AmendmentDraft --> AmendmentDraft : save correction
+AmendmentDraft --> AmendedVersionSigned : sign amendment [validation succeeds]
+AmendmentDraft --> Signed : abandon amendment [original remains current]
+AmendedVersionSigned --> AmendmentDraft : request another correction [reason supplied]
+note right of Signed
+  Signed versions are immutable. An amendment creates a linked
+  successor version; it never overwrites the signed source.
+end note
+Signed --> [*]
+@enduml

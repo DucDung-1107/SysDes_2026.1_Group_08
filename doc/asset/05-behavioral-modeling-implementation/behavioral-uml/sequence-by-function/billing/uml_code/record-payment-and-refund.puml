@@ -1,0 +1,48 @@
+@startuml
+title MEDORA -- Record Payment or Refund (System Sequence)
+skinparam shadowing false
+skinparam dpi 192
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 16
+skinparam titleFontSize 20
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam ArrowColor #2563A6
+skinparam sequence {
+  ParticipantBackgroundColor #EAF3FB
+  ParticipantBorderColor #163A5F
+  ParticipantFontColor #183247
+  LifeLineBorderColor #2563A6
+  LifeLineBackgroundColor #F5F9FE
+}
+actor Cashier
+actor "Authorized Finance Staff" as Finance
+participant "MEDORA System" as System
+
+Cashier -> System: Record payment(invoice, amount, method, request key)
+activate System
+alt Invalid amount, invoice state, or duplicate request
+  System --> Cashier: Reject; make no financial change
+else Valid payment
+  System --> Cashier: Return transaction and invoice status
+end
+deactivate System
+
+Finance -> System: Request refund(original transaction, amount, reason)
+activate System
+alt Invalid request or approval required but absent
+  System --> Finance: Reject or retain for authorized review
+else Refund permitted
+  System --> Finance: Return refund reference and resulting balance
+end
+deactivate System
+note over Cashier, System
+  Payment and refund are separate financial events. Neither changes
+  clinical content; external payment gateways are out of scope.
+end note
+@enduml

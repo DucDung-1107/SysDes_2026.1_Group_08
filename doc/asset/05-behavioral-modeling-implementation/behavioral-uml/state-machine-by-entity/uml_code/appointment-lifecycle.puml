@@ -1,0 +1,43 @@
+@startuml
+title MEDORA -- Appointment Lifecycle
+skinparam shadowing false
+skinparam dpi 192
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 18
+skinparam titleFontSize 22
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam ArrowColor #2563A6
+skinparam state {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+  FontSize 18
+  ArrowColor #2563A6
+}
+[*] --> Draft : create
+Draft --> Booked : validate [slot available]
+Draft --> Draft : reject [invalid or conflict]
+Booked --> Confirmed : confirm
+Booked --> Cancelled : cancel [authorized]
+Confirmed --> CheckedIn : check-in accepted
+Confirmed --> NoShow : mark no-show [policy permits]
+Confirmed --> Cancelled : cancel [authorized]
+Booked --> Rescheduled : reschedule [slot valid]
+Confirmed --> Rescheduled : reschedule [slot valid]
+Rescheduled --> [*]
+CheckedIn --> InService : encounter begins
+InService --> Completed : visit ends
+Cancelled --> [*]
+NoShow --> [*]
+Completed --> [*]
+note right of Rescheduled
+  Rescheduling preserves the prior appointment history;
+  the replacement slot is validated before commitment.
+end note
+@enduml

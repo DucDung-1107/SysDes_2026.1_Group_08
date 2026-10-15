@@ -1,0 +1,76 @@
+@startuml
+title MEDORA -- Service Order Allocation and Execution
+skinparam shadowing false
+skinparam dpi 192
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 16
+skinparam titleFontSize 20
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam activity {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+  DiamondBackgroundColor #FFFFFF
+  DiamondBorderColor #163A5F
+  BarColor #2A9D9F
+}
+skinparam partition {
+  BackgroundColor #F5F9FE
+  BorderColor #163A5F
+  FontColor #163A5F
+}
+start
+partition Doctor {
+  :Create order for active encounter;
+  :Specify service, reason and priority;
+}
+partition MEDORA {
+  :Authorize actor and validate required order data;
+  if (Order valid?) then (yes)
+    :Check staff, room and resource availability;
+    if (Complete allocation available?) then (yes)
+      :Commit booking and schedule order;
+    else (no)
+      :Keep order pending;
+      :Return available next action;
+      stop
+    endif
+  else (no)
+    :Reject order without booking resources;
+    stop
+  endif
+}
+partition "Assigned Service Staff" {
+  :Open assigned scheduled order;
+  :Start service;
+}
+partition MEDORA {
+  :Validate assignment and current state;
+  if (Execution may proceed?) then (yes)
+    :Record start actor and time;
+  else (no)
+    :Reject transition and preserve state;
+    stop
+  endif
+}
+partition "Assigned Service Staff" {
+  :Perform service;
+  :Enter required outcome and completion details;
+}
+partition MEDORA {
+  if (Required result complete?) then (yes)
+    :Append execution result and completion event;
+    :Release booked resources according to policy;
+  else (no)
+    :Keep order incomplete and request correction;
+  endif
+}
+stop
+@enduml

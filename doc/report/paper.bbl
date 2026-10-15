@@ -1,0 +1,83 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Nguyen et~al.(2018)]{Nguyen2018Waiting}
+Thi Thanh~Thuy Nguyen et~al.
+\newblock Waiting time in the outpatient clinic at a national hospital in
+  vietnam.
+\newblock \emph{BMC Health Services Research}, 18:\penalty0 1--9, 2018.
+\newblock \doi{10.1186/s12913-018-3285-2}.
+\newblock URL \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC5995730/}.
+
+\bibitem[Nguyen et~al.(2020)]{Nguyen2020Outpatient}
+Thi Thanh~Thuy Nguyen et~al.
+\newblock Outpatient waiting time at vietnam health facilities: policy
+  implications for medical examination procedure.
+\newblock \emph{Healthcare}, 8\penalty0 (1):\penalty0 63, 2020.
+\newblock \doi{10.3390/healthcare8010063}.
+\newblock URL \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC7151016/}.
+
+\bibitem[{Organisation for Economic Co-operation and
+  Development}(2023)]{OECD2023DigitalHealth}
+{Organisation for Economic Co-operation and Development}.
+\newblock \emph{Health at a Glance 2023: OECD Indicators}.
+\newblock OECD Publishing, Paris, 2023.
+\newblock \doi{10.1787/7a7afb35-en}.
+\newblock URL
+  \url{https://www.oecd.org/en/publications/health-at-a-glance-2023_7a7afb35-en/full-report/digital-health-at-a-glance_86518984.html}.
+
+\bibitem[{United Nations Population Fund Viet Nam}(2021)]{UNFPA2021Ageing}
+{United Nations Population Fund Viet Nam}.
+\newblock Ageing in viet nam.
+\newblock UNFPA Viet Nam thematic brief, 2021.
+\newblock URL \url{https://vietnam.unfpa.org/en/topics/ageing-0}.
+\newblock Accessed 14 October 2026.
+
+\bibitem[{World Health Organization}(2017)]{WHO2017Medication}
+{World Health Organization}.
+\newblock Who launches global effort to halve medication-related errors in 5
+  years.
+\newblock WHO news release, 2017.
+\newblock URL
+  \url{https://www.who.int/news/item/29-03-2017-who-launches-global-effort-to-halve-medication-related-errors-in-5-years}.
+\newblock Accessed 14 October 2026.
+
+\bibitem[{World Health
+  Organization}(2021{\natexlab{a}})]{WHO2021DataGovernance}
+{World Health Organization}.
+\newblock Health data as a global public good: A call for health data
+  governance.
+\newblock WHO policy article, 2021{\natexlab{a}}.
+\newblock URL
+  \url{https://www.who.int/news-room/articles-detail/health-data-as-a-global-public-good-a-call-for-health-data-governance-30-september}.
+\newblock Accessed 14 October 2026.
+
+\bibitem[{World Health Organization}(2021{\natexlab{b}})]{WHO2021Digital}
+{World Health Organization}.
+\newblock \emph{Global Strategy on Digital Health 2020--2025}.
+\newblock World Health Organization, Geneva, 2021{\natexlab{b}}.
+\newblock ISBN 978-92-4-002092-4.
+\newblock URL \url{https://www.who.int/publications/i/item/9789240020924}.
+
+\bibitem[{World Health Organization}(2023)]{WHO2023Safety}
+{World Health Organization}.
+\newblock Patient safety.
+\newblock WHO Fact Sheet, 2023.
+\newblock URL
+  \url{https://www.who.int/news-room/fact-sheets/detail/patient-safety}.
+\newblock Accessed 14 October 2026.
+
+\bibitem[{World Health Organization Alliance for Health Policy and Systems
+  Research}(2024)]{WHO2024DigitalTransformation}
+{World Health Organization Alliance for Health Policy and Systems Research}.
+\newblock Harnessing digital transformation to improve health.
+\newblock Thematic programme overview, 2024.
+\newblock URL
+  \url{https://ahpsr.who.int/what-we-do/thematic-areas-of-focus/harnessing-digital-transformation-to-improve-health}.
+\newblock Accessed 14 October 2026.
+
+\end{thebibliography}
