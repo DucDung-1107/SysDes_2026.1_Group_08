@@ -31,8 +31,4 @@ doctor -- open
 doctor -- review
 doctor -- note
 doctor -- diagnosis
-note bottom of diagnosis
-  FR-007 and FR-010: each recorded value or diagnosis is
-  linked to the encounter, actor and capture time.
-end note
 @enduml

@@ -23,9 +23,13 @@ skinparam rectangle {
 }
 
 actor Patient as patient
-actor "Authorized Clinic User" as user
-actor "Reception and\nCashier Staff" as operations
-actor "Clinical and\nService Staff" as clinical
+actor "Authenticated\nInternal User" as user
+actor Receptionist as reception
+actor Nurse as nurse
+actor Doctor as doctor
+actor "Technician /\nService Staff" as technician
+actor "Pharmacist /\nMedicine Staff" as pharmacist
+actor Cashier as cashier
 actor "Clinic Manager" as manager
 actor "System Administrator" as admin
 actor Auditor as auditor
@@ -51,13 +55,18 @@ rectangle "MEDORA -- Integrated Clinic Management and EMR System" {
 
 patient -- UCAppointment : phased portal
 user -- UCAuth
-operations -- UCPatient
-operations -- UCAppointment
-operations -- UCBilling
-clinical -- UCPatient
-clinical -- UCEncounter
-clinical -- UCPrescription
-clinical -- UCService
+reception -- UCPatient
+reception -- UCAppointment
+reception -- UCBilling
+nurse -- UCPatient
+nurse -- UCEncounter
+doctor -- UCPatient
+doctor -- UCEncounter
+doctor -- UCPrescription
+doctor -- UCService
+technician -- UCService
+pharmacist -- UCPrescription
+cashier -- UCBilling
 manager -- UCReporting
 manager -- UCAdmin
 admin -- UCAdmin
@@ -65,13 +74,4 @@ admin -- UCAudit
 auditor -- UCAudit
 
 
-note bottom of UCAppointment
-  Patient self-service is a planned phase-2 capability;
-  internal staff workflows remain available in the MVP.
-end note
-
-note left of user
-  Abstract actor representing an internal user before
-  the system resolves the user's assigned role and scope.
-end note
 @enduml

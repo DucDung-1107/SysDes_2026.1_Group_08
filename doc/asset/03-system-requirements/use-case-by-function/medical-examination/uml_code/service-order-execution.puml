@@ -18,15 +18,16 @@ actor Doctor as doctor
 actor "Technician /\nService Staff" as technician
 
 rectangle "Service Order and Execution Management" {
-  usecase "UC-039\nCreate Service\nor Procedure Order" as order
-  usecase "UC-040\nRecord Service\nResult" as result
+  usecase "UC-039\nCreate and Schedule\nService / Procedure Order" as order
+  usecase "Validate Required\nResource Availability" as availability
+  usecase "Allocate Room, Staff\nand Resource" as allocation
+  usecase "UC-040\nRecord Service Execution\nand Result" as result
 }
 
 doctor -- order
 technician -- result
 
-note bottom of result
-  FR-018: only assigned and authorized staff may record
-  the performer, time, status and result of a service.
-end note
+order .> availability : <<include>>
+order .> allocation : <<include>>
+
 @enduml

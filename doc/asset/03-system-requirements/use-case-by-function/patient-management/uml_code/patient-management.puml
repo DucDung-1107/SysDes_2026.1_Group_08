@@ -20,6 +20,7 @@ actor Nurse as nurse
 actor Doctor as doctor
 actor "Authorized Registrar" as registrar
 actor Auditor as auditor
+actor Patient as patient
 
 rectangle "Patient Management" {
   usecase "UC-010\nSearch Patient" as search
@@ -32,6 +33,7 @@ rectangle "Patient Management" {
   usecase "UC-017\nPerform Record Merge" as merge
   usecase "UC-018\nDetect Possible\nDuplicate" as duplicate
   usecase "UC-019\nReview Patient\nAudit Events" as audit
+  usecase "UC-055\nView Released\nDocuments" as releasedDocuments
 }
 
 reception -- search
@@ -47,13 +49,10 @@ doctor -- history
 doctor -- attachment
 registrar -- merge
 auditor -- audit
+patient -- releasedDocuments : phase 2
 
 register .> duplicate : <<include>>
 mergeRequest .> search : <<include>>
 merge .> mergeRequest : <<include>>
 
-note bottom of merge
-  FR-004: preserve source records, approver,
-  reason and audit history after a merge.
-end note
 @enduml

@@ -1,0 +1,44 @@
+@startuml
+title MEDORA -- Core Clinical Domain Model
+top to bottom direction
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+class Patient <<person>>
+class MedicalRecord <<longitudinal record>>
+class Appointment <<planned visit>>
+class Encounter <<actual visit>>
+class ClinicalNote <<clinical record>>
+class Diagnosis <<clinical record>>
+class Prescription <<clinical order>>
+class PrescriptionItem <<clinical order line>>
+class Medication <<catalogue>>
+class ProcedureOrder <<clinical order>>
+class ClinicService <<catalogue>>
+
+Patient "1" -- "1" MedicalRecord : owns
+Patient "1" -- "0..*" Appointment : requests / attends
+Patient "1" -- "0..*" Encounter : receives
+Appointment "0..1" -- "0..1" Encounter : may lead to
+
+Encounter "1" *-- "0..*" ClinicalNote : contains
+Encounter "1" *-- "0..*" Diagnosis : records
+Encounter "1" *-- "0..*" Prescription : produces
+Encounter "1" *-- "0..*" ProcedureOrder : produces
+
+Prescription "1" *-- "1..*" PrescriptionItem : contains
+PrescriptionItem "0..*" --> "1" Medication : selects
+ProcedureOrder "0..*" --> "1" ClinicService : requests
+
+note right of MedicalRecord
+  Conceptual aggregate of longitudinal health information;
+  not a claim about a final database table.
+end note
+@enduml

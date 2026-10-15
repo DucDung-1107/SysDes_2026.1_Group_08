@@ -30,9 +30,6 @@ reception -- viewQueue
 nurse -- viewQueue
 
 checkin .> queue : <<include>>
+walkin .> queue : <<include>>
 
-note bottom of queue
-  FR-006: one active encounter is allowed only when it
-  satisfies the facility's configured queue rule.
-end note
 @enduml

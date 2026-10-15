@@ -42,11 +42,7 @@ manager -- revenue
 
 invoice .> price : <<include>>
 discount .> invoice : <<extend>>
-payment .> receipt : <<include>>
+receipt .> payment : <<extend>>
 refund .> refundApproval : <<include>>
 
-note bottom of invoice
-  FR-023: billing records do not edit clinical data;
-  refunds and adjustments retain a reason and audit history.
-end note
 @enduml

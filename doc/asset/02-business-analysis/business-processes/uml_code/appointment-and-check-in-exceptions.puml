@@ -1,0 +1,71 @@
+@startuml
+title MEDORA -- Appointment and Check-in Business Workflow
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam activity {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+  DiamondBackgroundColor #FFFFFF
+  DiamondBorderColor #163A5F
+  BarColor #2A9D9F
+}
+skinparam partition {
+  BackgroundColor #F5F9FE
+  BorderColor #163A5F
+  FontColor #163A5F
+}
+
+start
+partition "Receptionist" {
+  :Receive booking, rescheduling or arrival request;
+  :Search patient using an approved identifier;
+  if (Patient record found?) then (yes)
+    :Confirm permitted identity and contact details;
+  else (no)
+    :Create a provisional patient record;
+    if (Possible duplicate?) then (yes)
+      :Flag record for authorized merge review;
+    endif
+  endif
+  if (Request is a walk-in?) then (yes)
+    :Check facility acceptance policy;
+    if (Accepted?) then (yes)
+      :Create Encounter and assign queue;
+      stop
+    else (no)
+      :Provide the next permitted action;
+      stop
+    endif
+  else (no)
+    :Select provider, service and requested time;
+  endif
+}
+partition "MEDORA" {
+  :Validate schedule, duration and required resources;
+  if (Slot available?) then (yes)
+    :Commit appointment and record actor/time;
+  else (no)
+    :Return available alternatives without creating a booking;
+    stop
+  endif
+}
+partition "Receptionist" {
+  :At arrival, check in appointment;
+}
+partition "MEDORA" {
+  :Create or activate Encounter and assign role-scoped queue;
+}
+stop
+
+note right
+  A rejected availability check creates neither an appointment
+  nor a resource booking. Merge execution is restricted to an
+  authorized role and is intentionally outside this reception flow.
+  Cancellation and rescheduling preserve history and apply
+  the same availability rule; they are summarised in the report text.
+end note
+@enduml

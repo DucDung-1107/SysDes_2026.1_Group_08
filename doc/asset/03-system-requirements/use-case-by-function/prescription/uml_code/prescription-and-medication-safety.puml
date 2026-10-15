@@ -39,14 +39,9 @@ doctor -- override
 pharmacist -- administer
 manager -- catalogue
 
-draft .> item : <<include>>
 item .> medicine : <<include>>
-item .> warning : <<include>>
 override .> issue : <<extend>>
+issue .> item : <<include>>
 issue .> warning : <<include>>
 
-note bottom of warning
-  FR-011: alerts inform clinicians and do not
-  autonomously diagnose or decide treatment.
-end note
 @enduml

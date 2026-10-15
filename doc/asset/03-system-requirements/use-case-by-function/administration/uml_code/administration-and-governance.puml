@@ -43,12 +43,6 @@ manager -- report
 manager -- resource
 auditor -- audit
 
-roles .> users : <<include>>
-revoke .> users : <<include>>
 filter .> audit : <<extend>>
 
-note bottom of roles
-  FR-002 and NFR-06: enforce authorization in the backend;
-  hiding an interface control is not sufficient.
-end note
 @enduml

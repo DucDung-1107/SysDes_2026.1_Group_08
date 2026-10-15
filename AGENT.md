@@ -579,3 +579,1091 @@ A deliverable is complete only when all applicable conditions are met:
 The final goal is a system-analysis and design deliverable that is
 **correct, traceable, readable, consistent, defensible, and
 implementation-aware**---not merely visually attractive.
+
+
+# SECTION 2 — BUSINESS ANALYSIS AND DOMAIN MODELING
+## Mandatory Authoring Instructions for the AI Agent
+
+### 1. Role and Objective
+
+Act as a senior Business Analyst and Systems Analyst specializing in clinic management systems and Electronic Medical Records (EMR).
+
+Develop Section 2 of the Medora system analysis and design report to a professional academic standard. The section must demonstrate a deep understanding of clinic operations, stakeholder responsibilities, business workflows, domain concepts, operational constraints, and the business rules that will shape the system design.
+
+Do not merely describe what a clinic management system generally does. Analyze the specific business context, explain how the clinic operates, identify the responsibilities and interactions of relevant stakeholders, and derive a coherent business model that can be used directly in subsequent requirements analysis and UML design.
+
+The result must be:
+- Business-driven and grounded in realistic clinic operations.
+- Detailed enough to justify the system's major functions and design decisions.
+- Logically structured, with clear relationships between stakeholders, processes, business rules, and domain entities.
+- Consistent with the project's confirmed scope and actual implementation.
+- Written in clear, formal, professional English.
+- Supported by appropriate diagrams, tables, and concrete workflow examples.
+- Free from redundant descriptions, unsupported assumptions, decorative diagrams, and generic filler.
+
+### 2. Evidence, Scope, and Assumption Management
+
+Before writing, inspect the available project documentation, source code, database schema, existing diagrams, and previous report sections.
+
+Establish which capabilities are confirmed, proposed, assumed, or outside the project scope.
+
+Do not automatically treat every feature commonly found in hospital information systems as a Medora requirement. Medora is a clinic management and EMR system; hospital-specific capabilities must not be introduced without justification.
+
+Potential business areas include:
+- Patient registration and demographic information.
+- Appointment scheduling and cancellation.
+- Reception, check-in, and patient queues.
+- Doctor consultation and clinical documentation.
+- Medical history, diagnoses, allergies, and prescriptions.
+- Laboratory orders and diagnostic results, if in scope.
+- Billing and payment processing, if in scope.
+- Staff management, clinic services, and working schedules.
+- Medical record access, auditing, and administrative reporting.
+
+These are candidate areas, not confirmed functionality.
+
+When project evidence is insufficient:
+1. Record the missing information explicitly.
+2. Make a reasonable assumption only when necessary to proceed.
+3. Label assumptions clearly and explain their impact.
+4. Avoid inventing organizational structures, approval procedures, external integrations, or clinical policies.
+5. Separate current business practices from proposed future workflows.
+
+If the actual implementation differs from the intended business model, document the discrepancy rather than silently presenting the proposed behavior as implemented.
+
+### 3. Required Section Structure
+
+Use the following structure as the default. Merge or omit a subsection only when the resulting report remains complete and logically justified.
+
+## 2.1 Business Context and Operational Overview
+
+Explain the business environment in which Medora operates.
+
+Cover:
+- The type and operational characteristics of the clinic.
+- The services and patient interactions relevant to the project.
+- The current or intended method of managing appointments, consultations, medical records, and related administrative activities.
+- The main operational challenges the system is intended to address.
+- The business objectives and expected operational improvements.
+- The system boundary: what Medora supports and what remains outside its responsibility.
+
+Distinguish the existing workflow from the proposed workflow. Use an As-Is and To-Be comparison when evidence supports meaningful differences.
+
+Do not claim that a clinic currently relies on paper records, spreadsheets, or fragmented systems unless this is confirmed or explicitly identified as an assumption.
+
+Deliverable:
+- A concise but substantive business-context narrative.
+- An As-Is versus To-Be comparison table when applicable.
+- A clear statement of the business problems and their implications for system design.
+
+## 2.2 Organizational Structure and Stakeholder Responsibilities
+
+Identify the organizational roles relevant to the system and explain how responsibilities are distributed.
+
+For each relevant stakeholder or staff role, specify:
+- Role name and business purpose.
+- Primary responsibilities.
+- Decisions the role is authorized to make.
+- Information the role creates, reads, updates, or approves.
+- Interactions with other roles.
+- Operational boundaries and potential conflicts of responsibility.
+
+Consider roles such as:
+- Clinic administrator or manager.
+- Receptionist or front-desk staff.
+- Doctor or clinician.
+- Nurse or clinical assistant, if applicable.
+- Pharmacist or laboratory staff, only if these functions are in scope.
+- Patient.
+- External service or system, where an actual integration exists.
+
+Do not include every possible healthcare role merely to make the organizational model appear comprehensive.
+
+Differentiate organizational hierarchy from system access permissions. A person who supervises another employee does not automatically require unrestricted access to that employee's clinical data.
+
+Required diagram:
+- Organizational Structure Diagram, if the clinic has a meaningful hierarchy.
+- Use a simple, readable hierarchy with clear reporting or coordination relationships.
+- Do not use an organizational chart as a substitute for a system actor diagram.
+
+Required table:
+| Role | Business Responsibilities | Decisions and Authority | Main Information Handled | Collaborating Roles |
+
+Ensure that the organizational structure agrees with the responsibilities described in the business processes and the role-based access matrix developed later.
+
+## 2.3 Business Actors and System Interaction Boundaries
+
+Identify and classify the actors that participate in Medora's business processes or interact directly with the system.
+
+For each actor, explain:
+- The actor's goal.
+- Its relationship with the clinic.
+- The business activities it participates in.
+- The information it supplies or receives.
+- The system functions it is expected to initiate or access.
+- The limits of its interaction with the system.
+
+Distinguish:
+- Human actors.
+- External software systems.
+- Organizational stakeholders who influence requirements but do not directly interact with Medora.
+- Internal software components, which are not external actors in a Use Case Diagram.
+
+A patient may be a business stakeholder without necessarily being a direct system user. Determine whether patients use a patient portal or whether clinic staff perform all interactions on their behalf.
+
+Likewise, do not introduce payment gateways, insurance providers, laboratories, notification services, or other external actors unless the scope supports them.
+
+Create a role-to-activity mapping table and ensure that every actor appearing in later Use Case Diagrams has a justified responsibility.
+
+The actor inventory must use stable names across the entire report.
+
+## 2.4 Business Process and Workflow Analysis
+
+Model the clinic's major business processes from initiation to completion.
+
+For each relevant process, identify:
+- Business objective and triggering event.
+- Preconditions and required information.
+- Participating roles and their responsibilities.
+- Main activities and their sequence.
+- Decision points and decision criteria.
+- Information created, updated, or retrieved.
+- Business rules and constraints.
+- Alternative workflows and exceptional outcomes.
+- Completion conditions and resulting business state.
+
+At minimum, analyze the end-to-end patient journey where applicable:
+
+1. Patient registration or identity verification.
+2. Appointment creation, rescheduling, or cancellation.
+3. Arrival, check-in, and queue handling.
+4. Consultation and clinical documentation.
+5. Diagnosis and prescription, if supported.
+6. Additional services, testing, or referrals, if in scope.
+7. Billing and payment, if in scope.
+8. Medical record completion and authorized follow-up.
+
+Do not force all these stages into a single workflow if they are independent, optional, or outside the project scope.
+
+Explain the relationship between processes. For example, an appointment may lead to a clinic visit, but creating an appointment does not necessarily mean a consultation has occurred.
+
+Distinguish business processes from software use cases. A business process describes the operational work performed by people and systems; a use case describes how an actor achieves a goal through interaction with the system.
+
+Required diagrams:
+- An overall business workflow diagram.
+- Focused Activity Diagrams or equivalent process models for complex workflows.
+- Swimlanes when they clarify which role performs each activity.
+
+Do not draw a separate diagram for every trivial action. Select diagrams based on business complexity and explanatory value.
+
+For each workflow, verify that:
+- The starting event is explicit.
+- The sequence of activities is realistic.
+- Decision branches have understandable conditions.
+- Alternative paths rejoin the main flow appropriately or terminate with a valid outcome.
+- Failure paths do not lead to impossible business states.
+- Each action has an identifiable responsible role or system.
+- The end state is consistent with the relevant domain model.
+
+## 2.5 Business Rules, Constraints, and Operational Exceptions
+
+Extract explicit business rules from the workflows instead of leaving them hidden in descriptive paragraphs.
+
+Assign stable identifiers such as BR-001, BR-002, and so on.
+
+Examples of rule categories include:
+- Patient identity and duplicate-registration handling.
+- Appointment scheduling, availability, cancellation, and rescheduling.
+- Doctor availability and consultation ownership.
+- Medical record creation, modification, and access.
+- Prescription and diagnosis documentation.
+- Invoice and payment status transitions, if applicable.
+- Restrictions on deleting or altering finalized clinical information.
+- Handling of incomplete records and invalid input.
+- Access restrictions for sensitive information.
+
+Treat these as examples to validate, not automatically applicable policies.
+
+For each confirmed rule, specify:
+- Rule identifier and concise name.
+- Rule statement.
+- Business rationale.
+- Trigger or context in which it applies.
+- Relevant actors and entities.
+- Expected behavior when the rule is satisfied.
+- Expected behavior when the rule is violated.
+- Related requirements and use cases.
+
+Use precise, testable statements. Avoid vague rules such as "appointments should be managed properly."
+
+Where a policy requires clinical, legal, or organizational authority, do not invent the policy. Mark it for confirmation.
+
+## 2.6 Domain Model and Core Business Entities
+
+Identify the principal business concepts that exist independently of the software implementation.
+
+Consider entities such as:
+- Patient.
+- Appointment.
+- Encounter or Consultation.
+- MedicalRecord.
+- Diagnosis.
+- Prescription.
+- Medication.
+- Invoice.
+- Payment.
+- StaffMember.
+- ClinicService.
+
+Include only entities justified by the confirmed scope.
+
+For each core entity, describe:
+- Its business meaning.
+- Why it exists.
+- Its relationship to other entities.
+- Its lifecycle, if applicable.
+- Its key business constraints.
+- Whether it represents a person, event, record, transaction, or reference data.
+
+Pay particular attention to the distinction between:
+- A patient and that patient's medical record.
+- An appointment and an actual consultation.
+- A clinical encounter and a diagnosis recorded during that encounter.
+- A prescription and the medication items contained in it.
+- An invoice and the payment transactions associated with it.
+
+These concepts should not be collapsed into a single entity merely to simplify the diagram.
+
+Required deliverable:
+- A Domain Model or Domain Class Diagram.
+- A concise entity glossary.
+- A relationship table describing meaningful associations and cardinalities where they are established.
+
+Ensure that the domain model captures the business concepts without prematurely introducing database-specific implementation details.
+
+Do not invent attributes or cardinalities merely to fill empty space. If a relationship is uncertain, identify the decision requiring clarification.
+
+## 2.7 Business-to-System Implications
+
+Conclude the analysis by explaining how the findings constrain and guide the system design.
+
+Create a traceability table linking:
+
+| Business Need | Business Rule or Process | Affected Actor | Derived System Capability | Related Requirement or Use Case |
+
+Explain the implications for:
+- Functional requirements.
+- Non-functional requirements.
+- Role-based access control.
+- Data integrity and entity relationships.
+- Workflow states and transitions.
+- Auditability and security.
+- Alternative flows and exception handling.
+
+This subsection must synthesize the analysis rather than repeat the preceding sections.
+
+Do not fully reproduce the requirements catalog or detailed Use Case Specifications here. Those belong in Section 3. Provide stable identifiers and cross-references so the reader can follow the reasoning.
+
+### 4. Functional and Non-Functional Requirement Alignment
+
+Although detailed requirements belong in Section 3, Section 2 must provide the business justification for them.
+
+For every major business process, identify the capabilities the system must support.
+
+Functional requirements should express observable system behavior, such as:
+- Registering a patient after validating required information.
+- Creating an appointment subject to defined availability rules.
+- Recording consultation information for an authorized encounter.
+- Retrieving medical records according to access permissions.
+
+Non-functional requirements should address measurable quality attributes, such as:
+- Confidentiality and authorization.
+- Data integrity and auditability.
+- Response time under a defined workload.
+- Availability and recoverability.
+- Usability and maintainability.
+
+Do not invent numeric performance targets without evidence or an explicit project decision. Mark proposed thresholds as targets requiring validation.
+
+In Section 3, assign identifiers such as FR-001 and NFR-001 and define verification criteria for each important requirement.
+
+Avoid duplicating the full requirements catalog in Section 2. Instead, explain why the requirement is needed and which business process or risk justifies it.
+
+### 5. Role-Based Access Control and Permission Analysis
+
+Analyze permissions from both business responsibility and information sensitivity.
+
+For each role, distinguish:
+- Read access.
+- Create access.
+- Update access.
+- Delete or archive access, where appropriate.
+- Approve or finalize actions, if applicable.
+- Administrative configuration permissions.
+
+Create a role-permission matrix in Section 3, supported by the role and process analysis in this section.
+
+Apply the principles of least privilege and separation of duties.
+
+Do not assume that all administrators can read or modify all clinical records. Administrative configuration privileges and clinical data privileges are separate concerns.
+
+Consider relevant access restrictions:
+- A doctor should access records required for authorized care.
+- Reception staff may need demographic and appointment information without unrestricted access to detailed clinical notes.
+- Patients should only access their own information through supported and verified access mechanisms.
+- Sensitive actions may require audit logging.
+- Unauthorized requests must be rejected without exposing sensitive data.
+
+These are design principles to validate against the project's actual access policy, not a substitute for a formally approved permission specification.
+
+Ensure that every protected function has an identifiable authorization rule and can be verified through test cases.
+
+### 6. Main, Alternative, and Exception Flows
+
+Detailed Use Case Specifications belong in Section 3, but the business analysis must identify realistic paths beyond the ideal scenario.
+
+For every critical workflow, consider:
+
+**Main success flow**
+- The normal sequence when all prerequisites are satisfied.
+
+**Alternative flow**
+- A legitimate variation that still achieves the business goal or leads to another valid outcome.
+- Examples may include rescheduling an appointment, an optional service, or an existing patient's returning visit.
+
+**Exception flow**
+- A failure or constraint violation that prevents the intended action.
+- Examples may include invalid patient information, an unavailable appointment slot, an unauthorized access attempt, a missing prerequisite, or a failed external service when that integration exists.
+
+For each non-trivial branch, identify:
+- The triggering condition.
+- The responsible actor or component.
+- The expected system response.
+- Whether the process resumes, restarts, terminates, or requires intervention.
+- The resulting business state.
+- Any data changes that must be prevented or rolled back.
+- The related business rule and test case.
+
+Do not treat every optional path as an exception. Do not treat every validation failure as a complete system failure.
+
+Ensure that:
+- No branch silently bypasses authorization.
+- Failed operations do not create inconsistent appointments, consultations, invoices, or medical records.
+- A completed clinical record cannot accidentally return to an invalid lifecycle state.
+- Cancellation and rescheduling preserve the required history.
+- Error messages communicate the next appropriate action without exposing sensitive data.
+
+Detailed flow descriptions must later agree with the corresponding Use Case Specifications, Sequence Diagrams, Activity Diagrams, State Machine Diagrams, and test cases.
+
+### 7. Writing and Presentation Standards
+
+Write in formal, clear academic English suitable for a university System Analysis and Design report.
+
+Use the following principles:
+- Start each subsection with its purpose and key conclusion.
+- Explain business significance before introducing a diagram.
+- Introduce each figure and table in the surrounding text.
+- After each major figure, interpret its important relationships and implications.
+- Avoid paragraphs that merely restate every label in the diagram.
+- Define domain terminology consistently.
+- Use concise tables for role comparisons, rule catalogs, entity glossaries, and traceability.
+- Avoid unnecessary repetition between Sections 1, 2, and 3.
+- Avoid unsupported claims about efficiency gains, reduced errors, compliance, or patient outcomes.
+- Keep the level of detail proportional to the project scope.
+
+Every figure should answer a specific question. Every table should support a decision or make an important relationship easier to understand.
+
+### 8. Diagram Quality Requirements
+
+Apply all diagram requirements in the root AGENTS.md, including the blue healthcare technology palette, readable English labels, correct notation, consistent naming, connector spacing, and mandatory visual review.
+
+For business process diagrams:
+- Use a clear reading direction.
+- Use meaningful action labels.
+- Identify responsible roles where this improves clarity.
+- Label decision branches with explicit conditions.
+- Keep alternate and exception flows visually distinct.
+- Avoid ambiguous crossings and overlapping connectors.
+
+If two connectors cross without joining, prefer rerouting them. If a crossing is unavoidable, use a visible curved bridge or jump-over convention when the rendering tool supports it. Never leave an ambiguous crossing that could be mistaken for a connection.
+
+Render every final diagram and inspect it at the size expected in the report. Correct layout, notation, label, arrow, and consistency issues before declaring it complete.
+
+### 9. Quality Assurance Checklist
+
+Before completing Section 2, verify all applicable items:
+
+**Business understanding**
+- [ ] The clinic context and project boundary are clear.
+- [ ] Existing and proposed workflows are distinguished.
+- [ ] Business problems and objectives are supported by project evidence or labeled assumptions.
+
+**Organization and actors**
+- [ ] Relevant organizational roles are justified.
+- [ ] Responsibilities and authority boundaries are clear.
+- [ ] Business stakeholders are distinguished from direct system actors.
+- [ ] Actor names are consistent with Section 3.
+
+**Business workflows**
+- [ ] Major in-scope workflows are covered from trigger to outcome.
+- [ ] Responsibilities and decision conditions are explicit.
+- [ ] Alternative and exception paths are realistic.
+- [ ] Workflow outcomes agree with domain concepts and lifecycle rules.
+
+**Business rules and domain model**
+- [ ] Important business rules have stable identifiers.
+- [ ] Each core entity has a clear business definition.
+- [ ] Relationships and cardinalities are justified.
+- [ ] Appointments, encounters, medical records, prescriptions, and financial records are not conflated.
+
+**Requirements and permissions**
+- [ ] Major business needs map to system capabilities.
+- [ ] Functional and non-functional implications are identified.
+- [ ] Access restrictions follow least privilege.
+- [ ] The detailed permission matrix is consistent with role responsibilities.
+- [ ] No unsupported numeric target or compliance claim is presented as fact.
+
+**Traceability and presentation**
+- [ ] Business needs can be traced into Section 3.
+- [ ] Requirements and use cases use stable identifiers.
+- [ ] Figures and tables are referenced and interpreted in the text.
+- [ ] No unnecessary duplication exists between sections.
+- [ ] All diagrams have been rendered and visually inspected.
+- [ ] No unresolved critical contradiction remains.
+
+### 10. Definition of Done
+
+Section 2 is complete only when it provides a coherent explanation of how the clinic operates, who participates in its processes, what business rules govern those processes, which domain concepts are required, and how these findings drive system requirements and design.
+
+The section must be detailed without being bloated, realistic without inventing facts, and technically rigorous without becoming difficult for non-technical readers to understand.
+
+Do not mark the section complete merely because every heading contains text. Completion requires evidence-based analysis, cross-section consistency, meaningful diagrams, explicit assumptions, and a successful final review.
+# SECTION 3 — SYSTEM REQUIREMENTS ANALYSIS
+## Mandatory Authoring Instructions for the AI Agent
+
+### 1. Role and Mission
+
+Act as a senior Requirements Engineer, Business Analyst, and Systems Analyst with expertise in clinic management systems, Electronic Medical Records (EMR), requirements engineering, and UML-based system analysis.
+
+Develop Section 3 of the Medora report to a rigorous academic and professional standard.
+
+**Project:** Medora — Integrated Clinic Management and Electronic Medical Records (EMR) System.
+
+The purpose of this section is to transform the business analysis from Section 2 into a precise, testable, implementation-aware specification of what the system must do and the conditions under which it must operate.
+
+The section must establish:
+- A clear and complete functional scope.
+- A coherent functional decomposition and Use Case model.
+- Detailed, testable functional requirements.
+- Measurable or verifiable non-functional requirements.
+- Precise Use Case Specifications covering normal, alternative, and exceptional behavior.
+- A defensible role-based access control model.
+- Traceability from business objectives and business rules to requirements, use cases, design artifacts, and tests.
+
+Do not merely list features or generate diagrams. Explain the reasoning behind the requirements, define their boundaries, identify dependencies and constraints, and establish how compliance will be verified.
+
+Every requirement must be relevant to the confirmed project scope. Do not introduce features solely because they are common in commercial hospital management products.
+
+---
+
+### 2. Source-of-Truth and Preparation
+
+Before writing Section 3, inspect:
+- The project brief and confirmed scope.
+- Section 1: objectives, scope, assumptions, and constraints.
+- Section 2: organizational roles, actors, business workflows, business rules, and domain model.
+- Existing source code, API definitions, database schema, and implementation evidence, where available.
+- Existing UML diagrams and project decisions.
+- The root `AGENTS.md` and all applicable diagram-quality requirements.
+
+Classify each capability as:
+- **Confirmed:** explicitly supported by project evidence or an approved decision.
+- **Proposed:** included in the intended design but not yet implemented.
+- **Assumed:** provisionally adopted because information is missing.
+- **Out of scope:** explicitly excluded from the project.
+
+Do not present proposed or assumed behavior as implemented functionality.
+
+When information is missing, make a reasonable, clearly documented assumption if it does not materially alter the system architecture or business rules. Otherwise, identify the unresolved decision and request clarification when necessary.
+
+Do not silently invent:
+- Actors or permissions.
+- External integrations.
+- Medical policies.
+- Approval procedures.
+- Legal compliance claims.
+- Performance measurements.
+- API behavior.
+- Business rules that have not been established.
+
+---
+
+### 3. Required Section Structure
+
+Use the following structure as the default. Every subsection must contribute meaningful analytical value. Merge genuinely overlapping content rather than writing repetitive paragraphs to fill the outline.
+
+## 3.1 Requirements Overview and Specification Method
+
+Explain how the system requirements are organized and how they relate to the business analysis.
+
+Cover:
+- The purpose and boundaries of requirements analysis.
+- The sources from which requirements are derived.
+- The relationship between business objectives, business rules, actors, and system requirements.
+- The requirement classification and identification conventions.
+- The prioritization and verification approach.
+- The distinction between functional requirements, non-functional requirements, constraints, and assumptions.
+
+Use stable identifiers:
+- `BR-001`: Business Rule.
+- `FR-001`: Functional Requirement.
+- `NFR-001`: Non-functional Requirement.
+- `UC-001`: Use Case.
+- `TC-001`: Test Case.
+- `AC-001`: Acceptance Criterion, if managed separately.
+
+Preserve existing identifiers when updating the report. Never renumber existing requirements without checking every reference.
+
+Explain the prioritization method if one is used, such as Must / Should / Could / Won't. Do not introduce a prioritization scheme unless it will actually be applied.
+
+Deliverables:
+- A concise explanation of the specification method.
+- A requirements inventory or summary table.
+- A clear statement of assumptions and unresolved scope decisions.
+
+Do not turn this subsection into a lengthy theoretical discussion of requirements engineering.
+
+## 3.2 Functional Decomposition and System Boundaries
+
+Organize the system into coherent functional groups based on business capabilities and responsibilities.
+
+Potential groups, subject to scope confirmation, include:
+- Patient and Profile Management.
+- Appointment and Schedule Management.
+- Reception and Visit Management.
+- Consultation and Clinical Documentation.
+- Medical Records Management.
+- Diagnosis and Prescription Management.
+- Laboratory or Diagnostic Services.
+- Billing and Payment Management.
+- Staff and Access Management.
+- Reporting and Audit Management.
+
+Do not automatically include every group. Exclude unsupported capabilities and document any proposed extensions separately.
+
+For each functional group, describe:
+- Its purpose.
+- The business responsibilities it supports.
+- Its principal inputs and outputs.
+- Its dependencies on other groups.
+- The actors who interact with it.
+- Its boundary and responsibilities relative to neighboring groups.
+
+### Required diagrams
+
+**A. Functional Decomposition Diagram**
+
+Show a clear hierarchy from the overall Medora system to its major functional groups and, where useful, lower-level capabilities.
+
+Do not confuse functional decomposition with a software package diagram. Functional decomposition describes what the system does; a Package Diagram describes how model elements or software responsibilities are grouped.
+
+**B. Package Diagram**
+
+Use a Package Diagram when it adds value by showing logical grouping, dependencies, and separation of concerns.
+
+Keep dependencies consistent with the intended architecture. Do not use the Package Diagram as a decorative duplicate of the functional hierarchy.
+
+**C. Overall System Boundary**
+
+Clearly distinguish:
+- Functionality within Medora.
+- External actors and systems.
+- Explicitly excluded capabilities.
+
+Deliverables:
+- Functional group inventory.
+- Diagram-to-requirement mapping.
+- Explanation of the most important module boundaries and dependencies.
+
+## 3.3 Actors and Overall Use Case Model
+
+Define the external actors that interact directly with Medora.
+
+For each actor, specify:
+- Actor ID, where useful.
+- Name and role description.
+- Business goal.
+- Main system interactions.
+- Relevant permission boundary.
+- Whether the actor is primary or supporting for important use cases.
+
+Distinguish a direct system actor from a stakeholder who influences requirements but does not interact with the application.
+
+Use consistent actor definitions from Section 2. Do not create a separate actor merely because two users have different job titles if they share the same interaction role and permissions. Conversely, do not merge roles with materially different authorization boundaries.
+
+### Overall Use Case Diagram
+
+The diagram must:
+- Show a clearly named Medora system boundary.
+- Place external actors outside the boundary.
+- Place system use cases inside the boundary.
+- Use concise verb-based names for use cases.
+- Show justified actor associations.
+- Use `<<include>>`, `<<extend>>`, and generalization only when their semantics are correct.
+- Remain readable at the final report size.
+
+Do not place internal classes, repositories, controllers, or database tables in a Use Case Diagram.
+
+Do not connect every actor to every use case. Every association must represent a meaningful interaction.
+
+### Use Case Diagrams by Functional Group
+
+Create separate diagrams when the overall model becomes crowded.
+
+Each focused diagram must:
+- Identify the functional group or system boundary it represents.
+- Include the relevant actors.
+- Use exactly the same use case names and identifiers as the overall inventory.
+- Preserve relationships that are semantically necessary.
+- Avoid duplicating unrelated use cases merely to fill space.
+
+Do not force an arbitrary number of diagrams. Split based on complexity and readability.
+
+## 3.4 Functional Requirements Specification
+
+Define what Medora must do in observable, testable terms.
+
+Assign each requirement a unique `FR-XXX` identifier.
+
+Each important functional requirement should specify:
+- Requirement ID and title.
+- Requirement statement using precise language.
+- Business rationale.
+- Relevant actor or initiating event.
+- Preconditions or applicable conditions.
+- Expected system behavior.
+- Resulting data or state changes, where relevant.
+- Priority, if an agreed prioritization method is used.
+- Related business rules and use cases.
+- Verification method or acceptance criteria.
+
+Use statements such as:
+
+"The system shall allow authorized reception staff to create an appointment for an existing patient when the selected doctor and time slot satisfy the configured scheduling rules."
+
+Avoid vague statements such as:
+
+"The system should manage appointments efficiently."
+
+Do not combine multiple independently testable behaviors into a single oversized requirement.
+
+Separate requirements when they have different:
+- Actors or authorization rules.
+- Preconditions.
+- Business outcomes.
+- Exception behavior.
+- Verification criteria.
+
+However, avoid fragmenting one simple behavior into dozens of meaningless requirements.
+
+### Functional Coverage
+
+For every in-scope functional group, examine:
+- Data entry and validation.
+- Search and retrieval.
+- Creation and modification.
+- Cancellation, deletion, archival, or finalization where appropriate.
+- Status transitions.
+- Authorization checks.
+- Error handling.
+- Relevant audit records.
+- Dependencies on other functions.
+
+Do not assume that all entities support deletion. Medical and financial records may require controlled correction, archival, or retention rather than physical deletion.
+
+Distinguish system behavior from user interface details unless a UI behavior is itself a requirement.
+
+Ensure that all important functional requirements can be traced to a business need, rule, or approved stakeholder decision.
+
+## 3.5 Non-Functional Requirements and Quality Constraints
+
+Specify the quality attributes and operational constraints that determine whether Medora is fit for purpose.
+
+Use stable `NFR-XXX` identifiers.
+
+Consider only applicable categories, including:
+- Security and authorization.
+- Confidentiality and data protection.
+- Data integrity and auditability.
+- Performance and responsiveness.
+- Availability and recoverability.
+- Usability and accessibility.
+- Maintainability and testability.
+- Compatibility and interoperability.
+- Scalability, where justified by the expected deployment.
+- Backup, recovery, and operational continuity.
+
+### Quality Requirement Format
+
+Where possible, define each requirement using:
+- ID and name.
+- Quality attribute.
+- Relevant system context.
+- Stimulus or operating condition.
+- Expected measurable response.
+- Measurement or verification method.
+- Related implementation or deployment constraint.
+
+For example, a response-time requirement should define:
+- The operation being measured.
+- The workload or test conditions.
+- The response-time threshold.
+- The percentile or measurement method, if relevant.
+- The test method used to verify compliance.
+
+Do not invent numeric targets and present them as approved requirements. If a target must be proposed, mark it as provisional and explain why it requires confirmation.
+
+For security and privacy:
+- Apply least privilege.
+- Require authorization checks for protected operations.
+- Consider audit logging of sensitive record access and changes.
+- Prevent sensitive information from leaking through error messages or logs.
+- Define backup and recovery expectations when data persistence is in scope.
+- Identify the applicable jurisdiction before asserting legal compliance.
+
+Do not claim that Medora complies with a healthcare regulation, privacy law, or security standard unless the relevant controls and evidence have been verified.
+
+### Non-Functional Acceptance Criteria
+
+Every critical non-functional requirement must have a feasible verification method.
+
+Examples include:
+- Automated response-time testing.
+- Unauthorized-access tests.
+- Data-integrity checks.
+- Recovery exercises.
+- Usability evaluation.
+- Code or configuration review.
+
+Do not describe a quality attribute as "satisfied" without evidence.
+
+## 3.6 Detailed Use Case Specifications
+
+This subsection is a central deliverable of the report.
+
+Create detailed specifications for the use cases that represent the system's major business goals and meaningful risks. Do not stop at the Use Case Diagram.
+
+Each use case must have a stable identifier such as `UC-001`.
+
+### Mandatory Use Case Template
+
+For each important use case, provide:
+
+1. **Use Case ID and Name**
+2. **Goal and Brief Description**
+3. **Primary Actor**
+4. **Supporting Actors**
+5. **Trigger**
+6. **Preconditions**
+7. **Postconditions**
+   - Success postconditions.
+   - Failure postconditions, where relevant.
+8. **Main Success Flow**
+9. **Alternative Flows**
+10. **Exception Flows**
+11. **Business Rules**
+12. **Related Functional Requirements**
+13. **Data Created, Read, Updated, or Archived**
+14. **Authorization Requirements**
+15. **Acceptance Criteria or Linked Test Cases**
+
+Do not omit a field merely because it is inconvenient. If a field does not apply, mark it as not applicable and briefly explain why.
+
+### Main Success Flow
+
+Write the normal interaction as numbered steps.
+
+Each step should identify:
+- The actor's action or initiating event.
+- The system's response.
+- The relevant validation or decision, where necessary.
+
+Keep actor actions distinct from system responses. Do not write vague steps such as "The system processes the request."
+
+The flow must be complete enough that a developer and tester can independently understand the intended behavior.
+
+### Alternative Flows
+
+Document legitimate variations that can occur without representing an error.
+
+For each alternative flow, specify:
+- The step at which the branch begins.
+- The condition that triggers it.
+- The alternative sequence.
+- The point at which it rejoins the main flow, if applicable.
+- The resulting state.
+
+### Exception Flows
+
+Document conditions that prevent the intended operation or require special handling.
+
+For each exception:
+- Identify the triggering condition.
+- Specify the system's response.
+- State whether the operation is rejected, retried, cancelled, or escalated.
+- Define what happens to any pending data changes.
+- Specify the resulting state and user feedback.
+- Identify relevant authorization, logging, and recovery behavior.
+
+Do not confuse an exception with a normal alternative path.
+
+### Use Case Relationships
+
+Use `<<include>>` only when the included behavior is required by the including use case.
+
+Use `<<extend>>` only when optional or conditional behavior extends a valid base use case at an appropriate extension point.
+
+Do not introduce `include` and `extend` relationships solely to make the diagram appear more sophisticated.
+
+### Coverage Requirements
+
+Prioritize detailed specifications for workflows such as:
+- Patient registration and identity validation.
+- Appointment creation, rescheduling, and cancellation.
+- Patient check-in and visit initiation.
+- Consultation and clinical record creation.
+- Diagnosis and prescription management.
+- Billing and payment, if in scope.
+- Staff access and role management.
+- Medical record retrieval and authorization failures.
+
+These are candidate workflows. Select and specify only those supported by the confirmed project scope.
+
+Ensure that the use cases cover the important business objectives and functional requirements without unnecessary duplication.
+
+## 3.7 Role-Based Access Control Matrix
+
+Translate the responsibilities established in Section 2 into explicit system permissions.
+
+The matrix must be based on business responsibilities, information sensitivity, and the principle of least privilege.
+
+Identify:
+- The relevant roles.
+- The protected functions or resources.
+- The permitted operations.
+- The applicable restrictions.
+- Any special conditions for sensitive actions.
+
+Use a consistent permission vocabulary, for example:
+- `C`: Create.
+- `R`: Read.
+- `U`: Update.
+- `D`: Delete, only where permitted.
+- `A`: Approve or finalize, if applicable.
+- `—`: Not permitted.
+
+Define the vocabulary clearly. Do not use an empty cell ambiguously.
+
+### Permission Design Rules
+
+- Distinguish administrative configuration from access to clinical records.
+- Do not grant unrestricted medical-record access to every administrator by default.
+- Distinguish viewing patient demographics from viewing detailed clinical information.
+- Specify whether permissions apply to all records or only authorized records.
+- Consider restrictions based on staff responsibilities and the relevant care relationship.
+- Protect sensitive actions with server-side authorization, not only UI hiding.
+- Ensure that unauthorized operations are rejected even if requests are sent directly to an API.
+- Define whether record deletion, correction, archival, or finalization is permitted for each relevant role.
+- Include audit requirements for sensitive actions where appropriate.
+
+Do not assume that a role can perform an operation merely because its name sounds senior.
+
+### Required Deliverables
+
+Provide:
+1. A role-to-function permission matrix.
+2. A short explanation of the most important authorization decisions.
+3. A mapping from protected requirements and use cases to permission checks.
+4. Test scenarios for authorized and unauthorized access.
+
+Ensure that the matrix agrees with the actor definitions, detailed use cases, and implementation model.
+
+## 3.8 Requirements Traceability and Validation
+
+Demonstrate that the requirements form a coherent, verifiable specification rather than an isolated feature list.
+
+Maintain traceability between:
+- Business objectives.
+- Business rules.
+- Functional requirements.
+- Non-functional requirements.
+- Actors and use cases.
+- Design artifacts.
+- Test cases and results.
+
+Create a requirements traceability matrix using stable identifiers.
+
+Suggested columns:
+
+| Business Objective / Rule | Requirement ID | Use Case ID | Design Artifact | Test Case ID | Status |
+
+Use `N/A` only when a relationship is genuinely inapplicable, and explain important exceptions.
+
+### Validation Checks
+
+Check that:
+- Every major business objective is supported by one or more requirements.
+- Every important functional requirement maps to at least one use case or an explicitly justified system-level behavior.
+- Every use case has a clear actor or initiating event.
+- Every important use case has complete main, alternative, and exception flows.
+- Every critical requirement has a verification method.
+- Every protected operation has an authorization rule.
+- Every important data change is consistent with the domain model.
+- No contradictory requirement or duplicated requirement remains.
+- All use case names and identifiers match the diagrams.
+- No requirement depends on a feature outside the confirmed scope without an explicit assumption or dependency.
+
+Do not claim full coverage if implementation or test evidence is missing. Distinguish requirements that are specified, designed, implemented, and verified.
+
+## 3.9 Section Summary
+
+Conclude Section 3 with a concise synthesis of:
+- The principal functional capabilities specified.
+- The most important quality and security constraints.
+- The resulting Use Case model and authorization structure.
+- The coverage and traceability achieved.
+- The remaining assumptions or requirements requiring confirmation.
+
+Do not repeat every requirement or use case in prose.
+
+Explain how the resulting specification forms the basis for Section 4's architecture, structural UML diagrams, data model, and detailed design.
+
+---
+
+### 4. Use Case and Requirement Consistency Rules
+
+All models must share a canonical terminology and consistent scope.
+
+Before finalizing:
+- Compare actors with the Section 2 stakeholder and actor inventory.
+- Compare use cases with the functional decomposition.
+- Compare requirements with the business rules.
+- Compare data changes with the domain model.
+- Compare access rules with the permission matrix.
+- Compare use-case branches with the business workflows.
+- Identify which use cases need Sequence, Activity, or State Machine Diagrams in Section 4 or Section 5, according to the report structure.
+- Ensure that later test cases can verify the expected outcomes.
+
+Do not create a use case for every database operation. Use cases should represent meaningful actor goals or justified system-triggered goals.
+
+Do not create a functional requirement merely by copying a use case title. Requirements define system behavior; use cases organize interactions to achieve goals.
+
+Do not duplicate a complete Use Case Specification in multiple sections. Use stable identifiers and cross-references.
+
+---
+
+### 5. Diagram Standards
+
+Follow the root `AGENTS.md` diagram standards without exception.
+
+Use the consistent blue healthcare technology palette, concise English labels, correct UML semantics, readable typography, clear spacing, and unambiguous connectors.
+
+For Use Case Diagrams:
+- Ensure actors are outside the system boundary.
+- Ensure use cases are inside the system boundary.
+- Use correct relationship direction and notation.
+- Avoid unnecessary associations and line crossings.
+
+For functional decomposition:
+- Make the hierarchy clear.
+- Avoid mixing business capabilities with implementation classes.
+- Keep the decomposition consistent with the functional requirements.
+
+For Package Diagrams:
+- Show logical grouping and dependencies rather than merely reproducing a feature list.
+- Keep dependencies consistent with the intended design.
+
+For all diagrams:
+- Avoid connectors that pass through nodes or labels.
+- Minimize crossings.
+- If unrelated connectors must cross, use a visible curved bridge or jump-over when supported by the rendering tool.
+- If bridge crossings are unsupported, reroute the connectors or redesign the layout.
+- Keep arrowheads and labels sufficiently separated.
+- Render and inspect the actual final output.
+- Correct all critical semantic or visual defects before declaring the diagram complete.
+
+A diagram is not validated merely because its source code parses successfully.
+
+---
+
+### 6. Writing and Presentation Standards
+
+Write in clear, formal English suitable for a university System Analysis and Design report.
+
+- Introduce each diagram with its purpose and interpret its key findings.
+- Use concise tables for requirement catalogs, actor mappings, and access-control matrices.
+- Avoid repeating generic textbook definitions.
+- Explain non-obvious design and requirements decisions.
+- Use consistent capitalization, terminology, and identifiers.
+- Avoid vague phrases such as "easy to use," "high performance," or "secure" without verification criteria.
+- Do not invent numerical targets or claim regulatory compliance without evidence.
+- Avoid duplicating detailed business-process descriptions from Section 2.
+- Keep the report detailed but proportionate to the scope of a clinic-management project.
+
+The objective is precision and traceability, not maximum page count.
+
+---
+
+### 7. Mandatory Quality Assurance Checklist
+
+Before marking Section 3 complete, verify all applicable items.
+
+**Requirements**
+- [ ] Every important requirement has a unique, stable identifier.
+- [ ] Requirement statements are clear, feasible, and testable.
+- [ ] Functional requirements describe observable behavior.
+- [ ] Non-functional requirements include measurable or otherwise verifiable criteria.
+- [ ] Assumptions and unresolved decisions are explicit.
+
+**Functional decomposition and Use Cases**
+- [ ] Functional groups reflect actual project scope.
+- [ ] Overall and focused Use Case Diagrams are consistent.
+- [ ] Actors and system boundaries are correct.
+- [ ] UML relationship semantics and arrow directions are valid.
+- [ ] Every important use case has a detailed specification.
+
+**Use Case flows**
+- [ ] Main success flows are complete and ordered.
+- [ ] Alternative flows are distinguished from exceptions.
+- [ ] Exception flows define the response and resulting state.
+- [ ] Preconditions and postconditions are consistent.
+- [ ] Business rules and data changes are identified.
+
+**Authorization**
+- [ ] Every relevant role has justified permissions.
+- [ ] Least privilege is applied.
+- [ ] Sensitive record access is explicitly considered.
+- [ ] Unauthorized operations have defined outcomes.
+- [ ] The permission matrix agrees with use cases and requirements.
+
+**Traceability**
+- [ ] Business objectives map to requirements.
+- [ ] Requirements map to use cases or justified system behavior.
+- [ ] Critical requirements have verification methods.
+- [ ] Requirements, diagrams, data models, and tests use consistent identifiers.
+- [ ] Implemented and verified status is evidence-based.
+
+**Presentation**
+- [ ] All diagrams have been rendered and visually inspected.
+- [ ] Labels are readable at report size.
+- [ ] Connectors, crossings, bridge arcs, arrowheads, and labels are unambiguous.
+- [ ] Figures and tables are explained in the surrounding text.
+- [ ] No unnecessary duplication or unsupported claims remain.
+
+### 8. Definition of Done
+
+Section 3 is complete only when it provides a precise, internally consistent, and testable specification of Medora's in-scope behavior.
+
+A polished diagram or a long requirement list is not sufficient. The section must demonstrate that the requirements are derived from the business analysis, the use cases define realistic interactions, the access-control model is defensible, alternative and exception paths are addressed, and the resulting specification can guide system design and testing.
+
+If important information remains unknown, document it explicitly. Never hide uncertainty behind invented details or claim complete validation without evidence.

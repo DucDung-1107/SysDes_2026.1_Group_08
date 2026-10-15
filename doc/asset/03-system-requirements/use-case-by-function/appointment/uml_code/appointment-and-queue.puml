@@ -25,6 +25,7 @@ rectangle "Appointment Management" {
   usecase "UC-024\nCancel Appointment" as cancel
   usecase "UC-025\nMark No-show" as noshow
   usecase "UC-026\nCheck Appointment\nAvailability" as validate
+  usecase "UC-054\nSend Appointment\nor Instruction Notification" as notification
 }
 
 patient -- book : phase 2
@@ -34,12 +35,9 @@ reception -- confirm
 reception -- reschedule
 reception -- cancel
 reception -- noshow
+reception -- notification
 
 book .> validate : <<include>>
 reschedule .> validate : <<include>>
 
-note bottom of validate
-  FR-005 and FR-017: booking and rescheduling reject
-  conflicts in required provider, room or resource availability.
-end note
 @enduml

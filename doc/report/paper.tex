@@ -1,5 +1,8 @@
 \documentclass[a4paper,12pt]{article}
 
+% Upload paper.tex, references.bib, and the complete asset/ folder at the
+% same directory level when compiling on Overleaf or another TeX service.
+
 % ==================================================
 % PACKAGES
 % ==================================================
@@ -17,6 +20,7 @@
     \setmainfont{Times New Roman}
 \fi
 \usepackage{geometry}
+\usepackage{pdflscape}
 \usepackage{setspace}
 \providecommand{\onehalfspacing}{\linespread{1.25}\selectfont}
 \usepackage{float}
@@ -273,7 +277,6 @@
         clip
     ]{soict.png}
 \end{minipage}
-
 \vspace{0.55cm}
 
 % Project heading
@@ -350,7 +353,24 @@
 \renewcommand{\headrulewidth}{0.6pt}
 \renewcommand{\footrulewidth}{0pt}
 
+\begin{abstract}
+MEDORA is a proposed integrated clinic-management and electronic medical-record (EMR) system for outpatient clinics and small healthcare facilities. It addresses workflow fragmentation across patient registration, appointment scheduling, check-in, clinical documentation, prescriptions, service execution, billing and operational reporting. The proposed solution centres on a shared patient and encounter record, explicit workflow states, role-based access control and an audit trail for sensitive actions. This report develops the business model, domain concepts, business rules, functional and non-functional requirements, use-case model and traceability needed to guide the subsequent system design and evaluation. The scope is deliberately limited to internal clinic operations; clinical decision-making, insurer settlement, national interoperability and production compliance certification remain outside the current project boundary.
+
+\vspace{0.4em}
+\noindent\textbf{Keywords:} electronic medical records, clinic management, outpatient workflow, role-based access control, system analysis and design.
+\end{abstract}
+\clearpage
+
 \tableofcontents
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+\clearpage
 
 \section{Introduction and Problem Definition}
 
@@ -405,26 +425,11 @@ Success is specified using SMART criteria so that the prototype can be evaluated
 Each target is specific to a defined workflow, measurable through test evidence, achievable for the course-project scope, relevant to the stated pain points and time-bound to the final evaluation cycle. The figures are prototype acceptance targets, not claims of production performance; a real deployment would first establish a site-specific baseline and then revalidate them with clinical and operational stakeholders.
 
 \subsection{System Scope, Assumptions, and Constraints}
-The scope of MEDORA is defined around the work that a clinic must coordinate every day, rather than around a list of screens. It is an internal web system for a clinic or small healthcare facility, accessed primarily from reception desks, consultation rooms, treatment rooms and management workstations, with tablet support where the workflow allows it. The system assumes one organization may contain several specialties, doctors, rooms, services and staff members; a multi-branch deployment is an extension of the same model rather than a different product.
+MEDORA is an internal web system for a clinic or small healthcare facility. It supports the outpatient journey from patient identification and appointment or walk-in reception to check-in, screening, consultation, prescription or service order, execution, encounter closure and payment status.
 
-The in-scope journey begins when a receptionist searches for an existing patient or creates a new patient record. It continues through appointment booking or walk-in reception, check-in, queue assignment and preliminary screening. During the encounter, authorized clinical staff can review history, allergies and current medication; nurses can record vital signs; doctors can document the reason for visit, symptoms, examination findings, assessment and diagnosis; and doctors can create prescriptions, procedure orders or service requests. The workflow then coordinates the room, staff and time required to perform an order, records who performed it and what result was produced, and ends with a clinical summary, follow-up instructions and basic invoicing or payment status.
+Receptionists manage identity, appointments and queues; nurses record screening; doctors own clinical decisions; technicians and medicine staff record actual execution; cashiers record financial events; managers, administrators and auditors supervise operations, configuration and accountability. The system preserves the difference between planned and completed work: an appointment is not an encounter, a prescription is not a medicine event, an order is not a result, and an invoice is not a payment.
 
-For clarity, the core workflow can be read as five stages:
-\begin{enumerate}[leftmargin=1.6em]
-    \item patient identity, appointment or walk-in reception, check-in and queue assignment;
-    \item screening, consultation and structured clinical documentation;
-    \item prescription, procedure or service ordering with safety and permission checks;
-    \item scheduling, resource allocation, execution and result recording; and
-    \item encounter closure, follow-up instructions, billing and payment status.
-\end{enumerate}
-
-The operational scope is supported by a second set of capabilities. Administrators configure users, roles, specialties, rooms, services, medicines, diagnoses, schedules and notification templates. Managers monitor queues, room occupancy, appointment status, service progress, revenue and exception cases through dashboards and reports. Authorized auditors can search access and change history. The system distinguishes a prescription from the later act of dispensing or administering a medicine, an order from its execution, and an invoice from its payment or refund; this distinction prevents the database from implying that a planned action has already happened.
-
-The principal actors and their boundaries are explicit. Receptionists manage identity, appointments, check-in and queues but cannot change clinical decisions. Nurses record screening and care activities within their assignment. Doctors own examination, diagnosis, prescription, orders and encounter closure. Technicians perform assigned services and record results without gaining unrestricted access to unrelated clinical information. Pharmacists or authorized medicine staff review and dispense prescriptions. Cashiers manage charges, payments and refunds without editing clinical content. Clinic managers supervise operations and reports, while system administrators manage accounts and configuration. Patients are outside the internal MVP workflow; a patient portal for booking and viewing released documents is reserved for a later phase.
-
-Several boundaries are deliberate. The MVP does not autonomously diagnose or recommend treatment, replace professional judgement, or silently override a clinical warning. It does not assume national health-data interoperability, insurance settlement, electronic invoicing, advanced pharmacy inventory, LIS/RIS/PACS integration or a production-grade patient portal. These may be connected through later APIs after their data contracts, legal basis and operational ownership are confirmed. The system also does not make a legal claim of HIPAA, ISO 27001 or any local certification. Before real deployment, the clinic and its legal and information-security advisers must approve retention periods, consent, correction procedures, backup, incident response and applicable medical-record regulations.
-
-The constraints shape the design. Health information is sensitive, so every read, create, edit, sign, cancel, export and print action must be evaluated against role, scope and current workflow state on the server. A signed note is not overwritten; a correction is represented as an amendment linked to the original, with actor, timestamp, reason and before/after information where appropriate. Network failure must not be reported as success, concurrent users must not create the same booking twice, and completed records must remain available for audit. These assumptions make the scope realistic for a system-design project while preserving the properties required of a credible clinical information system.
+The MVP focuses on internal operations, basic billing, reporting and governance. Patient self-service, external diagnostic systems, insurer settlement and advanced inventory are later-stage extensions. Every sensitive action is constrained by role, scope and workflow state; signed notes are amended rather than overwritten, and concurrent booking must not create a conflict.
 
 \subsection{Proposed Solution and System Overview}
 MEDORA is a clinic operating system built around one shared patient and encounter record, not a collection of unrelated modules. Its central unit of work is the outpatient encounter. A Patient may have many Appointments and Encounters; an Encounter is the controlled context for clinical notes, vital signs, diagnoses, prescriptions and procedure orders; an order may consume a scheduled ResourceBooking and later receive an execution result; and an Invoice and Payment record the financial consequence without changing the clinical history. Attachments, notifications and AuditLogs are linked to the relevant business object rather than stored as anonymous files or messages.
@@ -446,15 +451,15 @@ Table~\ref{tab:product-definition} defines the product by capability. Each row s
     Function & Primary users & What the system does & Value delivered \\
     \midrule
     \endhead
-        Patient identity and record management & Receptionists, nurses, doctors, auditors & Search and register patients, detect possible duplicates, maintain a stable internal medical-record number, and connect demographic data, history, allergies, documents and encounters to the same patient. & Reduces duplicate records and repeated data entry; gives staff a reliable longitudinal view; improves patient identification before clinical actions. \\
-        Appointment, schedule and queue management & Receptionists, patients (future portal), managers & Create, confirm, reschedule or cancel appointments; check provider schedules; check in walk-in patients; assign queue status; and record no-show or cancellation reasons. & Makes demand and workload visible; reduces waiting caused by informal coordination; gives patients and staff a clear next step. \\
-        Clinical examination and EMR & Nurses and doctors & Record screening, vital signs, reason for visit, symptoms, history, examination findings, assessment, diagnosis, care plan and follow-up instructions within an encounter. & Preserves clinical continuity; reduces missing context at hand-off; supports complete and structured documentation without replacing professional judgement. \\
-        Prescription and medication safety & Doctors, pharmacists or authorized medicine staff & Select medicines from an approved catalogue, record dose and directions, check available allergy or configured contraindication data, issue prescriptions, and maintain amendment and dispensing history. & Separates prescribing from dispensing or administration; makes warnings and overrides visible; reduces avoidable transcription and medication-process errors. \\
-        Procedure, service and resource coordination & Doctors, coordinators, nurses and technicians & Create service orders; find compatible time slots; reserve rooms, staff and required resources; obtain consent where configured; track progress; and record the performer, time and result. & Prevents double-booking; reduces idle rooms and staff conflicts; connects a clinical order to its actual execution and outcome. \\
-        Billing and payment status & Cashiers, managers and authorized finance staff & Calculate basic charges from configured services, issue invoices, record payments or refunds, and preserve the transaction history without editing the clinical record. & Separates financial accountability from clinical authority; improves reconciliation; gives managers a trustworthy view of service and payment status. \\
-        Administration and role-based access & System administrators, managers and auditors & Manage accounts, roles, permissions, facility scope, specialties, rooms, services, medicines, diagnoses, schedules and configurable workflow rules. & Applies least privilege consistently; makes the system adaptable to the clinic; reduces the risk of unauthorized clinical or financial changes. \\
-        Dashboards, reports and audit trail & Managers, operations staff and authorized auditors & Show queue, waiting, appointment, room, service, completion, revenue and exception indicators; allow controlled export; and record sensitive reads, changes, approvals and overrides. & Converts daily activity into evidence for decisions; supports investigation and accountability; enables the success criteria to be measured. \\
-        Attachments and notifications & Assigned staff, managers and patients (future portal) & Store document metadata, permissions and integrity information; send configured operational notifications without exposing unnecessary clinical detail. & Keeps supporting documents linked to the correct encounter; reduces lost follow-up; limits privacy exposure in communication channels. \\
+        Patient identity and record management & Reception, nurses, doctors & Search/register patients, flag duplicates and link history, allergies, documents and encounters. & One longitudinal record and safer identification. \\
+        Appointment, schedule and queue management & Reception, managers; patient portal (Phase~2) & Book, reschedule, cancel, check in and assign queues against current availability. & Visible workload and fewer coordination conflicts. \\
+        Clinical examination and EMR & Nurses, doctors & Capture screening, vital signs, consultation, diagnosis and follow-up in the Encounter. & Continuous, structured clinical context. \\
+        Prescription and medication safety & Doctors, medicine staff & Issue prescriptions with directions and configured safety checks; retain amendment and medicine-event history. & Safer hand-offs between prescribing and dispensing. \\
+        Procedure, service and resource coordination & Doctors, nurses, technicians & Create orders, allocate constrained resources and record execution/result. & Prevents double-booking and links decision to outcome. \\
+        Billing and payment status & Cashiers, managers & Create invoices and retain payment/refund history separately from clinical content. & Clear financial accountability and reconciliation. \\
+        Administration and role-based access & Administrators, managers, auditors & Manage users, permissions, catalogues, schedules and scope. & Least privilege and adaptable operations. \\
+        Dashboards, reports and audit trail & Managers, auditors & Present operational indicators, controlled export and sensitive-event history. & Evidence for decisions and investigation. \\
+        Attachments and notifications & Assigned staff; patient portal (Phase~2) & Store controlled documents and send privacy-aware operational notifications. & Reliable follow-up with lower privacy exposure. \\
         \bottomrule
 \end{longtable}
 \endgroup
@@ -468,37 +473,250 @@ The solution uses four cooperating layers:
     \item \textbf{Data:} persistent patient, encounter, order, resource, invoice and audit entities with integrity constraints and history.
 \end{itemize}
 
-The core flow is simple: identify the patient, create or activate an encounter, perform screening and consultation, issue a prescription or service order, allocate the required resources, record execution, close the encounter and update payment status. Each step is represented by an explicit state and an accountable actor. This prevents the database from treating a planned order as completed or a signed note as silently editable.
-
-Security is enforced as part of the solution rather than added to the interface afterwards. MEDORA applies role-based least privilege, checks authorization at the backend, protects attachments through metadata and permissions, and records sensitive reads, changes, approvals and overrides in the audit trail. The modular design keeps the MVP focused while leaving controlled extension points for a patient portal, laboratory or imaging adapters, inventory and interoperability services.
+Each workflow step has an explicit state and accountable actor. Backend authorisation, controlled attachments and audit history protect the record while the modular structure leaves a clear path for later portal, diagnostic and interoperability extensions.
 
 \section{Business Analysis and Domain Modeling}
 
-\subsection{Organizational Structure and Stakeholders}
-\subsection{Business Actors and Their Responsibilities}
-\subsection{Business Processes and Workflow Analysis}
-\subsection{Domain Model and Core Business Entities}
+\subsection{Business Context and Operational Overview}
+MEDORA is an internal web system for an outpatient clinic or small healthcare facility. It coordinates one outpatient episode from patient identification and appointment handling to consultation, service execution, payment status and operational reporting. Its central design principle is continuity: every authorised role works from the same patient and encounter context rather than from disconnected records.
 
-\section{System Requirements Analysis}
+Four distinctions protect that continuity. An Appointment reserves time, while an Encounter represents the visit that actually occurs. A prescription is a clinical decision; dispensing or administration is a later, accountable event. A service order is not an execution result. An Invoice records charges, whereas a Payment or refund records a financial transaction. These distinctions prevent the system from reporting planned work as completed work.
 
-\subsection{Functional Decomposition and Package Structure}
-\subsection{Actors and Overall Use Case Model}
-MEDORA has ten primary actor groups: Patient (through the phased portal), Receptionist, Nurse, Doctor, Technician or Service Staff, Pharmacist or Medicine Staff, Cashier, Clinic Manager, System Administrator and Auditor. The overall model below establishes their system boundary and assigns each group only the capabilities required for its work. The decomposition follows established hospital-management UML examples \citep{SoftwareIdeas2024HospitalUML,Saipraveen2026SmartHospital}, but its actors, workflow states and access boundaries are derived from MEDORA's own requirements.
+The MVP covers internal clinic operations, basic billing, reporting and governance. Patient self-service, external laboratory or imaging interfaces, insurer settlement and other integrations are later-stage capabilities.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.23\textwidth}Y@{}}
+\toprule
+Business area & Target operating model \\
+\midrule
+Patient identity & Search before registration; flag possible duplicates; preserve merge history. \\
+Visit coordination & Treat appointment, check-in, encounter and queue placement as explicit states. \\
+Clinical care & Keep screening, documentation, diagnosis, prescription and orders in one encounter context. \\
+Execution and finance & Record allocation, service execution, invoice and payment as separate events. \\
+Governance & Apply scoped access, controlled export and auditable sensitive actions. \\
+\bottomrule
+\end{tabularx}
+\caption{Business baseline and target operating model}
+\label{tab:business-as-is-to-be}
+\end{table}
+
+\subsection{Stakeholders and Responsibilities}
+Table~\ref{tab:stakeholder-summary} defines the roles that participate in the target workflow. Access is always restricted by role, facility, assignment and workflow state; managerial responsibility does not create unrestricted clinical-edit access.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.39\textwidth}Y@{}}
+\toprule
+Role & Primary responsibility & Authority boundary \\
+\midrule
+Receptionist & Identify/register patients; manage appointments, arrivals and queues. & Administrative and operational data only. \\
+Nurse & Record screening, vital signs and assigned care activity. & Cannot alter diagnosis or signed prescriptions. \\
+Doctor & Consult, document, diagnose, prescribe, order services and close encounters. & Owns clinical decisions for assigned encounters. \\
+Technician / Pharmacist & Execute assigned service work or record the medicine event. & Records execution; does not create the clinical decision. \\
+Cashier & Create eligible invoices and record payments or refunds. & Cannot edit clinical content. \\
+Manager & Monitor capacity, services, revenue and reports. & Uses scoped operational information. \\
+Administrator / Auditor & Configure access/catalogues or review audit evidence. & Administration and audit are separate from clinical authority. \\
+Patient (Phase~2) & Request appointments and view released documents. & Accesses only verified, explicitly released information. \\
+\bottomrule
+\end{tabularx}
+\caption{Stakeholder responsibilities and authority boundaries}
+\label{tab:stakeholder-summary}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.33\textwidth}Y@{}}
+\toprule
+Actor & Main system interaction & Boundary \\
+\midrule
+Receptionist & Patient search, registration, appointment, check-in and queue. & No clinical decision editing. \\
+Nurse / Doctor & Assigned encounter, clinical history, screening, documentation and orders. & Access is assignment- and role-scoped. \\
+Technician / Pharmacist & Assigned service execution or medicine event. & Cannot create the originating clinical decision. \\
+Cashier & Invoice, payment, refund and payment status. & Cannot modify clinical records. \\
+Manager / Administrator / Auditor & Reports, configuration or audit review. & Each role has a separate scope. \\
+Patient (Phase~2) & Appointment request and released-document viewing. & Verified self-service only. \\
+\bottomrule
+\end{tabularx}
+\caption{Role-to-activity mapping and interaction boundaries}
+\label{tab:actor-activity-map}
+\end{table}
+
+\subsection{Business Workflow and Controls}
+Figure~\ref{fig:outpatient-patient-journey} shows the normal outpatient journey. Figure~\ref{fig:appointment-check-in-workflow} isolates appointment and arrival exceptions, where invalid transitions are most likely to disrupt service flow.
 
 \begin{figure}[p]
     \centering
-    \includegraphics[height=0.88\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png}
+    \includegraphics[height=0.84\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png}
+    \caption{Target business workflow for a standard outpatient journey}
+    \label{fig:outpatient-patient-journey}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=0.86\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png}
+    \caption{Appointment and check-in workflow with alternative and exception paths}
+    \label{fig:appointment-check-in-workflow}
+\end{figure}
+
+The workflow is governed by five control points:
+
+\begin{enumerate}[leftmargin=1.6em]
+    \item Search and duplicate checks occur before a new patient record is created.
+    \item Booking and rescheduling validate provider, room and required-resource availability before commitment.
+    \item Check-in creates one valid active Encounter and its queue state.
+    \item Orders, execution and medicine events are recorded as separate lifecycle events.
+    \item Encounter closure, payment and refund preserve their own accountable history.
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.25\textwidth}P{0.35\textwidth}Y@{}}
+\toprule
+Process & Completion state & Alternative or exception \\
+\midrule
+Identity and booking & Confirmed patient and valid appointment. & Duplicate review or an alternative slot; no conflict is committed. \\
+Arrival and queue & One active encounter with queue status. & Accepted walk-in or rejected duplicate active encounter. \\
+Consultation and documentation & Structured clinical note and plan. & Draft is retained; signed content is amended, not overwritten. \\
+Order and execution & Order, allocation and recorded result. & Unavailable resource, delay or cancellation preserves status history. \\
+Closure and finance & Encounter summary plus invoice/payment status. & Incomplete work blocks closure; refund retains reason and history. \\
+\bottomrule
+\end{tabularx}
+\caption{Major business processes, outcomes and controlled alternatives}
+\label{tab:process-analysis}
+\end{table}
+
+\subsection{Business Rules}
+\begin{table}[H]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.14}
+\begin{tabularx}{\textwidth}{@{}P{0.12\textwidth}P{0.28\textwidth}Y@{}}
+\toprule
+ID & Rule & Required behaviour \\
+\midrule
+BR-001 & Patient identity & Use a stable identifier, flag possible duplicates and preserve merge history. \\
+BR-002 & Availability & Validate provider, room, staff and required resources before booking or allocation. \\
+BR-003 & Encounter integrity & Prevent duplicate active encounters and maintain role-scoped queues. \\
+BR-004 & Authorisation and audit & Enforce role, scope and state checks at the server boundary; retain sensitive-event evidence. \\
+BR-005 & Clinical-record integrity & Preserve signed notes; record corrections as linked amendments with a reason. \\
+BR-006 & Clinical safety and execution & Warnings inform clinicians without deciding treatment; prescriptions, orders and actual execution remain distinct. \\
+BR-007 & Financial history & Keep invoices, payments and refunds separate from clinical records and retain transaction history. \\
+\bottomrule
+\end{tabularx}
+\caption{Core business rules}
+\label{tab:business-rules}
+\end{table}
+
+\subsection{Domain Model and Core Entities}
+Figure~\ref{fig:conceptual-domain-model} presents the clinical core. The remaining operational and governance concepts extend this core without changing its central relationship: the Encounter contextualises the clinical work performed for one Patient.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png}
+    \caption{Core clinical conceptual domain model}
+    \label{fig:conceptual-domain-model}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.29\textwidth}Y@{}}
+\toprule
+Entity group & Purpose \\
+\midrule
+Patient and MedicalRecord & Stable identity and longitudinal clinical context. \\
+Appointment and Encounter & Planned visit versus actual outpatient episode. \\
+ClinicalNote, Diagnosis and Prescription & Authorised clinical documentation and decisions. \\
+ProcedureOrder and ResourceBooking & Requested service, constrained allocation and execution context. \\
+Invoice and Payment & Charges and financial transactions without clinical mutation. \\
+UserAccount, Role, Attachment and AuditLog & Scoped access, controlled documents and accountability evidence. \\
+\bottomrule
+\end{tabularx}
+\caption{Core entity glossary}
+\label{tab:entity-glossary}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.14}
+\begin{tabularx}{\textwidth}{@{}P{0.30\textwidth}Y@{}}
+\toprule
+Relationship & Business meaning \\
+\midrule
+Patient--Appointment--Encounter & A patient may have many appointments and encounters; an appointment may lead to one encounter, while a walk-in has none. \\
+Encounter--clinical records & Notes, diagnoses, prescriptions and procedure orders belong to the encounter in which they are created. \\
+Prescription--medicine event & A prescription contains medicine directions; dispensing or administration is a separate, accountable event. \\
+ProcedureOrder--ResourceBooking--Result & An order may reserve resources and later obtain an execution result; neither is implied by the other. \\
+Invoice--Payment & One invoice may have zero or many payment, refund or adjustment transactions. \\
+UserAccount--Role--AuditLog & Role and scope govern access; audit evidence records the actor, action, target and time. \\
+\bottomrule
+\end{tabularx}
+\caption{Core domain relationships}
+\label{tab:domain-relationships}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.24\textwidth}P{0.28\textwidth}Y@{}}
+\toprule
+Business need & System implication & Trace \\
+\midrule
+Reliable identity & Search, duplicate control, merge history and longitudinal record. & BR-001; FR-003--FR-004 \\
+Conflict-free coordination & Transactional availability, queue state and resource allocation. & BR-002--BR-003; FR-005--FR-006, FR-015 \\
+Accountable care & Signed-note amendments, warnings and separate execution events. & BR-005--BR-008; FR-009--FR-018 \\
+Financial accountability & Invoice, payment and refund history separate from clinical data. & BR-007; FR-022--FR-023 \\
+Governance & Least privilege, audit trail, reports and controlled export. & BR-004; FR-026--FR-030 \\
+\bottomrule
+\end{tabularx}
+\caption{Business-to-system traceability}
+\label{tab:business-traceability}
+\end{table}
+
+\section{System Requirements Analysis}
+\subsection{Functional Decomposition and Package Structure}
+Figure~\ref{fig:functional-decomposition} groups MEDORA by business capability rather than user interface. It provides the functional boundary for the requirements and use-case model.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png}
+    \caption{Functional decomposition of MEDORA}
+    \label{fig:functional-decomposition}
+\end{figure}
+
+Identity and Access provides the stable patient and user context on which all other capabilities rely. Scheduling and Reception controls planned appointments, walk-ins, queues and resource availability. Clinical Care records the actual encounter; Orders and Execution preserves the distinction between a decision and the action carried out. Finance and Operations handles eligible charges and operational visibility, while Governance applies cross-cutting controls for attachments, audit evidence and exports. The package dependencies are deliberately not shown in Figure~\ref{fig:functional-decomposition}: they would duplicate the logical architecture and reduce readability.
+
+\subsection{Actors and Overall Use Case Model}
+The overall use-case model in Figure~\ref{fig:overall-use-case-model} gives a bounded view of actor goals. Patient self-service is explicitly Phase~2; in the MVP, reception staff perform appointment and check-in work on the patient's behalf. No insurer, payment gateway, laboratory information system, imaging system or messaging provider is shown as an actor because no approved integration contract exists.
+\begin{figure}[p]
+    \centering
+    \includegraphics[
+        width=\textwidth,
+        height=0.88\textheight,
+        keepaspectratio
+    ]{asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png}
     \caption{Overall use-case model of MEDORA}
     \label{fig:overall-use-case-model}
 \end{figure}
-
 \subsection{Use Case Diagrams by Functional Group}
-The functional diagrams decompose the overall model into business-sized areas. They make the responsible actor, the core use case and the important reusable or conditional behaviour explicit. The PlantUML sources are maintained beside the rendered figures in the corresponding asset folders.
+The focused diagrams below decompose the overview without changing the actor boundary. Solid associations identify participating external roles. A dashed \texttt{<<include>>} relationship is mandatory reusable behaviour; \texttt{<<extend>>} is conditional behaviour that leaves the base use case valid. UC-054 (operational notification) and UC-055 (released-document viewing) are explicitly scoped as P1/Phase~2 capabilities and are not implementation claims. The sources and mappings are maintained in the model inventory under \texttt{doc/asset/03-system-requirements/use-case-model}.
 
 \subsubsection{Patient Management}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png}
+    \includegraphics[height=0.78\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png}
     \caption{Patient-management use cases}
     \label{fig:use-case-patient-management}
 \end{figure}
@@ -506,14 +724,14 @@ The functional diagrams decompose the overall model into business-sized areas. T
 \subsubsection{Appointment, Check-in and Queue Management}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png}
+    \includegraphics[height=0.72\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png}
     \caption{Appointment-management use cases}
     \label{fig:use-case-appointment}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.65\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png}
+    \includegraphics[height=0.62\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png}
     \caption{Check-in and queue-management use cases}
     \label{fig:use-case-check-in-queue}
 \end{figure}
@@ -521,54 +739,256 @@ The functional diagrams decompose the overall model into business-sized areas. T
 \subsubsection{Medical Examination and Encounter Management}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png}
+    \includegraphics[height=0.72\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png}
     \caption{Screening and consultation use cases}
     \label{fig:use-case-medical-examination}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.65\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png}
+    \includegraphics[height=0.62\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png}
     \caption{Clinical-note lifecycle and encounter-closure use cases}
     \label{fig:use-case-clinical-note-lifecycle}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.52\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png}
+    \includegraphics[height=0.50\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png}
     \caption{Service-order and execution use cases}
     \label{fig:use-case-service-order-execution}
 \end{figure}
 
-\subsubsection{Prescription and Medication Safety}
+\subsubsection{Prescription, Billing and Governance}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png}
+    \includegraphics[height=0.72\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png}
     \caption{Prescription and medication-safety use cases}
     \label{fig:use-case-prescription}
 \end{figure}
 
-\subsubsection{Billing and Payment}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png}
+    \includegraphics[height=0.72\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png}
     \caption{Billing and payment use cases}
     \label{fig:use-case-billing}
 \end{figure}
 
-\subsubsection{Administration, Reporting and Governance}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.78\textheight,keepaspectratio]{../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png}
+    \includegraphics[height=0.72\textheight,keepaspectratio]{asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png}
     \caption{Administration, reporting and governance use cases}
     \label{fig:use-case-administration}
 \end{figure}
 
 \subsection{Detailed Use Case Specifications}
+The six use cases below carry the principal state, safety or financial risk. Each specification states the minimum successful path and the control that prevents an invalid state transition.
+
+\subsubsection{UC-021 Book Appointment}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule Item & Specification \\
+\midrule
+Actor, trigger and preconditions & Receptionist; a patient and service/provider context are selected; the actor is authorised. \\
+Success flow & Select slot; validate provider, room, duration and required resources; atomically create the Appointment and audit-relevant metadata. \\
+Alternative and exception flow & Rescheduling repeats validation and preserves history. An unavailable slot, unresolved identity or invalid scope creates no appointment. \\
+Postconditions and data & One valid Appointment exists; no Encounter is created by booking alone. \\
+Rules and trace & BR-002, BR-004; FR-005, FR-017; UC-026; NFR-06, NFR-15. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection{UC-027 Check In Patient}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule Item & Specification \\
+\midrule
+Actor, trigger and preconditions & Receptionist receives an identified booked patient or an accepted walk-in. \\
+Success flow & Confirm arrival; check the active-encounter rule; create/activate the Encounter; assign the role-scoped queue state. \\
+Alternative and exception flow & An accepted walk-in follows the same queue rule. A conflicting active encounter, rejected walk-in or invalid scope creates no duplicate encounter. \\
+Postconditions and data & The relevant Appointment is updated and one active Encounter with queue status is available to authorised roles. \\
+Rules and trace & BR-003, BR-004; FR-006; UC-029; NFR-06, NFR-15. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection{UC-037/UC-038 Sign and Amend a Clinical Note}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule Item & Specification \\
+\midrule
+Actor, trigger and preconditions & Authorised Doctor; a draft note belongs to an assigned Encounter. \\
+Success flow & Validate required content and state; sign the note with actor/time. A correction creates a linked amendment with a reason. \\
+Alternative and exception flow & A draft may be saved for later. Missing fields, invalid state, invalid scope or a concurrent update prevents signing or requires reconciliation. \\
+Postconditions and data & Signed content remains intact; each amendment retains author, time, reason and linkage. \\
+Rules and trace & BR-004, BR-005; FR-009, FR-020, FR-032; UC-042; NFR-06, NFR-07, NFR-15. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection{UC-048 Validate and Issue Prescription}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule Item & Specification \\
+\midrule
+Actor, trigger and preconditions & Authorised Doctor requests issue for a valid encounter with complete medicine items. \\
+Success flow & Validate dose and directions; evaluate configured safety rules; address a warning or record a permitted override; issue the prescription. \\
+Alternative and exception flow & The Doctor may retain a draft. Missing fields, an unresolved required warning or invalid scope blocks issue; unavailable source data does not create an invented warning. \\
+Postconditions and data & An issued prescription and item history exist; no dispensing or administration event is inferred. \\
+Rules and trace & BR-006, BR-008; FR-011--FR-013; UC-046--UC-047; NFR-06, NFR-07. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection{UC-039/UC-040 Service Order, Allocation and Result}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule Item & Specification \\
+\midrule
+Actor, trigger and preconditions & Doctor creates an order for an active encounter; assigned Technician/Service Staff records execution. \\
+Success flow & Record service, reason and priority; validate/allocate required room, staff and resource; record performer, time, status and result. \\
+Alternative and exception flow & An order may be scheduled later or remain pending. Unavailable resources, unassigned staff, delay or cancellation preserve a valid non-completed state. \\
+Postconditions and data & ProcedureOrder, optional ResourceBooking and execution/result history are linked to the Encounter. \\
+Rules and trace & BR-002, BR-004, BR-007; FR-014--FR-018; NFR-06, NFR-15. \\
+\bottomrule
+\end{longtable}
+
+\subsubsection{UC-063/UC-065 Record Payment and Refund}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule Item & Specification \\
+\midrule
+Actor, trigger and preconditions & Cashier records payment for an eligible Invoice; authorised Finance Staff records a refund or adjustment. \\
+Success flow & Verify outstanding status; record method, amount and time; update the Invoice. Refunds record the prior transaction, reason and required approval. \\
+Alternative and exception flow & Partial payment leaves an outstanding balance. Invalid amount/status, invalid scope or duplicate submission produces no financial effect. \\
+Postconditions and data & Payment/refund history and invoice status are updated; clinical content is unchanged. \\
+Rules and trace & BR-004, BR-007; FR-022--FR-023; UC-064, UC-066; NFR-06, NFR-07, NFR-15. \\
+\bottomrule
+\end{longtable}
+
 \subsection{Functional Requirements}
+Table~\ref{tab:functional-requirements} groups related requirements without changing their identifiers. P0 is required for the MVP; P1 is a controlled extension; P2 depends on a later organisational decision or integration contract.
+
+\begingroup
+\scriptsize
+\renewcommand{\arraystretch}{1.10}
+\begin{longtable}{@{}p{0.14\textwidth}p{0.28\textwidth}p{0.42\textwidth}p{0.08\textwidth}@{}}
+\caption{Functional requirements catalogue}\label{tab:functional-requirements}\\
+\toprule ID & Capability & Observable system behaviour & Priority \\
+\midrule
+\endfirsthead
+\toprule ID & Capability & Observable system behaviour & Priority \\
+\midrule
+\endhead
+FR-001--FR-002 & Authentication and access & Authenticate individual accounts; manage roles, facility scope and sensitive-session controls; enforce authorisation at the server boundary. & P0 \\
+FR-003--FR-004 & Patient identity & Create/search patient profiles, flag duplicates and preserve authorised merge evidence. & P0/P1 \\
+FR-005--FR-006 & Appointment and reception & Manage appointment status, availability, walk-ins, check-in and role-scoped queues. & P0 \\
+FR-007--FR-010 & Encounter documentation & Record screening, history, clinical notes, symptoms, diagnoses and follow-up in encounter context. & P0 \\
+FR-011--FR-013 & Prescription and medicine event & Validate configured safety rules; issue prescriptions; record dispensing/administration separately. & P0/P1 \\
+FR-014--FR-018 & Service order and execution & Create orders; allocate rooms, staff and resources; record execution status and result. & P0 \\
+FR-019 & Diagnostic request & Support an approved manual request/result attachment or later adapter. & P1 \\
+FR-020--FR-021 & Encounter conclusion & Record conclusion and follow-up; support configured leave/discharge review where applicable. & P0/P1 \\
+FR-022--FR-023 & Catalogue, invoice and payment & Maintain effective service/price data; create invoices and retain payment/refund history. & P0 \\
+FR-024--FR-025 & Notification and patient portal & Send configured operational notifications; support verified portal self-service only when enabled. & P1 / Phase 2 \\
+FR-026--FR-027 & Dashboard, reports and export & Present scoped operational indicators and log controlled report exports. & P0 \\
+FR-028--FR-031 & Administration, attachment and search & Maintain reference catalogues, controlled attachments, audit evidence and scoped search. & P0 \\
+FR-032 & Draft and recovery & Preserve drafts and unsaved-change state; report success only after server confirmation. & P1 \\
+FR-033--FR-034 & Facility and external integration & Apply approved facility scope and provide logged connectors only for approved contracts. & P2 \\
+\bottomrule
+\end{longtable}
+\endgroup
+
 \subsection{Non-functional Requirements}
+The table defines the quality targets used for design and later verification.
+
+\begin{longtable}{@{}p{0.15\textwidth}p{0.24\textwidth}p{0.45\textwidth}p{0.09\textwidth}@{}}
+\caption{Non-functional requirements catalogue}\label{tab:nonfunctional-requirements}\\
+\toprule ID & Attribute & Requirement / acceptance basis & Status \\
+\midrule
+\endfirsthead
+\toprule ID & Attribute & Requirement / acceptance basis & Status \\
+\midrule
+\endhead
+NFR-01--NFR-03 & Performance, availability and recovery & Target p95 ordinary screen $\leq$ 2 seconds, search $\leq$ 3 seconds; define availability, RPO and RTO before deployment. & Target \\
+NFR-04--NFR-07 & Security and auditability & Use protected transport/storage, server-side RBAC, least privilege, time-synchronised sensitive-event evidence and retention policy. & Specified \\
+NFR-08--NFR-09 & Resilience and scale & Preserve confirmed data through dependency failure; use bounded queries, pagination and modular APIs. & Specified \\
+NFR-10--NFR-11 & Compatibility and accessibility & Support current Chrome/Edge desktop/tablet use with keyboard operation, labels, contrast and clear errors. & Target \\
+NFR-12--NFR-13 & Maintainability and observability & Use controlled migrations, documentation and structured operational metrics/logs. & Specified \\
+NFR-14--NFR-15 & Locale and integrity & Configure Vietnamese/local formats; use transactions, constraints and idempotency for critical operations. & Specified \\
+NFR-16 & Testability & Maintain unit, integration and end-to-end tests with non-production data. & Specified \\
+\bottomrule
+\end{longtable}
+
 \subsection{Role-based Access Control Matrix}
+Table~\ref{tab:rbac-matrix} records the intended minimum business permissions. It is a requirements baseline, not an implementation claim. \textbf{R}, \textbf{C}, \textbf{U}, \textbf{S}, \textbf{A} and \textbf{F} respectively mean read, create, update, sign/finalise, approve/override and finance transaction. A dash means no routine access. All non-dash permissions remain subject to facility, assignment and lifecycle state; Section~4 must enforce them at the server boundary.
+
+\begin{table}[p]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.16}
+\textbf{Clinical and front-desk roles}\par\vspace{0.15cm}
+\begin{tabular}{@{}p{0.30\textwidth}*{5}{>{\centering\arraybackslash}p{0.115\textwidth}}@{}}
+\toprule
+Capability / data domain & Rec. & Nurse & Doctor & Tech. & Pharm. \\
+\midrule
+Patient administrative profile & R/C/U & R & R & R$^{\dagger}$ & R$^{\dagger}$ \\
+Appointment, check-in and queue & R/C/U & R & R & R$^{\dagger}$ & -- \\
+Screening and vital signs & R & C/U & R & R$^{\dagger}$ & -- \\
+Clinical note and diagnosis & R$^{\dagger}$ & R$^{\dagger}$ & R/C/U/S & R$^{\dagger}$ & R$^{\dagger}$ \\
+Prescription and medicine event & R$^{\dagger}$ & R$^{\dagger}$ & R/C/U/S/A & -- & R/C/U \\
+Service order and execution result & R$^{\dagger}$ & R/C/U$^{\dagger}$ & R/C/U/S & R/C/U & -- \\
+Invoice, payment and refund & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- & -- \\
+Dashboard and scoped reports & -- & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & -- \\
+User, role and catalogue configuration & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ \\
+Audit log and controlled export & -- & -- & R$^{\dagger}$ & -- & -- \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.35cm}
+\textbf{Finance, governance and patient roles}\par\vspace{0.15cm}
+\begin{tabular}{@{}p{0.30\textwidth}*{5}{>{\centering\arraybackslash}p{0.115\textwidth}}@{}}
+\toprule
+Capability / data domain & Cash. & Manager & Admin & Auditor & Patient$^{*}$ \\
+\midrule
+Patient administrative profile & R$^{\dagger}$ & R$^{\dagger}$ & -- & R$^{\dagger}$ & R/U \\
+Appointment, check-in and queue & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & R/C/U \\
+Screening and vital signs & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
+Clinical note and diagnosis & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Prescription and medicine event & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Service order and execution result & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Invoice, payment and refund & R/C/U/F & R/A$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
+Dashboard and scoped reports & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & -- \\
+User, role and catalogue configuration & R$^{\dagger}$ & R/U$^{\dagger}$ & R/C/U/A & R$^{\dagger}$ & -- \\
+Audit log and controlled export & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R & -- \\
+\bottomrule
+\end{tabular}
+\caption{Target role-based access-control matrix}
+\label{tab:rbac-matrix}
+\vspace{0.2cm}
+\begin{minipage}{0.90\textwidth}\tiny
+$^{*}$Phase~2 only. $^{\dagger}$Only within assigned, facility or approved scope. $^{\ddagger}$Only information expressly released through the portal. Administrative configuration does not confer clinical-edit authority; Auditor access is read-only and itself may be logged.
+\end{minipage}
+\end{table}
+
 \subsection{Requirements Traceability and Use Case Validation}
+Table~\ref{tab:requirements-traceability} links the business rationale to requirements, use cases, entities and planned verification.
+
+\begingroup
+\scriptsize
+\renewcommand{\arraystretch}{1.14}
+\begin{longtable}{@{}p{0.14\textwidth}p{0.18\textwidth}p{0.20\textwidth}p{0.22\textwidth}p{0.17\textwidth}@{}}
+\caption{Requirements traceability and planned verification}\label{tab:requirements-traceability}\\
+\toprule Business rule/need & Requirement & Use cases & Domain/design focus & Planned verification \\
+\midrule
+\endfirsthead
+\toprule Business rule/need & Requirement & Use cases & Domain/design focus & Planned verification \\
+\midrule
+\endhead
+BR-001 identity continuity & FR-003, FR-004, FR-031 & UC-010--UC-018 & Patient, MedicalRecord, AuditLog; unique identifier and merge history. & Duplicate-search, unauthorised-merge and merge-history test cases. \\
+BR-002 conflict-free allocation & FR-005, FR-015--FR-017; NFR-15 & UC-021--UC-026, UC-039 & Appointment, ResourceBooking, schedule/room/staff constraints. & Concurrent booking/reschedule tests; zero accepted conflict target. \\
+BR-003 controlled arrival & FR-006 & UC-027--UC-030 & Appointment--Encounter relationship and queue state. & Duplicate-active-encounter and role-scoped queue tests. \\
+BR-005 signed-record integrity & FR-009, FR-032; NFR-07, NFR-15 & UC-036--UC-038, UC-041--UC-042 & ClinicalNote draft/signed/amendment lifecycle. & Missing-field, amendment and concurrent-edit tests. \\
+BR-006 bounded warning & FR-011, FR-012 & UC-043--UC-048 & Prescription, PrescriptionItem, Medication and override evidence. & Rule-trigger, override-reason and no-autonomous-decision tests. \\
+BR-007 accountable execution & FR-014--FR-018 & UC-039--UC-040 & ProcedureOrder, ResourceBooking and execution result. & Assignment, unavailable-resource, delay/cancel and result tests. \\
+BR-008 separate medicine event & FR-012, FR-013 & UC-048--UC-051 & PrescriptionItem versus MedicationAdministration. & Verify issue alone creates no administration event. \\
+BR-009 financial history & FR-022, FR-023; NFR-15 & UC-060--UC-069 & Invoice, Payment and refund/adjustment history. & Partial-payment, duplicate-submission and refund-reason tests. \\
+BR-004 / BR-010 governance & FR-001, FR-002, FR-027, FR-030; NFR-06, NFR-07 & UC-001, UC-070--UC-079 & UserAccount, Role, AuditLog and controlled export. & Negative API authorisation and audit-completeness tests. \\
+Operational visibility & FR-026, FR-027 & UC-075--UC-076 & Scoped measures, report filters and export audit. & Role-scope/report-reconciliation tests. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\textit{Open decisions.} The clinic will confirm clinical-warning sources, consent and retention policy, refund approval thresholds, branch scope and portal publication rules before deployment.
+
 
 \section{System Design and Structural Modeling}
 

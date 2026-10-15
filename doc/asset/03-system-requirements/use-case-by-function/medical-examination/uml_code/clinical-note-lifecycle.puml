@@ -32,8 +32,4 @@ doctor -- close
 sign .> validate : <<include>>
 close .> validate : <<include>>
 
-note bottom of amend
-  FR-009: amendments preserve the signed original,
-  author, timestamp and reason; the original is not overwritten.
-end note
 @enduml
