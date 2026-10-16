@@ -1,27 +1,27 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Target business workflow for a standard outpatient journey}}{15}{figure.caption.20}%
-\contentsline {figure}{\numberline {2}{\ignorespaces Appointment and check-in workflow with alternative and exception paths}}{16}{figure.caption.21}%
-\contentsline {figure}{\numberline {3}{\ignorespaces Core clinical conceptual domain model}}{18}{figure.caption.31}%
-\contentsline {figure}{\numberline {6}{\ignorespaces Patient-management use cases}}{21}{figure.caption.42}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Appointment-management use cases}}{22}{figure.caption.44}%
-\contentsline {figure}{\numberline {8}{\ignorespaces Check-in and queue-management use cases}}{23}{figure.caption.45}%
-\contentsline {figure}{\numberline {9}{\ignorespaces Screening and consultation use cases}}{24}{figure.caption.47}%
-\contentsline {figure}{\numberline {10}{\ignorespaces Clinical-note lifecycle and encounter-closure use cases}}{25}{figure.caption.48}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Service-order and execution use cases}}{26}{figure.caption.49}%
-\contentsline {figure}{\numberline {12}{\ignorespaces Prescription and medication-safety use cases}}{27}{figure.caption.51}%
-\contentsline {figure}{\numberline {13}{\ignorespaces Billing and payment use cases}}{28}{figure.caption.52}%
-\contentsline {figure}{\numberline {14}{\ignorespaces Administration, reporting and governance use cases}}{29}{figure.caption.53}%
-\contentsline {figure}{\numberline {4}{\ignorespaces Functional decomposition of MEDORA}}{35}{figure.caption.37}%
-\contentsline {figure}{\numberline {5}{\ignorespaces Overall use-case model of MEDORA}}{36}{figure.caption.39}%
-\contentsline {figure}{\numberline {15}{\ignorespaces System sequence for appointment booking and availability validation}}{39}{figure.caption.100}%
-\contentsline {figure}{\numberline {16}{\ignorespaces System sequence for check-in, encounter creation, and queue assignment}}{40}{figure.caption.101}%
-\contentsline {figure}{\numberline {17}{\ignorespaces System sequence for signing a clinical note and appending a correction}}{41}{figure.caption.102}%
-\contentsline {figure}{\numberline {18}{\ignorespaces System sequence for configured prescription safety checks and issue}}{42}{figure.caption.103}%
-\contentsline {figure}{\numberline {19}{\ignorespaces System sequence for resource allocation and service-order execution}}{43}{figure.caption.104}%
-\contentsline {figure}{\numberline {20}{\ignorespaces System sequence for payment and separately authorized refund events}}{44}{figure.caption.105}%
-\contentsline {figure}{\numberline {21}{\ignorespaces Activity model for service-order allocation and execution}}{45}{figure.caption.107}%
-\contentsline {figure}{\numberline {22}{\ignorespaces Activity model for encounter closure and independent financial settlement}}{46}{figure.caption.108}%
-\contentsline {figure}{\numberline {23}{\ignorespaces Proposed appointment lifecycle and terminal outcomes}}{47}{figure.caption.110}%
-\contentsline {figure}{\numberline {24}{\ignorespaces Proposed encounter lifecycle from check-in to clinical completion}}{47}{figure.caption.111}%
-\contentsline {figure}{\numberline {25}{\ignorespaces Clinical-note version lifecycle with immutable signed versions}}{48}{figure.caption.112}%
-\contentsline {figure}{\numberline {26}{\ignorespaces Proposed procedure-order lifecycle with allocation and execution outcomes}}{48}{figure.caption.113}%
-\contentsline {figure}{\numberline {27}{\ignorespaces Proposed invoice lifecycle for unpaid, partial-payment, and paid states}}{49}{figure.caption.114}%
+\contentsline {figure}{\numberline {1}{\ignorespaces Target business workflow for a standard outpatient journey}}{14}{figure.caption.20}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Appointment and check-in workflow with alternative and exception paths}}{15}{figure.caption.21}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Core clinical conceptual domain model}}{17}{figure.caption.31}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Patient-management use cases}}{20}{figure.caption.42}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Appointment-management use cases}}{21}{figure.caption.44}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Check-in and queue-management use cases}}{22}{figure.caption.45}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Screening and consultation use cases}}{23}{figure.caption.47}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Clinical-note lifecycle and encounter-closure use cases}}{24}{figure.caption.48}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Service-order and execution use cases}}{25}{figure.caption.49}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Prescription and medication-safety use cases}}{26}{figure.caption.51}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Billing and payment use cases}}{27}{figure.caption.52}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Administration, reporting and governance use cases}}{28}{figure.caption.53}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Functional decomposition of MEDORA}}{34}{figure.caption.37}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Overall use-case model of MEDORA}}{35}{figure.caption.39}%
+\contentsline {figure}{\numberline {15}{\ignorespaces System sequence for appointment booking and availability validation}}{38}{figure.caption.100}%
+\contentsline {figure}{\numberline {16}{\ignorespaces System sequence for check-in, encounter creation, and queue assignment}}{39}{figure.caption.101}%
+\contentsline {figure}{\numberline {17}{\ignorespaces System sequence for signing a clinical note and appending a correction}}{40}{figure.caption.102}%
+\contentsline {figure}{\numberline {18}{\ignorespaces System sequence for configured prescription safety checks and issue}}{41}{figure.caption.103}%
+\contentsline {figure}{\numberline {19}{\ignorespaces System sequence for resource allocation and service-order execution}}{42}{figure.caption.104}%
+\contentsline {figure}{\numberline {20}{\ignorespaces System sequence for payment and separately authorized refund events}}{43}{figure.caption.105}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Activity model for service-order allocation and execution}}{44}{figure.caption.107}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Activity model for encounter closure and independent financial settlement}}{45}{figure.caption.108}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Proposed appointment lifecycle and terminal outcomes}}{46}{figure.caption.110}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Proposed encounter lifecycle from check-in to clinical completion}}{46}{figure.caption.111}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Clinical-note version lifecycle with immutable signed versions}}{47}{figure.caption.112}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Proposed procedure-order lifecycle with allocation and execution outcomes}}{47}{figure.caption.113}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Proposed invoice lifecycle for unpaid, partial-payment, and paid states}}{48}{figure.caption.114}%

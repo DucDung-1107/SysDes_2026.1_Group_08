@@ -1,0 +1,24 @@
+@startsalt
+title MEDORA -- Proposed Cashier Invoice and Payment Wireframe
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+{
+  {T
+    MEDORA  | Finance Workspace  |  User: Cashier
+  }
+  { [Invoice queue] | [Payments] | [Refund review] | [Reports] }
+  {+
+    Encounter E-8831  | Patient P-10482  | Finance scope: Main Clinic
+    Invoice draft: I-22018  | Price snapshot: effective 16 Oct 2026
+    {T
+      Item | Quantity | Unit price | Total
+      Consultation | 1 | 250000 VND | 250000 VND
+      Service item | 1 | 120000 VND | 120000 VND
+    }
+    Total: 370000 VND  |  Paid: 0 VND  |  Balance: 370000 VND
+    [Issue invoice]  [Record payment]  [Request adjustment]
+  }
+  Financial events append to history and do not alter clinical records.
+}
+@endsalt

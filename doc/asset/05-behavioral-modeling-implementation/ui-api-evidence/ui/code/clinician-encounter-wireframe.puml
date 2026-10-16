@@ -1,0 +1,28 @@
+@startsalt
+title MEDORA -- Proposed Clinician Encounter Workspace Wireframe
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+{
+  {T
+    MEDORA  | Clinical Workspace  |  User: Assigned Doctor
+  }
+  { [My queue] | [Patient timeline] | [Encounter] | [Orders] }
+  {+
+    Patient P-10482  | Encounter E-8831  | State: In consultation
+    Identity: verified  | Assignment: active  | Allergies: review required
+  }
+  {+
+    Clinical note
+    Chief concern: [____________________________________________]
+    Assessment:    [____________________________________________]
+    Plan:          [____________________________________________]
+    [Save draft]  [Validate and sign]  [Create service order]
+  }
+  {+
+    Encounter context
+    Vital signs: available  |  Diagnoses: 1  |  Orders: 0  |  History: scoped
+    Signed content is read-only; correction creates a linked amendment.
+  }
+}
+@endsalt

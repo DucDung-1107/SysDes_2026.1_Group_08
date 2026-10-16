@@ -52,7 +52,7 @@
 \usepackage[most]{tcolorbox}
 \usepackage{listings}
 \usepackage{xurl}
-% Hyperref được nạp sau các package tạo float/longtable để patch anchor đúng cách.
+% Hyperref is loaded after float and longtable packages so anchors are patched consistently.
 \usepackage[hypertexnames=false]{hyperref}
 
 \usetikzlibrary{
@@ -182,6 +182,7 @@
         line width=2pt
     ]
     ($(current page.north west)+(0.75cm,-0.75cm)$)
+
     rectangle
     ($(current page.south east)+(-0.75cm,0.75cm)$);
 
@@ -1126,7 +1127,28 @@ The state machines formalize the status proposals in WorkStation Sections 5 and 
 \end{figure}
 
 \subsection{Source Code Organization and Module Structure}
-The repository does not contain an application implementation from which a source-module architecture can be reported. The observable project structure is a report, its editable analysis/design assets, and a placeholder source directory. Table~\ref{tab:implementation-evidence} records this boundary; proposed modules must be mapped to real files only after the implementation technology and architecture are approved.
+The repository contains no application code yet. To make the design actionable, this section proposes a TypeScript modular-monolith implementation baseline: Next.js for the role-specific web client, a NestJS REST API, PostgreSQL persistence through Prisma migrations, private object storage for attachments, and Docker Compose for local development. This stack is a recommendation, not an approved or implemented technology decision; the team should record approval as ADR-001 before scaffolding. The API remains the sole authorization and state-transition boundary; the browser must not access persistence directly.
+
+\begin{lstlisting}[language={},caption={Proposed source layout for the first implementation},label={lst:proposed-source-layout}]
+medora/
+    apps/
+        web/                         # Next.js role-specific browser UI
+        api/src/modules/
+            identity/ patients/ scheduling/
+            encounters/ prescriptions/ orders/
+            finance/ governance/ audit/
+    packages/
+        contracts/                   # versioned DTOs and OpenAPI contract
+        persistence/                 # Prisma schema, repositories, migrations
+    infra/
+        compose.yaml                 # local-only services and test dependencies
+        proxy/                       # non-production HTTPS configuration
+    tests/
+        unit/ integration/ e2e/      # synthetic data only
+    doc/asset/                     # report and editable UML sources
+\end{lstlisting}
+
+Each API module owns its use cases and validation. Shared contracts contain request/response types, not business rules. Persistence migrations are reviewed and versioned; domain modules call repositories through application services. Authorization, transaction boundaries, audit emission, and idempotency belong in the API/application layer, not in UI visibility rules. A later implementation may reorganize this layout only with an updated module mapping and traceability review.
 
 \begin{table}[H]
 \centering
@@ -1137,8 +1159,8 @@ The repository does not contain an application implementation from which a sourc
 Evidence item & Repository observation & Status / implication \\
 \midrule
 Application source & \texttt{src/README.md} is a placeholder asking for source code. & No application modules or implemented behavior are evidenced. \\
-Build/dependency manifest & No application package manifest or runtime build configuration is present. & Framework, language, and module boundaries are not established. \\
-Persistence and API & No database schema, migration, API contract, or service implementation is present. & Data and endpoint behavior remain specified requirements, not implementation facts. \\
+Build/dependency manifest & No application package manifest or runtime build configuration is present. & Next.js/NestJS/TypeScript is the recommended ADR-001 baseline, pending team approval. \\
+Persistence and API & No database schema, migration, API contract, or service implementation is present. & PostgreSQL/Prisma and the versioned REST contract are proposals, not implementation facts. \\
 Behavioral assets & PlantUML sources and rendered figures are stored under \texttt{doc/asset/05-behavioral-modeling-implementation/}. & These are proposed behavioral models; they are not executable application code. \\
 Deployment & No container, server, environment, or deployment configuration is present. & Production topology, hosting, and operational controls are not yet determined. \\
 \bottomrule
@@ -1147,39 +1169,59 @@ Deployment & No container, server, environment, or deployment configuration is p
 \label{tab:implementation-evidence}
 \end{table}
 
-The report's conceptual layers and functional groups provide inputs for a future source organization, but they do not prove that presentation, application, domain, or persistence modules have been created. The next design step is to select a proportionate architecture, record its decision and dependencies, then map each component to actual source files and tests.
+The source layout above maps the report's logical layers and functional groups to a buildable project structure while preserving the current evidence boundary. No listed directory, package, or module should be described as implemented until it exists and is reviewed in the repository.
 
 \subsection{Implementation of Core Functionalities}
-No core capability can be marked implemented from the available repository evidence. Table~\ref{tab:implementation-status} separates specification coverage from implementation status so that the planned scope is not mistaken for delivered software.
+The following implementation slices turn the requirements into an ordered build plan. All are currently \textbf{Not Implemented}; the invariant column defines the minimum behavior each slice must preserve before it can be accepted.
 
 \begin{table}[H]
 \centering
 \small
 \renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\textwidth}{@{}P{0.25\textwidth}P{0.30\textwidth}Y@{}}
+\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.23\textwidth}P{0.37\textwidth}Y@{}}
 \toprule
-Capability area & Specification reference & Implementation evidence \\
+Implementation slice & Trace & Acceptance invariant & Status \\
 \midrule
-Identity, roles, and patient records & FR-001--FR-004, FR-028--FR-031 & Not present in source code; not verified. \\
-Appointments, check-in, and queues & FR-005--FR-006, FR-017 & Not present in source code; not verified. \\
-Clinical documentation and encounter closure & FR-007--FR-010, FR-020--FR-021, FR-032 & Not present in source code; not verified. \\
-Prescription and medicine events & FR-011--FR-013 & Not present in source code; not verified. \\
-Service orders and resource execution & FR-014--FR-019 & Not present in source code; not verified. \\
-Billing, reporting, and audit & FR-022--FR-027, FR-030 & Not present in source code; not verified. \\
+Identity and authorization & FR-001--FR-004; NFR-06 & Server rejects out-of-scope reads/writes; patient duplicate review precedes merge. & Not Implemented \\
+Scheduling and reception & FR-005--FR-006, FR-017 & Concurrent conflicts do not commit; accepted check-in creates one active encounter. & Not Implemented \\
+Encounter and clinical records & FR-007--FR-010, FR-020, FR-032 & Signed versions are immutable; encounter close validates required work. & Not Implemented \\
+Prescription and service orders & FR-011--FR-019 & Configured safety checks are bounded; orders, bookings, and actual events remain distinct. & Not Implemented \\
+Finance and reporting & FR-022--FR-027 & Price is snapshotted; payment/refund are idempotent append-only events. & Not Implemented \\
+Governance and attachments & FR-028--FR-031; NFR-07 & Sensitive actions are scoped and audited; files are private and access-controlled. & Not Implemented \\
 \bottomrule
 \end{tabularx}
-\caption{Specification coverage versus implementation evidence}
+\caption{Proposed implementation slices and acceptance invariants}
 \label{tab:implementation-status}
 \end{table}
 
 \subsection{Development and Deployment Environment}
-The environment available for this report is not the runtime environment of MEDORA. The report has been built locally with XeLaTeX/MiKTeX; behavioral figures were rendered from PlantUML through Kroki. These tools validate and publish documentation artifacts only. No application runtime, database, deployment target, environment variables, or operational service has been established, so this section makes no claim about application hosting or production readiness.
+Table~\ref{tab:proposed-environments} defines a reproducible target environment without implying any environment currently exists. Secrets, patient data, and production records must never be placed in the local development stack. Production hosting, availability design, data residency, backup retention, and incident ownership require explicit approval.
 
-\subsection{Implemented User Interfaces and API Evidence}
-No application UI, API, or operational workflow screenshot is available because no application source or running system is present. The workflow figures in this chapter are UML design evidence, not screenshots of implemented screens. No mock screen is substituted for implementation evidence.
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.10}
+\begin{tabularx}{\textwidth}{@{}P{0.18\textwidth}P{0.41\textwidth}Y@{}}
+\toprule
+Environment & Proposed services and configuration & Data / release controls \\
+\midrule
+Local development & Node.js LTS toolchain; web and API; PostgreSQL; private S3-compatible storage emulator; Docker Compose. & Synthetic fixtures only; local secrets in ignored environment files; migrations applied from source. \\
+Automated test & Ephemeral database and private file store; isolated test accounts; unit, integration, and Playwright end-to-end suites. & No real patient data; reset between runs; deterministic seeds and retained test logs. \\
+Staging & One controlled application deployment behind HTTPS reverse proxy; restricted database and private attachment store; monitoring and backup/restore rehearsal. & De-identified/synthetic data only; role access reviewed; release build and migration version recorded. \\
+Production target & Hosting provider and topology TBD after capacity, privacy, recovery, and cost review; separate app, database, object storage, and protected backup boundaries. & TLS, managed secrets, least-privilege service accounts, audit retention, restore exercises, and approved operational ownership. \\
+\bottomrule
+\end{tabularx}
+\caption{Proposed development and deployment environment matrix}
+\label{tab:proposed-environments}
+\end{table}
+
+The proposed environment matrix above captures the intended trust boundaries without selecting a vendor topology. The local LaTeX/PlantUML/Kroki tools used to produce this report are documentation tooling and are not part of the MEDORA runtime.
+
+\subsection{Proposed User Interfaces and API Evidence}
+No UI/API screenshots or proposed wireframe images are included because there is no running application. WorkStation Section 7 provides a screen inventory that can guide later UX design; Appendix C provides proposed API/data examples, not captured responses from an existing endpoint. A future implementation evidence package must pair a redacted screen/API capture with build ID, actor role, workflow state, and test-case ID.
 
 \begin{warningbox}[Evidence required before implementation claims]
-Capture redacted screenshots from a running non-production build and identify the build/version, actor role, workflow state, and test case for each image. API evidence should include the approved endpoint and schema, authorization context, sanitized request/response, and observed result. Do not include real patient data or secrets.
+After implementation, capture redacted UI, API, and workflow evidence from a running non-production build. Record build/version, actor role, workflow state, and linked test case. API evidence should include the approved endpoint/schema, authorization context, sanitized request/response, and observed result. Never include real patient data or secrets.
 \end{warningbox}
 
 \section{System Testing and Evaluation}
@@ -1336,11 +1378,7 @@ Future work should proceed in evidence-producing stages:
 This sequence keeps the report aligned with the project's clinic scope and makes each future claim auditable against source code, test results, or operational evidence.
 
 \appendix
-
-\section{Detailed Use Case Specifications}
-\section{Supplementary UML Diagrams}
-\section{API Specifications and Data Schemas}
-\section{Detailed Test Cases and Execution Results}
+\input{appendices}
 
 \clearpage
 \phantomsection
