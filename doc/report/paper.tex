@@ -430,7 +430,7 @@ Each target is specific to a defined workflow, measurable through test evidence,
 \subsection{System Scope, Assumptions, and Constraints}
 MEDORA is an internal web system for a clinic or small healthcare facility. It supports the outpatient journey from patient identification and appointment or walk-in reception to check-in, screening, consultation, prescription or service order, execution, encounter closure and payment status.
 
-Receptionists manage identity, appointments and queues; nurses record screening; doctors own clinical decisions; technicians and medicine staff record actual execution; cashiers record financial events; managers, administrators and auditors supervise operations, configuration and accountability. The system preserves the difference between planned and completed work: an appointment is not an encounter, a prescription is not a medicine event, an order is not a result, and an invoice is not a payment.
+Receptionists manage identity, appointments and queues; nurses record screening; doctors own clinical decisions; technicians and medicine staff record actual execution; cashiers record payments; and authorized finance staff assess and execute permitted refunds. Managers, administrators and auditors supervise operations, configuration and accountability. The system preserves the difference between planned and completed work: an appointment is not an encounter, a prescription is not a medicine event, an order is not a result, and an invoice is not a payment.
 
 The MVP focuses on internal operations, basic billing, reporting and governance. Patient self-service, external diagnostic systems, insurer settlement and advanced inventory are later-stage extensions. Every sensitive action is constrained by role, scope and workflow state; signed notes are amended rather than overwritten, and concurrent booking must not create a conflict.
 
@@ -476,12 +476,12 @@ The solution uses four cooperating layers:
     \item \textbf{Data:} persistent patient, encounter, order, resource, invoice and audit entities with integrity constraints and history.
 \end{itemize}
 
-Each workflow step has an explicit state and accountable actor. Backend authorisation, controlled attachments and audit history protect the record while the modular structure leaves a clear path for later portal, diagnostic and interoperability extensions.
+Each workflow step has an explicit state and accountable actor. Backend authorization, controlled attachments and audit history protect the record while the modular structure leaves a clear path for later portal, diagnostic and interoperability extensions.
 
 \section{Business Analysis and Domain Modeling}
 
 \subsection{Business Context and Operational Overview}
-MEDORA is an internal web system for an outpatient clinic or small healthcare facility. It coordinates one outpatient episode from patient identification and appointment handling to consultation, service execution, payment status and operational reporting. Its central design principle is continuity: every authorised role works from the same patient and encounter context rather than from disconnected records.
+MEDORA is an internal web system for an outpatient clinic or small healthcare facility. It coordinates one outpatient episode from patient identification and appointment handling to consultation, service execution, payment status and operational reporting. Its central design principle is continuity: every authorized role works from the same patient and encounter context rather than from disconnected records.
 
 Four distinctions protect that continuity. An Appointment reserves time, while an Encounter represents the visit that actually occurs. A prescription is a clinical decision; dispensing or administration is a later, accountable event. A service order is not an execution result. An Invoice records charges, whereas a Payment or refund records a financial transaction. These distinctions prevent the system from reporting planned work as completed work.
 
@@ -521,7 +521,9 @@ Receptionist & Identify/register patients; manage appointments, arrivals and que
 Nurse & Record screening, vital signs and assigned care activity. & Cannot alter diagnosis or signed prescriptions. \\
 Doctor & Consult, document, diagnose, prescribe, order services and close encounters. & Owns clinical decisions for assigned encounters. \\
 Technician / Pharmacist & Execute assigned service work or record the medicine event. & Records execution; does not create the clinical decision. \\
-Cashier & Create eligible invoices and record payments or refunds. & Cannot edit clinical content. \\
+Cashier & Create eligible invoices and record payments. & Cannot edit clinical content or approve refunds. \\
+Authorized Finance Staff & Review refund requests and execute permitted refunds. & Requires the finance authority and approval rule defined for the request. \\
+Authorized Registrar & Review flagged duplicates and perform approved record merges. & Merge authority only; cannot edit clinical content. \\
 Manager & Monitor capacity, services, revenue and reports. & Uses scoped operational information. \\
 Administrator / Auditor & Configure access/catalogues or review audit evidence. & Administration and audit are separate from clinical authority. \\
 Patient (Phase~2) & Request appointments and view released documents. & Accesses only verified, explicitly released information. \\
@@ -542,7 +544,9 @@ Actor & Main system interaction & Boundary \\
 Receptionist & Patient search, registration, appointment, check-in and queue. & No clinical decision editing. \\
 Nurse / Doctor & Assigned encounter, clinical history, screening, documentation and orders. & Access is assignment- and role-scoped. \\
 Technician / Pharmacist & Assigned service execution or medicine event. & Cannot create the originating clinical decision. \\
-Cashier & Invoice, payment, refund and payment status. & Cannot modify clinical records. \\
+Cashier & Invoice, payment and payment status. & Cannot modify clinical records or approve refunds. \\
+Authorized Finance Staff & Refund request, approval status and completed refund. & Cannot modify clinical records; authority is limited to approved finance actions. \\
+Authorized Registrar & Merge request review and record merge, with merge history preserved. & Cannot edit clinical content; a Receptionist may request a merge but cannot perform it. \\
 Manager / Administrator / Auditor & Reports, configuration or audit review. & Each role has a separate scope. \\
 Patient (Phase~2) & Appointment request and released-document viewing. & Verified self-service only. \\
 \bottomrule
@@ -556,14 +560,14 @@ Figure~\ref{fig:outpatient-patient-journey} shows the normal outpatient journey.
 
 \begin{figure}[p]
     \centering
-    \includegraphics[height=0.84\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png}
+    \includegraphics[height=0.93\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png}
     \caption{Target business workflow for a standard outpatient journey}
     \label{fig:outpatient-patient-journey}
 \end{figure}
 
 \begin{figure}[p]
     \centering
-    \includegraphics[height=0.86\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png}
+    \includegraphics[width=\textwidth,height=0.89\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png}
     \caption{Appointment and check-in workflow with alternative and exception paths}
     \label{fig:appointment-check-in-workflow}
 \end{figure}
@@ -609,10 +613,13 @@ ID & Rule & Required behaviour \\
 BR-001 & Patient identity & Use a stable identifier, flag possible duplicates and preserve merge history. \\
 BR-002 & Availability & Validate provider, room, staff and required resources before booking or allocation. \\
 BR-003 & Encounter integrity & Prevent duplicate active encounters and maintain role-scoped queues. \\
-BR-004 & Authorisation and audit & Enforce role, scope and state checks at the server boundary; retain sensitive-event evidence. \\
-BR-005 & Clinical-record integrity & Preserve signed notes; record corrections as linked amendments with a reason. \\
-BR-006 & Clinical safety and execution & Warnings inform clinicians without deciding treatment; prescriptions, orders and actual execution remain distinct. \\
-BR-007 & Financial history & Keep invoices, payments and refunds separate from clinical records and retain transaction history. \\
+BR-004 & Least-privilege action control & Enforce role, scope and state checks at the server boundary. \\
+BR-005 & Signed-note integrity & Preserve signed notes; record corrections as linked amendments with a reason. \\
+BR-006 & Bounded clinical warnings & Warnings inform clinicians without deciding treatment; an override needs a permitted role and a reason. \\
+BR-007 & Order versus execution & An order is not a result; resources are committed only for a valid allocation and execution is recorded separately. \\
+BR-008 & Prescription versus medicine event & Issuing a prescription creates no dispensing or administration event. \\
+BR-009 & Financial separation and history & Keep invoices, payments and refunds separate from clinical records; a refund is its own event that refers to the original payment and never edits it. \\
+BR-010 & Evidence of sensitive activity & Retain audit evidence of sensitive reads and writes, including merges, amendments, overrides and refunds. \\
 \bottomrule
 \end{tabularx}
 \caption{Core business rules}
@@ -620,12 +627,12 @@ BR-007 & Financial history & Keep invoices, payments and refunds separate from c
 \end{table}
 
 \subsection{Domain Model and Core Entities}
-Figure~\ref{fig:conceptual-domain-model} presents the clinical core. The remaining operational and governance concepts extend this core without changing its central relationship: the Encounter contextualises the clinical work performed for one Patient.
+Figure~\ref{fig:conceptual-domain-model} presents the clinical core and the financial chain of Invoice, Payment and Refund. The remaining operational and governance concepts extend this core without changing its central relationship: the Encounter contextualizes the clinical work performed for one Patient. A Refund refers to one original Payment and never edits it, and an Encounter has at most one Invoice.
 
 \begin{figure}[p]
     \centering
     \includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png}
-    \caption{Core clinical conceptual domain model}
+    \caption{Core clinical and financial conceptual domain model}
     \label{fig:conceptual-domain-model}
 \end{figure}
 
@@ -639,7 +646,7 @@ Entity group & Purpose \\
 \midrule
 Patient and MedicalRecord & Stable identity and longitudinal clinical context. \\
 Appointment and Encounter & Planned visit versus actual outpatient episode. \\
-ClinicalNote, Diagnosis and Prescription & Authorised clinical documentation and decisions. \\
+ClinicalNote, Diagnosis and Prescription & Authorized clinical documentation and decisions. \\
 ProcedureOrder and ResourceBooking & Requested service, constrained allocation and execution context. \\
 Invoice and Payment & Charges and financial transactions without clinical mutation. \\
 UserAccount, Role, Attachment and AuditLog & Scoped access, controlled documents and accountability evidence. \\
@@ -680,8 +687,8 @@ Business need & System implication & Trace \\
 Reliable identity & Search, duplicate control, merge history and longitudinal record. & BR-001; FR-003--FR-004 \\
 Conflict-free coordination & Transactional availability, queue state and resource allocation. & BR-002--BR-003; FR-005--FR-006, FR-015 \\
 Accountable care & Signed-note amendments, warnings and separate execution events. & BR-005--BR-008; FR-009--FR-018 \\
-Financial accountability & Invoice, payment and refund history separate from clinical data. & BR-007; FR-022--FR-023 \\
-Governance & Least privilege, audit trail, reports and controlled export. & BR-004; FR-026--FR-030 \\
+Financial accountability & Invoice, payment and refund history separate from clinical data. & BR-009; FR-022--FR-023 \\
+Governance & Least privilege, audit trail, reports and controlled export. & BR-004, BR-010; FR-026--FR-030 \\
 \bottomrule
 \end{tabularx}
 \caption{Business-to-system traceability}
@@ -790,7 +797,7 @@ The six use cases below carry the principal state, safety or financial risk. Eac
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Receptionist; a patient and service/provider context are selected; the actor is authorised. \\
+Actor, trigger and preconditions & Receptionist; a patient and service/provider context are selected; the actor is authorized. \\
 Success flow & Select slot; validate provider, room, duration and required resources; atomically create the Appointment and audit-relevant metadata. \\
 Alternative and exception flow & Rescheduling repeats validation and preserves history. An unavailable slot, unresolved identity or invalid scope creates no appointment. \\
 Postconditions and data & One valid Appointment exists; no Encounter is created by booking alone. \\
@@ -805,7 +812,7 @@ Rules and trace & BR-002, BR-004; FR-005, FR-017; UC-026; NFR-06, NFR-15. \\
 Actor, trigger and preconditions & Receptionist receives an identified booked patient or an accepted walk-in. \\
 Success flow & Confirm arrival; check the active-encounter rule; create/activate the Encounter; assign the role-scoped queue state. \\
 Alternative and exception flow & An accepted walk-in follows the same queue rule. A conflicting active encounter, rejected walk-in or invalid scope creates no duplicate encounter. \\
-Postconditions and data & The relevant Appointment is updated and one active Encounter with queue status is available to authorised roles. \\
+Postconditions and data & The relevant Appointment is updated and one active Encounter with queue status is available to authorized roles. \\
 Rules and trace & BR-003, BR-004; FR-006; UC-029; NFR-06, NFR-15. \\
 \bottomrule
 \end{longtable}
@@ -814,7 +821,7 @@ Rules and trace & BR-003, BR-004; FR-006; UC-029; NFR-06, NFR-15. \\
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Authorised Doctor; a draft note belongs to an assigned Encounter. \\
+Actor, trigger and preconditions & Authorized Doctor; a draft note belongs to an assigned Encounter. \\
 Success flow & Validate required content and state; sign the note with actor/time. A correction creates a linked amendment with a reason. \\
 Alternative and exception flow & A draft may be saved for later. Missing fields, invalid state, invalid scope or a concurrent update prevents signing or requires reconciliation. \\
 Postconditions and data & Signed content remains intact; each amendment retains author, time, reason and linkage. \\
@@ -826,7 +833,7 @@ Rules and trace & BR-004, BR-005; FR-009, FR-020, FR-032; UC-042; NFR-06, NFR-07
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Authorised Doctor requests issue for a valid encounter with complete medicine items. \\
+Actor, trigger and preconditions & Authorized Doctor requests issue for a valid encounter with complete medicine items. \\
 Success flow & Validate dose and directions; evaluate configured safety rules; address a warning or record a permitted override; issue the prescription. \\
 Alternative and exception flow & The Doctor may retain a draft. Missing fields, an unresolved required warning or invalid scope blocks issue; unavailable source data does not create an invented warning. \\
 Postconditions and data & An issued prescription and item history exist; no dispensing or administration event is inferred. \\
@@ -850,11 +857,11 @@ Rules and trace & BR-002, BR-004, BR-007; FR-014--FR-018; NFR-06, NFR-15. \\
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Cashier records payment for an eligible Invoice; authorised Finance Staff records a refund or adjustment. \\
-Success flow & Verify outstanding status; record method, amount and time; update the Invoice. Refunds record the prior transaction, reason and required approval. \\
-Alternative and exception flow & Partial payment leaves an outstanding balance. Invalid amount/status, invalid scope or duplicate submission produces no financial effect. \\
-Postconditions and data & Payment/refund history and invoice status are updated; clinical content is unchanged. \\
-Rules and trace & BR-004, BR-007; FR-022--FR-023; UC-064, UC-066; NFR-06, NFR-07, NFR-15. \\
+Actor, trigger and preconditions & Cashier records payment for an eligible Invoice. Authorized Finance Staff submits a refund request for an identifiable original transaction, amount and reason. \\
+Success flow & For payment, validate invoice state, amount, method and request key; record one payment event and return the transaction reference and invoice status. For a refund, validate the original transaction, amount, authority and policy; record a separate refund event only when the request is authorized and permitted. \\
+Alternative and exception flow & Partial payment leaves an outstanding balance. An invalid payment/refund request, invalid scope or duplicate submission is rejected with no financial effect. A valid refund that requires approval returns a pending-approval status; it is neither rejected nor completed and no resulting balance is reported. \\
+Postconditions and data & A successful payment or completed refund updates its own history and the resulting invoice status. The original transaction is retained and clinical content is unchanged. \\
+Rules and trace & BR-004, BR-009, BR-010; FR-022--FR-023; UC-064, UC-066; NFR-06, NFR-07, NFR-15. \\
 \bottomrule
 \end{longtable}
 
@@ -872,8 +879,8 @@ Table~\ref{tab:functional-requirements} groups related requirements without chan
 \toprule ID & Capability & Observable system behaviour & Priority \\
 \midrule
 \endhead
-FR-001--FR-002 & Authentication and access & Authenticate individual accounts; manage roles, facility scope and sensitive-session controls; enforce authorisation at the server boundary. & P0 \\
-FR-003--FR-004 & Patient identity & Create/search patient profiles, flag duplicates and preserve authorised merge evidence. & P0/P1 \\
+FR-001--FR-002 & Authentication and access & Authenticate individual accounts; manage roles, facility scope and sensitive-session controls; enforce authorization at the server boundary. & P0 \\
+FR-003--FR-004 & Patient identity & Create/search patient profiles, flag duplicates and preserve authorized merge evidence. & P0/P1 \\
 FR-005--FR-006 & Appointment and reception & Manage appointment status, availability, walk-ins, check-in and role-scoped queues. & P0 \\
 FR-007--FR-010 & Encounter documentation & Record screening, history, clinical notes, symptoms, diagnoses and follow-up in encounter context. & P0 \\
 FR-011--FR-013 & Prescription and medicine event & Validate configured safety rules; issue prescriptions; record dispensing/administration separately. & P0/P1 \\
@@ -925,6 +932,7 @@ Table~\ref{tab:rbac-matrix} records the intended minimum business permissions. I
 Capability / data domain & Rec. & Nurse & Doctor & Tech. & Pharm. \\
 \midrule
 Patient administrative profile & R/C/U & R & R & R$^{\dagger}$ & R$^{\dagger}$ \\
+Patient record merge$^{c}$ & C (request) & -- & -- & -- & -- \\
 Appointment, check-in and queue & R/C/U & R & R & R$^{\dagger}$ & -- \\
 Screening and vital signs & R & C/U & R & R$^{\dagger}$ & -- \\
 Clinical note and diagnosis & R$^{\dagger}$ & R$^{\dagger}$ & R/C/U/S & R$^{\dagger}$ & R$^{\dagger}$ \\
@@ -938,27 +946,28 @@ Audit log and controlled export & -- & -- & R$^{\dagger}$ & -- & -- \\
 \end{tabular}
 \par\vspace{0.35cm}
 \textbf{Finance, governance and patient roles}\par\vspace{0.15cm}
-\begin{tabular}{@{}p{0.30\textwidth}*{5}{>{\centering\arraybackslash}p{0.115\textwidth}}@{}}
+\begin{tabular}{@{}p{0.27\textwidth}*{6}{>{\centering\arraybackslash}p{0.105\textwidth}}@{}}
 \toprule
-Capability / data domain & Cash. & Manager & Admin & Auditor & Patient$^{*}$ \\
+Capability / data domain & Cash. & Finance & Manager & Admin & Auditor & Patient$^{*}$ \\
 \midrule
-Patient administrative profile & R$^{\dagger}$ & R$^{\dagger}$ & -- & R$^{\dagger}$ & R/U \\
-Appointment, check-in and queue & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & R/C/U \\
-Screening and vital signs & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
-Clinical note and diagnosis & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
-Prescription and medicine event & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
-Service order and execution result & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
-Invoice, payment and refund & R/C/U/F & R/A$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
-Dashboard and scoped reports & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & -- \\
-User, role and catalogue configuration & R$^{\dagger}$ & R/U$^{\dagger}$ & R/C/U/A & R$^{\dagger}$ & -- \\
-Audit log and controlled export & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R & -- \\
+Patient administrative profile & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & -- & R$^{\dagger}$ & R/U \\
+Patient record merge$^{c}$ & -- & -- & -- & -- & R$^{\dagger}$ & -- \\
+Appointment, check-in and queue & R$^{\dagger}$ & -- & R & -- & R$^{\dagger}$ & R/C/U \\
+Screening and vital signs & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
+Clinical note and diagnosis & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Prescription and medicine event & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Service order and execution result & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Invoice, payment and refund & R/C/U/F$^{a}$ & R/C/A/F$^{b}$ & R/A$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
+Dashboard and scoped reports & R$^{\dagger}$ & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & -- \\
+User, role and catalogue configuration & R$^{\dagger}$ & -- & R/U$^{\dagger}$ & R/C/U/A & R$^{\dagger}$ & -- \\
+Audit log and controlled export & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R & -- \\
 \bottomrule
 \end{tabular}
 \caption{Target role-based access-control matrix}
 \label{tab:rbac-matrix}
 \vspace{0.2cm}
 \begin{minipage}{0.90\textwidth}\tiny
-$^{*}$Phase~2 only. $^{\dagger}$Only within assigned, facility or approved scope. $^{\ddagger}$Only information expressly released through the portal. Administrative configuration does not confer clinical-edit authority; Auditor access is read-only and itself may be logged.
+$^{*}$Phase~2 only. $^{\dagger}$Only within assigned, facility or approved scope. $^{\ddagger}$Only information expressly released through the portal. $^{a}$Payment transactions only; Cashier cannot request, approve or execute a refund. $^{b}$Refunds only after validation and any required approval; pending approval is not a completed refund, and the approver is a Manager or Authorized Finance Staff member other than the requester. $^{c}$Merge is performed only by the Authorized Registrar (a role without its own column); other roles may not execute a merge. Administrative configuration does not confer clinical-edit authority; Auditor access is read-only and itself may be logged.
 \end{minipage}
 \end{table}
 
@@ -976,7 +985,7 @@ Table~\ref{tab:requirements-traceability} links the business rationale to requir
 \toprule Business rule/need & Requirement & Use cases & Domain/design focus & Planned verification \\
 \midrule
 \endhead
-BR-001 identity continuity & FR-003, FR-004, FR-031 & UC-010--UC-018 & Patient, MedicalRecord, AuditLog; unique identifier and merge history. & Duplicate-search, unauthorised-merge and merge-history test cases. \\
+BR-001 identity continuity & FR-003, FR-004, FR-031 & UC-010--UC-018 & Patient, MedicalRecord, AuditLog; unique identifier and merge history. & Duplicate-search, unauthorized-merge and merge-history test cases. \\
 BR-002 conflict-free allocation & FR-005, FR-015--FR-017; NFR-15 & UC-021--UC-026, UC-039 & Appointment, ResourceBooking, schedule/room/staff constraints. & Concurrent booking/reschedule tests; zero accepted conflict target. \\
 BR-003 controlled arrival & FR-006 & UC-027--UC-030 & Appointment--Encounter relationship and queue state. & Duplicate-active-encounter and role-scoped queue tests. \\
 BR-005 signed-record integrity & FR-009, FR-032; NFR-07, NFR-15 & UC-036--UC-038, UC-041--UC-042 & ClinicalNote draft/signed/amendment lifecycle. & Missing-field, amendment and concurrent-edit tests. \\
@@ -984,7 +993,7 @@ BR-006 bounded warning & FR-011, FR-012 & UC-043--UC-048 & Prescription, Prescri
 BR-007 accountable execution & FR-014--FR-018 & UC-039--UC-040 & ProcedureOrder, ResourceBooking and execution result. & Assignment, unavailable-resource, delay/cancel and result tests. \\
 BR-008 separate medicine event & FR-012, FR-013 & UC-048--UC-051 & PrescriptionItem versus MedicationAdministration. & Verify issue alone creates no administration event. \\
 BR-009 financial history & FR-022, FR-023; NFR-15 & UC-060--UC-069 & Invoice, Payment and refund/adjustment history. & Partial-payment, duplicate-submission and refund-reason tests. \\
-BR-004 / BR-010 governance & FR-001, FR-002, FR-027, FR-030; NFR-06, NFR-07 & UC-001, UC-070--UC-079 & UserAccount, Role, AuditLog and controlled export. & Negative API authorisation and audit-completeness tests. \\
+BR-004 / BR-010 governance & FR-001, FR-002, FR-027, FR-030; NFR-06, NFR-07 & UC-001, UC-070--UC-079 & UserAccount, Role, AuditLog and controlled export. & Negative API authorization and audit-completeness tests. \\
 Operational visibility & FR-026, FR-027 & UC-075--UC-076 & Scoped measures, report filters and export audit. & Role-scope/report-reconciliation tests. \\
 \bottomrule
 \end{longtable}
@@ -1091,17 +1100,38 @@ Figure~\ref{fig:activity-service-order} shows the service lifecycle from clinici
 \subsubsection{State Machine Diagrams for Lifecycle-driven Entities}
 The state machines formalize the status proposals in WorkStation Sections 5 and 9 and the domain distinctions in Section 2. They are design constraints for later implementation and policy review. In particular, rescheduling preserves the prior appointment history, a clinical-note correction creates a linked version, and refunds remain separate financial transactions.
 
+The WorkStation draft names a status field for the Appointment only, so the analyst fixed the state sets below as design decisions. Table~\ref{tab:lifecycle-states} lists the values that the five figures use. A completed refund returns the invoice to Partially Paid or Issued according to the net paid amount; a refund still pending approval changes no invoice state.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}Y@{}}
+\toprule
+Entity & States \\
+\midrule
+Appointment & Draft, Booked, Confirmed, CheckedIn, NoShow, Cancelled \\
+Encounter & Waiting, In Consultation, Awaiting Service, Awaiting Closure, Completed \\
+Clinical-note version & Draft, Signed, Amendment Draft, Amended Signed Version \\
+Procedure order & Created, Pending Allocation, Scheduled, Delayed, In Progress, Completed, Not Performed, Cancelled \\
+Invoice & Draft, Issued, Partially Paid, Paid \\
+\bottomrule
+\end{tabularx}
+\caption{Lifecycle states by entity}
+\label{tab:lifecycle-states}
+\end{table}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png}
-    \caption{Proposed appointment lifecycle and terminal outcomes}
+    \caption{Appointment lifecycle and terminal outcomes}
     \label{fig:state-appointment}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png}
-    \caption{Proposed encounter lifecycle from check-in to clinical completion}
+    \caption{Encounter lifecycle from check-in to clinical completion}
     \label{fig:state-encounter}
 \end{figure}
 
@@ -1115,14 +1145,14 @@ The state machines formalize the status proposals in WorkStation Sections 5 and 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png}
-    \caption{Proposed procedure-order lifecycle with allocation and execution outcomes}
+    \caption{Procedure-order lifecycle with allocation and execution outcomes}
     \label{fig:state-procedure-order}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png}
-    \caption{Proposed invoice lifecycle for unpaid, partial-payment, and paid states}
+    \caption{Invoice lifecycle with payment and completed-refund transitions}
     \label{fig:state-invoice}
 \end{figure}
 
@@ -1272,7 +1302,7 @@ TC-005 & Sign a note with missing required content, then amend a signed note; bl
 TC-006 & Issue a prescription with a configured safety warning; require the permitted response/override evidence and verify issue alone creates no dispensing or administration event. & FR-011--FR-013; BR-006, BR-008; UC-043--UC-052 & Not Run \\
 TC-007 & Allocate a service order with unavailable or conflicting resources, then complete a valid execution; do not commit a conflict and do not mark complete without required results. & FR-014--FR-018; NFR-15; UC-039--UC-040 & Not Run \\
 TC-008 & Record partial and repeated payment submissions; maintain the correct balance and prevent a duplicate request from applying a second financial effect. & FR-022--FR-023; NFR-15; UC-060--UC-069 & Not Run \\
-TC-009 & Request a refund with invalid authority, amount, or reason; reject or hold it for approved review and retain the original transaction history. & FR-023, FR-030; BR-009; UC-065--UC-066 & Not Run \\
+TC-009 & Submit an invalid refund request (authority, original transaction, amount or reason) and verify rejection with no financial effect; submit a valid request requiring approval and verify a pending status with no completed refund/balance; then verify that only an authorized, permitted request creates one separate refund event. & FR-023, FR-030; BR-009; UC-065--UC-066 & Not Run \\
 TC-010 & Export a scoped report and review its audit evidence; enforce the actor's scope and record the controlled export event. & FR-026--FR-027, FR-030; NFR-06--NFR-07; UC-076--UC-079 & Not Run \\
 TC-011 & Measure ordinary-screen and search response times under an agreed representative workload; compare p95 values with the provisional targets. & NFR-01; WorkStation Section 10 & Not Run \\
 TC-012 & Restore a protected backup and measure data loss and recovery time against approved RPO/RTO; a backup log alone is insufficient evidence. & NFR-02--NFR-03; WorkStation Section 10 & Not Run \\
@@ -1305,7 +1335,7 @@ NFR-01--NFR-16 & TC-001, TC-003, TC-005--TC-013 & Verification methods proposed;
 \end{table}
 
 \subsection{Exception Handling, Authorization, and Data Integrity Testing}
-The highest-risk checks are rejection paths that must leave no invalid partial state: unauthorized access (TC-001), duplicate identity/encounter handling (TC-002 and TC-004), concurrent resource allocation (TC-003 and TC-007), incomplete signing and append-only amendments (TC-005), bounded prescription overrides (TC-006), and idempotent payment/refund handling (TC-008--TC-009). Expected behavior is specified, but the corresponding server-side controls and transactional boundaries cannot be verified until they exist in code.
+The highest-risk checks are rejection paths that must leave no invalid partial state: unauthorized access (TC-001), duplicate identity/encounter handling (TC-002 and TC-004), concurrent resource allocation (TC-003 and TC-007), incomplete signing and append-only amendments (TC-005), bounded prescription overrides (TC-006), and idempotent payment/refund handling (TC-008--TC-009). TC-009 deliberately distinguishes rejection, pending approval and completed refund because these outcomes have different state, evidence and follow-up. Expected behavior is specified, but the corresponding server-side controls and transactional boundaries cannot be verified until they exist in code.
 
 \subsection{Test Execution Results and Evidence}
 \begin{warningbox}[Execution status: Not Run]

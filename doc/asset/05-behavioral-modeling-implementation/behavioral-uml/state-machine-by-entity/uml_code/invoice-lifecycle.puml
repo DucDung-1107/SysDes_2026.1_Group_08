@@ -1,37 +1,29 @@
 @startuml
-title MEDORA -- Invoice Lifecycle
-skinparam shadowing false
+title MEDORA: Invoice Lifecycle
+!include ../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
 skinparam defaultFontSize 18
 skinparam titleFontSize 22
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam state {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-  FontSize 18
-  ArrowColor #2563A6
-}
-[*] --> Draft : create from eligible items
-Draft --> Issued : validate totals and issue
-Issued --> Unpaid : no payment recorded
-Issued --> PartiallyPaid : payment recorded [amount < balance]
-Issued --> Paid : payment recorded [amount = balance]
-Unpaid --> PartiallyPaid : payment recorded [amount < balance]
-Unpaid --> Paid : payment recorded [amount = balance]
-PartiallyPaid --> PartiallyPaid : additional partial payment
-PartiallyPaid --> Paid : payment settles balance
-note right of Paid
-  Refunds and adjustments are separate, auditable transactions.
-  They do not erase the original invoice or payment history.
+state "Partially Paid" as PartiallyPaid
+state RefundOutcome <<choice>>
+
+[*] -down-> Draft : createFromEligibleItems()
+Draft -down-> Issued : issue()\n[totals and price data valid]
+Issued -down-> PartiallyPaid : recordPayment(amount, requestKey)\n[0 < amount < balance]\n/ append payment event
+Issued -[hidden]right-> Paid
+PartiallyPaid -down-> Paid : recordPayment(amount, requestKey)\n[amount = balance]\n/ append payment event
+Issued -right-> Paid : recordPayment(amount, requestKey)\n[amount = balance]\n/ append payment event
+PartiallyPaid --> PartiallyPaid : recordPayment(amount, requestKey)\n[0 < amount < balance]\n/ append payment event
+
+Paid -left-> RefundOutcome : completeRefund(refundRef)
+PartiallyPaid -right-> RefundOutcome : completeRefund(refundRef)
+RefundOutcome -up-> PartiallyPaid : [0 < net paid after refund < total]\n/ append refund event
+RefundOutcome -up-> Issued : [net paid after refund = 0]\n/ append refund event
+
+note bottom of Paid
+  Refunds are separate, auditable events that never edit the original
+  payment. A refund still pending approval changes no invoice state.
+  A completed refund returns the invoice to Partially Paid or Issued,
+  according to the net paid amount.
 end note
-Paid --> [*]
 @enduml

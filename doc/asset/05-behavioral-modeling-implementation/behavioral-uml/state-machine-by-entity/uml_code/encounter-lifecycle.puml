@@ -1,36 +1,22 @@
 @startuml
-title MEDORA -- Encounter Lifecycle
-skinparam shadowing false
+title MEDORA: Encounter Lifecycle
+!include ../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 18
-skinparam titleFontSize 22
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam state {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-  FontSize 18
-  ArrowColor #2563A6
-}
-[*] --> New : check-in accepted
-New --> Waiting : queue assigned
-Waiting --> InConsultation : clinician starts encounter [authorized]
-InConsultation --> AwaitingService : required service order pending
-AwaitingService --> InConsultation : required result reviewed
-InConsultation --> AwaitingClosure : clinical plan complete
-AwaitingClosure --> Completed : required summary signed [checklist satisfied]
-AwaitingClosure --> InConsultation : missing requirement corrected
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+state "In Consultation" as InConsultation
+state "Awaiting Service" as AwaitingService
+state "Awaiting Closure" as AwaitingClosure
+[*] --> Waiting : checkIn()\n[identity and appointment/walk-in valid] \n/ assign queue
+Waiting --> InConsultation : startConsultation()\n[assigned clinician authorized]
+InConsultation --> AwaitingService : requestService()\n[order created]
+AwaitingService --> InConsultation : reviewResult()\n[required result recorded]
+InConsultation --> AwaitingClosure : submitForClosure()
+AwaitingClosure --> InConsultation : returnForCorrection()\n[required item missing]
+AwaitingClosure --> Completed : completeEncounter()\n[authorized and checklist satisfied] \n/ sign summary
 note right of Completed
-  Completion is a controlled clinical transition, not deletion.
-  Invoice settlement remains a separate financial lifecycle.
+  Completion is a controlled clinical transition. Invoice settlement
+  remains a separate financial lifecycle.
 end note
 Completed --> [*]
 @enduml

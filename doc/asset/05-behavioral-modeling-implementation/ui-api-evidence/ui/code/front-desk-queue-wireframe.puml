@@ -1,8 +1,11 @@
 @startsalt
-title MEDORA -- Proposed Front Desk and Queue Wireframe
+title MEDORA: Proposed Front Desk and Queue Wireframe
+skinparam shadowing false
 skinparam backgroundColor #F5F9FE
 skinparam defaultFontName Arial
 skinparam defaultFontColor #183247
+skinparam titleFontColor #163A5F
+skinparam dpi 192
 {
   {T
     MEDORA  | Front Desk  |  Clinic: Main  |  User: Receptionist
@@ -10,7 +13,7 @@ skinparam defaultFontColor #183247
   { [Patients] | [Schedule] | [Check-in / Queue] | [Reports] }
   {+
     Patient lookup
-    [MRN, name, or phone____________________________] [Search] [Register]
+    "MRN, name, or phone                    " | [Search] | [Register]
     Possible duplicate review: 0 pending
   }
   {+
@@ -18,10 +21,10 @@ skinparam defaultFontColor #183247
     {T
       Queue | Patient reference | Visit | Provider | State
       014 | P-10482 | Appointment | Dr. A | Waiting
-      015 | P-10496 | Walk-in | Dr. B | Screening
-      016 | P-10502 | Appointment | Dr. A | In service
+      015 | P-10496 | Walk-in | Dr. B | Waiting
+      016 | P-10502 | Appointment | Dr. A | In Consultation
     }
   }
-  { Check in selected patient } | { Open patient record }
+  { [Check in selected patient] | [Open patient record] }
 }
 @endsalt

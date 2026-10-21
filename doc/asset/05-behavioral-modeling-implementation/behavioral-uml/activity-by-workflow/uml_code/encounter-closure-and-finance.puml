@@ -1,58 +1,31 @@
 @startuml
-title MEDORA -- Encounter Closure and Financial Settlement
-skinparam shadowing false
+title MEDORA: Encounter Closure and Financial Settlement
+!include ../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
 skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam activity {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-  DiamondBackgroundColor #FFFFFF
-  DiamondBorderColor #163A5F
-  BarColor #2A9D9F
-}
-skinparam partition {
-  BackgroundColor #F5F9FE
-  BorderColor #163A5F
-  FontColor #163A5F
-}
+skinparam titleFontSize 18
+skinparam wrapWidth 230
+skinparam maxMessageSize 230
+|Doctor|
 start
-partition Doctor {
-  :Prepare encounter summary and follow-up plan;
-  :Submit encounter for completion;
-}
-partition MEDORA {
-  :Authorize doctor and validate encounter state;
-  :Check required clinical fields and unresolved mandatory work;
-  if (Closure checklist satisfied?) then (yes)
-    :Sign summary and complete encounter;
-  else (no)
-    :Keep encounter open and identify missing items;
-    stop
-  endif
-  :Prepare eligible billable items independently;
-}
-partition Cashier {
-  :Review eligible invoice items;
-  :Issue invoice;
-  :Record payment or leave balance outstanding;
-}
-partition MEDORA {
-  :Append invoice and payment events;
-  note right
-    Clinical encounter completion and financial settlement are
-    separate lifecycles. Unpaid balance does not rewrite signed care.
-  end note
-}
+:Prepare encounter summary and follow-up plan;
+:Submit encounter for completion;
+|MEDORA System|
+:Authorize doctor and validate encounter state;
+:Check required clinical fields and mandatory work;
+if (Closure checklist satisfied?) then (yes)
+  :Sign summary and complete encounter;
+else (no)
+  :Keep encounter open and identify missing items;
+  stop
+endif
+:Prepare eligible billable items;
+|Cashier|
+:Review eligible invoice items and issue invoice;
+if (Payment received?) then (yes)
+  :Record payment; the system appends a payment event and updates the balance;
+else (no)
+  :Leave invoice issued with outstanding balance;
+endif
 stop
 @enduml

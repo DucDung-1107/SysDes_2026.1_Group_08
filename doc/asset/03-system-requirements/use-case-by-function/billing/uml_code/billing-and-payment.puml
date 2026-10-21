@@ -1,30 +1,20 @@
 @startuml
-title MEDORA -- Billing and Payment Use Cases
+title MEDORA: Billing and Payment Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor Cashier as cashier
 actor "Authorized Finance\nStaff" as finance
 actor "Clinic Manager" as manager
 
-rectangle "Billing and Payment" {
+rectangle "MEDORA System\nBilling and Payment" {
   usecase "UC-060\nCreate Invoice\nfrom Eligible Items" as invoice
   usecase "UC-061\nApply Effective\nService Price" as price
   usecase "UC-062\nApply Authorized\nDiscount" as discount
   usecase "UC-063\nRecord Payment" as payment
   usecase "UC-064\nIssue Receipt" as receipt
-  usecase "UC-065\nRecord Refund\nor Adjustment" as refund
+  usecase "UC-065\nRecord Refund" as refund
   usecase "UC-066\nRecord Refund\nReason and Approval" as refundApproval
   usecase "UC-067\nView Invoice and\nPayment Status" as status
   usecase "UC-068\nManage Service\nand Price List" as priceList
@@ -41,8 +31,7 @@ manager -- priceList
 manager -- revenue
 
 invoice .> price : <<include>>
-discount .> invoice : <<extend>>
-receipt .> payment : <<extend>>
+discount .> invoice : <<extend>>\n[discount requested and authorized]
 refund .> refundApproval : <<include>>
 
 @enduml

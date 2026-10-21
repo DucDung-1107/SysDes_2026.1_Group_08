@@ -1,19 +1,8 @@
 @startuml
-title MEDORA -- Patient Management Use Cases
+title MEDORA: Patient Management Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
-skinparam RectangleFontColor #163A5F
 
 actor Receptionist as reception
 actor Nurse as nurse
@@ -22,7 +11,7 @@ actor "Authorized Registrar" as registrar
 actor Auditor as auditor
 actor Patient as patient
 
-rectangle "Patient Management" {
+rectangle "MEDORA System\nPatient Management" {
   usecase "UC-010\nSearch Patient" as search
   usecase "UC-011\nRegister Patient" as register
   usecase "UC-012\nUpdate Patient\nAdministrative Data" as update
@@ -49,10 +38,20 @@ doctor -- history
 doctor -- attachment
 registrar -- merge
 auditor -- audit
-patient -- releasedDocuments : phase 2
+patient -- releasedDocuments
 
 register .> duplicate : <<include>>
 mergeRequest .> search : <<include>>
-merge .> mergeRequest : <<include>>
+
+note right of registrar
+  UC-017 starts only from an existing UC-016 merge request.
+  Only the Authorized Registrar performs a merge. A Receptionist may
+  request one but cannot perform it.
+end note
+
+note right of patient
+  Proposed Phase 2 portal interaction;
+  not an MVP capability.
+end note
 
 @enduml

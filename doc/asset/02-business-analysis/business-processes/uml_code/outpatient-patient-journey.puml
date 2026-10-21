@@ -1,65 +1,45 @@
 @startuml
-title MEDORA -- Standard Outpatient Patient Journey
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam activity {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-  DiamondBackgroundColor #FFFFFF
-  DiamondBorderColor #163A5F
-  BarColor #2A9D9F
-}
-skinparam partition {
-  BackgroundColor #F5F9FE
-  BorderColor #163A5F
-  FontColor #163A5F
-}
-
+title MEDORA: Standard Outpatient Patient Journey
+!include ../../../shared/templates/medora-style.puml
+skinparam dpi 192
+skinparam defaultFontSize 16
+skinparam wrapWidth 130
+skinparam maxMessageSize 130
+|Receptionist|
 start
-partition "Receptionist" {
-  :Identify patient and search for an existing record;
-  if (Existing record found?) then (yes)
-    :Confirm permitted demographic details;
-  else (no)
-    :Register patient after duplicate warning review;
-  endif
-  if (Appointment exists?) then (yes)
-    :Check in the booked appointment;
-  else (no)
-    :Register walk-in under facility policy;
-  endif
-  :Create or activate Encounter and assign queue;
-}
-partition "Nurse" {
-  :Record screening and vital signs;
-}
-partition "Doctor" {
-  :Review permitted longitudinal information;
-  :Document consultation, symptoms and diagnosis;
-  if (Prescription or service order required?) then (yes)
-    :Issue prescription and/or create service order;
-  endif
-}
-if (Service order created?) then (yes)
-  partition "Coordinator / Technician" {
-    :Allocate available room, staff and resource;
-    :Perform service and record result or status;
-  }
-  partition "Doctor" {
-    :Review result when required for the care plan;
-  }
+:Identify patient and search for an existing record;
+if (Existing record found?) then (yes)
+  :Confirm permitted demographic details;
+else (no)
+  :Register patient after duplicate warning review;
 endif
-partition "Doctor" {
-  :Complete encounter summary and follow-up plan;
-}
-partition "Cashier" {
-  :Create invoice from eligible items;
-  :Record payment or outstanding status;
-}
+if (Appointment exists?) then (yes)
+  :Check in the booked appointment;
+else (no)
+  :Register walk-in under facility policy;
+endif
+:Create or activate Encounter and assign queue;
+|Nurse|
+:Record screening and vital signs;
+|Doctor|
+:Review permitted longitudinal information;
+:Document consultation, symptoms and diagnosis;
+if (Prescription or service order required?) then (yes)
+  :Issue prescription and/or create and schedule service order;
+else (no)
+  :Continue without a new prescription or service order;
+endif
+if (Service order created?) then (yes)
+  |Technician / Service Staff|
+  :Perform service and record result or status;
+  |Doctor|
+  :Review result when required for the care plan;
+else (no)
+endif
+:Complete encounter summary and follow-up plan;
+|Cashier|
+:Create invoice from eligible items;
+:Record payment or outstanding status;
 stop
 
 note right

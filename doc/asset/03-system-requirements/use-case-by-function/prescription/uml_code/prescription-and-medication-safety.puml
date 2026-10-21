@@ -1,24 +1,14 @@
 @startuml
-title MEDORA -- Prescription and Medication Safety Use Cases
+title MEDORA: Prescription and Medication Safety Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor Doctor as doctor
 actor "Pharmacist /\nMedicine Staff" as pharmacist
 actor "Clinic Manager" as manager
 
-rectangle "Prescription and Medication Safety" {
+rectangle "MEDORA System\nPrescription and Medication Safety" {
   usecase "UC-043\nCreate Prescription\nDraft" as draft
   usecase "UC-044\nAdd Medicine\nand Directions" as item
   usecase "UC-045\nSearch Approved\nMedicine Catalogue" as medicine
@@ -32,6 +22,7 @@ rectangle "Prescription and Medication Safety" {
 }
 
 doctor -- draft
+doctor -- item
 doctor -- issue
 doctor -- print
 doctor -- amend
@@ -40,8 +31,7 @@ pharmacist -- administer
 manager -- catalogue
 
 item .> medicine : <<include>>
-override .> issue : <<extend>>
-issue .> item : <<include>>
+override .> issue : <<extend>>\n[blocking warning raised]
 issue .> warning : <<include>>
 
 @enduml

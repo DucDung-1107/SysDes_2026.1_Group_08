@@ -98,3 +98,9 @@ asset/
 - Put an asset in `shared/` only when it is reused by at least two sections.
 - Never put LaTeX build output such as `.aux`, `.log`, `.toc`, or `.pdf` in
   `asset/`; keep those beside the report build or in a dedicated build folder.
+- Every PlantUML source includes `shared/templates/medora-style.puml` for the report
+  palette, fonts and notation. A figure sets only its own `dpi`, font size and wrap
+  width after the include. Run PlantUML with `PLANTUML_LIMIT_SIZE=16384` so large
+  diagrams are not clipped at 4096 px.
+- `03-system-requirements/functional-decomposition/uml_code/` holds a Python script
+  instead of a `.puml`, because PlantUML cannot keep a fixed grid there.

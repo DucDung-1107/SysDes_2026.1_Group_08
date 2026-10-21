@@ -1,22 +1,12 @@
 @startuml
-title MEDORA -- Clinical Note and Encounter Closure Use Cases
+title MEDORA: Clinical Note and Encounter Closure Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor Doctor as doctor
 
-rectangle "Clinical Note Lifecycle and Encounter Closure" {
+rectangle "MEDORA System\nClinical Note Lifecycle and Encounter Closure" {
   usecase "UC-036\nSave Clinical\nNote Draft" as draft
   usecase "UC-037\nSign Clinical Note" as sign
   usecase "UC-038\nAmend Signed\nClinical Note" as amend

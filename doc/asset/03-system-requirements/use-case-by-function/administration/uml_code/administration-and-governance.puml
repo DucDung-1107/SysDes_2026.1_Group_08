@@ -1,24 +1,14 @@
 @startuml
-title MEDORA -- Administration, Reporting and Governance Use Cases
+title MEDORA: Administration, Reporting and Governance Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor "System Administrator" as admin
 actor "Clinic Manager" as manager
 actor Auditor as auditor
 
-rectangle "Administration, Reporting and Governance" {
+rectangle "MEDORA System\nAdministration, Reporting and Governance" {
   usecase "UC-070\nManage User Accounts\nand Account Status" as users
   usecase "UC-071\nAssign Roles, Permissions\nand Facility Scope" as roles
   usecase "UC-072\nConfigure Clinical and\nOperational Catalogues" as catalogue
@@ -43,6 +33,6 @@ manager -- report
 manager -- resource
 auditor -- audit
 
-filter .> audit : <<extend>>
+filter .> audit : <<extend>>\n[filter criteria supplied]
 
 @enduml

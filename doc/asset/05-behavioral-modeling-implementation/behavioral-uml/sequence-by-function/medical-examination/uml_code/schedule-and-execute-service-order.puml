@@ -1,45 +1,43 @@
 @startuml
-title MEDORA -- Schedule and Execute Service Order (System Sequence)
-skinparam shadowing false
+title MEDORA: Schedule and Execute Service Order (System Sequence)
+!include ../../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam sequence {
-  ParticipantBackgroundColor #EAF3FB
-  ParticipantBorderColor #163A5F
-  ParticipantFontColor #183247
-  LifeLineBorderColor #2563A6
-  LifeLineBackgroundColor #F5F9FE
-}
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+skinparam maxMessageSize 260
+hide footbox
+autonumber
 actor Doctor
-actor "Service Staff" as Staff
 participant "MEDORA System" as System
+actor "Service Staff" as Staff
 
-Doctor -> System: Create service order(encounter, service, priority)
-activate System
-System --> Doctor: Return order reference
-Doctor -> System: Request schedule and resource allocation
-alt No valid allocation available
-  System --> Doctor: Keep order pending; commit no booking
-else Valid allocation available
-  System --> Doctor: Return scheduled order and allocation
-  Staff -> System: Start assigned service order
-  System --> Staff: Confirm service started or reject invalid assignment
-  Staff -> System: Record outcome and completion
-  alt Required result is incomplete
-    System --> Staff: Keep order incomplete; request correction
-  else Required result is valid
-    System --> Staff: Return completed status
+Doctor -> System: createServiceOrder(encounterRef, service, priority)
+alt order data invalid or actor unauthorized
+  System -->> Doctor: ServiceOrderResult(rejected, reason)
+  note right: No order or resource booking is created.
+else order valid
+  System -->> Doctor: ServiceOrderResult(created, orderRef, pendingAllocation)
+  Doctor -> System: requestSchedule(orderRef)
+  alt no valid allocation available
+    System -->> Doctor: ScheduleResult(pending, nextAction)
+    note right: The order is retained; no resource booking is committed.
+  else valid allocation available
+    System -->> Doctor: ScheduleResult(scheduled, allocationRef)
+    Staff -> System: viewAssignedOrder(orderRef)
+    System -->> Staff: AssignedOrder(orderRef, scheduledDetails)
+    Staff -> System: startServiceOrder(orderRef)
+    alt assignment no longer valid
+      System -->> Staff: ServiceStartResult(rejected, reason)
+      note right: The scheduled order is retained.
+    else assignment valid
+      System -->> Staff: ServiceStartResult(started)
+      Staff -> System: recordServiceOutcome(orderRef, outcome)
+      alt required result incomplete
+        System -->> Staff: ServiceOutcomeResult(incomplete, correctionRequired)
+      else required result complete
+        System -->> Staff: ServiceOutcomeResult(completed)
+      end
+    end
   end
 end
-deactivate System
 @enduml

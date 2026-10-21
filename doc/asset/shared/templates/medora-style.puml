@@ -1,0 +1,73 @@
+' MEDORA shared PlantUML style (AGENT.md Section 5 palette).
+' navy #163A5F, blue #2563A6, light blue #EAF3FB, pale blue #F5F9FE,
+' teal #2A9D9F, dark text #183247, gray #667085, error red #C43D4B (errors only).
+' Each figure sets its own dpi, font size and wrap width after including this file.
+
+skinparam shadowing false
+skinparam backgroundColor #F5F9FE
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam titleFontColor #163A5F
+skinparam titleFontStyle bold
+skinparam roundCorner 12
+skinparam packageStyle rectangle
+skinparam ArrowColor #2563A6
+skinparam ArrowFontColor #183247
+skinparam ArrowThickness 1
+
+skinparam ActorBackgroundColor #EAF3FB
+skinparam ActorBorderColor #163A5F
+skinparam ActorFontColor #183247
+
+skinparam UsecaseBackgroundColor #EAF3FB
+skinparam UsecaseBorderColor #2563A6
+skinparam UsecaseFontColor #183247
+
+skinparam RectangleBackgroundColor #F5F9FE
+skinparam RectangleBorderColor #163A5F
+skinparam RectangleFontColor #163A5F
+skinparam PackageBackgroundColor #F5F9FE
+skinparam PackageBorderColor #163A5F
+skinparam PackageFontColor #163A5F
+
+skinparam NoteBackgroundColor #EAF3FB
+skinparam NoteBorderColor #2563A6
+skinparam NoteFontColor #183247
+
+skinparam ClassBackgroundColor #EAF3FB
+skinparam ClassBorderColor #2563A6
+skinparam ClassFontColor #183247
+skinparam ClassHeaderBackgroundColor #EAF3FB
+skinparam ClassAttributeFontColor #183247
+skinparam ClassStereotypeFontColor #667085
+
+skinparam StateBackgroundColor #EAF3FB
+skinparam StateBorderColor #2563A6
+skinparam StateFontColor #183247
+skinparam StateStartColor #163A5F
+skinparam StateEndColor #163A5F
+
+skinparam ParticipantBackgroundColor #EAF3FB
+skinparam ParticipantBorderColor #163A5F
+skinparam ParticipantFontColor #183247
+skinparam SequenceLifeLineBorderColor #B4C6DA
+skinparam SequenceLifeLineBackgroundColor #F5F9FE
+skinparam SequenceGroupBackgroundColor #EAF3FB
+skinparam SequenceGroupBorderColor #163A5F
+skinparam SequenceGroupBorderThickness 1
+skinparam SequenceGroupFontColor #163A5F
+skinparam SequenceGroupHeaderFontColor #163A5F
+
+skinparam ActivityBackgroundColor #EAF3FB
+skinparam ActivityBorderColor #2563A6
+skinparam ActivityFontColor #183247
+skinparam ActivityDiamondBackgroundColor #FFFFFF
+skinparam ActivityDiamondBorderColor #163A5F
+skinparam ActivityBarColor #2A9D9F
+skinparam ActivityStartColor #163A5F
+skinparam ActivityEndColor #163A5F
+skinparam SwimlaneBorderColor #163A5F
+skinparam SwimlaneTitleFontColor #163A5F
+
+hide empty description
+hide circle
