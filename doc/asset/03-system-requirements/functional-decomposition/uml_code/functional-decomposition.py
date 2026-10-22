@@ -28,9 +28,9 @@ GROUPS = [
         "Create Service or\nProcedure Order", "Allocate Resources and\nRecord Execution Result"]),
     ("Finance and Operations", [
         "Create Invoice and\nRecord Payment", "Record Authorized\nRefund",
-        "Manage Service and\nPrice Catalogue", "View Dashboard\nand Reports"]),
+        "Manage Service and\nPrice Catalog", "View Dashboard\nand Reports"]),
     ("Governance", [
-        "Administer Accounts,\nFacilities and Catalogues", "Control Attachments\nand Exports",
+        "Administer Accounts,\nFacilities and Catalogs", "Control Attachments\nand Exports",
         "Review Audit Trail"]),
 ]
 

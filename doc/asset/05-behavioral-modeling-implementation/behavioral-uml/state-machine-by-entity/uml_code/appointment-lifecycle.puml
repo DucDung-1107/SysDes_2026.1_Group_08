@@ -10,11 +10,11 @@ Draft --> Booked : validate()\n[identity, scope, and slot valid]
 Booked --> Confirmed : confirm()
 Booked --> Booked : reschedule()\n[new slot valid]
 Confirmed --> Confirmed : reschedule()\n[new slot valid]
-Booked --> Cancelled : cancel()\n[authorized]
-Confirmed --> Cancelled : cancel()\n[authorized]
+Booked --> Canceled : cancel()\n[authorized]
+Confirmed --> Canceled : cancel()\n[authorized]
 Confirmed --> NoShow : markNoShow()\n[policy permits]
 Confirmed --> CheckedIn : checkIn()\n[identity and encounter state valid] \n/ open encounter
-Cancelled --> [*]
+Canceled --> [*]
 NoShow --> [*]
 CheckedIn --> [*]
 @enduml

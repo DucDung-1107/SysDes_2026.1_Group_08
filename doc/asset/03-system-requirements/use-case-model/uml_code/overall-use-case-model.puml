@@ -23,7 +23,7 @@ rectangle "MEDORA -- Integrated Clinic Management and EMR System" {
   package "Operations and Governance" {
     usecase "Manage Invoice\nand Payment" as UCBilling
     usecase "View Dashboard\nand Reports" as UCReporting
-    usecase "Administer Access\nand Catalogues" as UCAdmin
+    usecase "Administer Access\nand Catalogs" as UCAdmin
     usecase "Review Audit Trail" as UCAudit
   }
 }

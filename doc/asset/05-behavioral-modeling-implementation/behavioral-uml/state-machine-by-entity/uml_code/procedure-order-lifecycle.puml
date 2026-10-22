@@ -15,12 +15,12 @@ Scheduled --> InProgress : start()\n[assigned staff authorized]
 InProgress --> Completed : recordOutcome()\n[required result complete]\n/ release resources
 Scheduled --> Delayed : delay(reason)\n[authorized]\n/ retain or release reservation per policy
 Delayed --> Scheduled : reallocate()\n[slot available]\n/ reserve resources
-Created --> Cancelled : cancel(reason)\n[authorized]
-PendingAllocation --> Cancelled : cancel(reason)\n[authorized]
-Scheduled --> Cancelled : cancel(reason)\n[authorized]\n/ release resources
+Created --> Canceled : cancel(reason)\n[authorized]
+PendingAllocation --> Canceled : cancel(reason)\n[authorized]
+Scheduled --> Canceled : cancel(reason)\n[authorized]\n/ release resources
 InProgress --> NotPerformed : stop(reason)\n[reason recorded]\n/ release resources
-Delayed --> Cancelled : cancel(reason)\n[authorized]
+Delayed --> Canceled : cancel(reason)\n[authorized]
 Completed --> [*]
-Cancelled --> [*]
+Canceled --> [*]
 NotPerformed --> [*]
 @enduml

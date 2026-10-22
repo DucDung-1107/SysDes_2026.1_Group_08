@@ -15,7 +15,7 @@
 | Authorized Finance Staff | Requests and executes permitted refunds; approval follows the finance approval rule. | MVP |
 | Authorized Registrar | Reviews flagged duplicates and performs approved record merges. A Receptionist may request a merge but cannot perform it. | MVP (decision D-1) |
 | Clinic Manager | Supervises schedules, operations, dashboards and reports. | MVP |
-| System Administrator | Manages accounts, roles, catalogues and configuration. | MVP |
+| System Administrator | Manages accounts, roles, catalogs and configuration. | MVP |
 | Auditor | Reviews approved audit evidence in read-only scope. | MVP |
 
 ## Use-case traceability
@@ -64,7 +64,7 @@
 | --- | --- | --- |
 | Patient | Person receiving or seeking care. | Owns one conceptual longitudinal MedicalRecord and may have many Appointments and Encounters. |
 | Appointment | Planned time allocation. | May lead to zero or one Encounter; cancellation/no-show does not create an Encounter. |
-| Encounter | Actual clinical visit. | Belongs to one Patient and contextualises clinical notes, diagnoses, prescriptions and procedure orders. |
+| Encounter | Actual clinical visit. | Belongs to one Patient and contextualizes clinical notes, diagnoses, prescriptions and procedure orders. |
 | ClinicalNote | Structured consultation record. | Signed content is preserved; corrections are amendments rather than direct overwrite. |
 | Prescription / PrescriptionItem | Clinical medicine order and its individual directions. | A prescription has one or more items; dispensing/administration remains separate. |
 | ProcedureOrder | Request for a clinic service/procedure. | May require ResourceBooking and execution before a result is recorded. |
@@ -74,7 +74,7 @@
 
 ## Design decisions (22 October 2026)
 
-The project owner delegated these decisions to the analyst on the basis of `paper.tex`. They are design decisions, not implemented behaviour.
+The project owner delegated these decisions to the analyst on the basis of `paper.tex`. They are design decisions, not implemented behavior.
 
 | ID | Decision | Basis in the report |
 | --- | --- | --- |
@@ -88,10 +88,10 @@ The project owner delegated these decisions to the analyst on the basis of `pape
 
 | Entity | States | Source figure |
 | --- | --- | --- |
-| Appointment | Draft, Booked, Confirmed, CheckedIn, NoShow, Cancelled | `appointment-lifecycle.puml` |
+| Appointment | Draft, Booked, Confirmed, CheckedIn, NoShow, Canceled | `appointment-lifecycle.puml` |
 | Encounter | Waiting, In Consultation, Awaiting Service, Awaiting Closure, Completed | `encounter-lifecycle.puml` |
 | ClinicalNote version | Draft, Signed, Amendment Draft, Amended Signed Version | `clinical-note-version-lifecycle.puml` |
-| ProcedureOrder | Created, Pending Allocation, Scheduled, Delayed, In Progress, Completed, Not Performed, Cancelled | `procedure-order-lifecycle.puml` |
+| ProcedureOrder | Created, Pending Allocation, Scheduled, Delayed, In Progress, Completed, Not Performed, Canceled | `procedure-order-lifecycle.puml` |
 | Invoice | Draft, Issued, Partially Paid, Paid | `invoice-lifecycle.puml` |
 
-Refund is modelled as its own accountable event and does not edit the original Payment.
+Refund is modeled as its own accountable event and does not edit the original Payment.

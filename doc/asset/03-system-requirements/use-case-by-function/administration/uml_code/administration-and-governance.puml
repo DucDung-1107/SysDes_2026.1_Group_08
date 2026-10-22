@@ -11,7 +11,7 @@ actor Auditor as auditor
 rectangle "MEDORA System\nAdministration, Reporting and Governance" {
   usecase "UC-070\nManage User Accounts\nand Account Status" as users
   usecase "UC-071\nAssign Roles, Permissions\nand Facility Scope" as roles
-  usecase "UC-072\nConfigure Clinical and\nOperational Catalogues" as catalogue
+  usecase "UC-072\nConfigure Clinical and\nOperational Catalogs" as catalog
   usecase "UC-073\nConfigure Rooms, Resources\nand Staff Schedules" as resource
   usecase "UC-074\nConfigure Notification\nTemplates and Channels" as notify
   usecase "UC-075\nView Operational\nDashboard" as dashboard
@@ -23,7 +23,7 @@ rectangle "MEDORA System\nAdministration, Reporting and Governance" {
 
 admin -- users
 admin -- roles
-admin -- catalogue
+admin -- catalog
 admin -- resource
 admin -- notify
 admin -- audit

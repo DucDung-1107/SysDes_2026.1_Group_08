@@ -7,7 +7,7 @@ This file supersedes the status table in `figure-audit.md`.
 
 - Every figure was re-rendered from its source (PlantUML 1.2026.8, `PLANTUML_LIMIT_SIZE=16384`; one matplotlib script) and opened as a PNG. No figure was scored from source alone.
 - Report-scale legibility was computed from the `\includegraphics` limits in `paper.tex` and each figure's pixel size and font size. Effective text size is now 7.0 pt or larger for every figure (smallest: outpatient journey 7.0 pt, functional decomposition 7.0 pt).
-- Cross-artefact checks: use-case IDs against `model-inventory.md`; actor names, role tables and the RBAC matrix in `paper.tex`; state names against the report; spelling (US) across figures and report.
+- Cross-artifact checks: use-case IDs against `model-inventory.md`; actor names, role tables and the RBAC matrix in `paper.tex`; state names against the report; spelling (US) across figures and report.
 - The two course references in `ref/` were checked through rendered slides: `l04` slides 13 to 54 (analysis classes, sequence, state machine notation) and `l05` slides 13 to 18, 25 to 30, 37 to 42 and 49 to 54 (styles, 4+1 views, component and deployment notation), plus extracted text for the rest. Section 4a records the check.
 - Not available and therefore not claimed: the project brief, source code or schema (the report states no application code exists), executed tests. The LaTeX report was not compiled, by decision. Nothing here is marked implemented or verified.
 
@@ -48,7 +48,7 @@ Score bands: 9 = submission-ready; 8 = one meaningful defect remains. Overall = 
 | F-29 | Wireframe: clinician encounter | 9 | 9 | 9 | 9 | 9 | 9 | 9 | 9.0 | Pass (not used in report) |
 | F-30 | Wireframe: cashier invoice and payment | 9 | 9 | 9 | 9 | 9 | 9 | 9 | 9.0 | Pass (not used in report) |
 
-All 30 figures pass. Seven of them (F-03, F-06, F-23 to F-27) first stopped at B = 8 because they relied on proposals that nobody had approved. The analyst has since decided each point from `paper.tex`; the decisions are recorded in `model-inventory.md` and listed in Section 4. They are design decisions, not implemented behaviour.
+All 30 figures pass. Seven of them (F-03, F-06, F-23 to F-27) first stopped at B = 8 because they relied on proposals that nobody had approved. The analyst has since decided each point from `paper.tex`; the decisions are recorded in `model-inventory.md` and listed in Section 4. They are design decisions, not implemented behavior.
 
 ## 3. Defects found and corrections made
 
@@ -63,9 +63,9 @@ All 30 figures pass. Seven of them (F-03, F-06, F-23 to F-27) first stopped at B
 | 7 | Activity figures were 4.4 to 4.9 pt at page width. | Wrapped labels, enlarged type, narrower lanes. | Now 7.0 pt or larger. |
 | 8 | Encounter closure: a "no payment" box straddled two lanes. | Moved both payment outcomes into the Cashier lane. | Clean. |
 | 9 | Overall use-case model: abstract actor without real generalization; tangled lines. | Removed the abstract actor; UC-001 kept with a note; actors reordered. `model-inventory.md` updated to match. | No crossings. |
-| 10 | Patient management: UC-017 "included" UC-016, which is a precondition, not mandatory behaviour. | Removed the include and added a note. | Include/extend checklist satisfied. |
+| 10 | Patient management: UC-017 "included" UC-016, which is a precondition, not mandatory behavior. | Removed the include and added a note. | Include/extend checklist satisfied. |
 | 11 | `extend` links had no condition; Issue Receipt extended Record Payment without a basis. | Added conditions to UC-047, UC-062, UC-078; made UC-064 a plain Cashier association. | Section 13.1 satisfied. |
-| 12 | Service order use cases included two sub-behaviours without IDs. | Assigned UC-056 and UC-057; inventory range updated. | IDs consistent. |
+| 12 | Service order use cases included two sub-behaviors without IDs. | Assigned UC-056 and UC-057; inventory range updated. | IDs consistent. |
 | 13 | Domain model had no Invoice, Payment or Refund although the report keeps them separate. | Added the three entities and relationships (decision D-2); caption and text updated in `paper.tex`. | Matches inventory and BR financial history. |
 | 14 | Functional decomposition: staggered, unaligned auto-layout. | Redrawn as a fixed 2 by 3 grid (`functional-decomposition.py`, replaces the `.puml`). | 7.0 pt, aligned. |
 | 15 | Authorized Registrar and Authorized Finance Staff were used in figures but missing from the canonical actor table. | Added both to `model-inventory.md`; added Registrar rows and a merge row with footnote to `paper.tex` role and RBAC tables. | Figures, inventory and report agree. |
@@ -76,7 +76,7 @@ All 30 figures pass. Seven of them (F-03, F-06, F-23 to F-27) first stopped at B
 | 20 | Business-rule IDs disagreed: the report table had seven rules with finance as BR-007, while the inventory, the traceability table and the appendices use ten rules with finance as BR-009. | Replaced the report table with the ten canonical rules and remapped the references to BR-009 and BR-010. | All BR references now use one numbering. |
 | 21 | Refund approval did not say who approves. | Decision D-5: a Manager or Authorized Finance Staff member who is not the requester; added to the SSD note, inventory and RBAC footnote. | Matches RBAC footnote b and Section 14.1 (no self-approval). |
 | 22 | Style check against `ref/l04` (message notation): calls and returns used the same arrowhead, and messages had no sequence number. | Calls keep the solid arrowhead; returns are dashed with an open arrowhead (`-->>`); every SSD message is numbered (`autonumber`), which is the "[sequence number]" part of the message specification. | Payment/Refund SSD re-opened: arrowheads and numbers match the lecture notation. |
-| 23 | Style check against the palette (AGENT.md Section 5): actors rendered in PlantUML's default lilac, notes in default yellow, state boxes had an empty second compartment, titles mixed "MEDORA --" and "MEDORA:". | One shared style file, `shared/templates/medora-style.puml`, now defines colours, fonts, actors, notes, states, activities and sequence frames. All 27 PlantUML diagrams include it and keep only their own dpi, font size and wrap width. Titles use "MEDORA: ...". | Use-case, state, activity, domain and sequence figures re-opened: one colour identity, no default colours left. |
+| 23 | Style check against the palette (AGENT.md Section 5): actors rendered in PlantUML's default lilac, notes in default yellow, state boxes had an empty second compartment, titles mixed "MEDORA --" and "MEDORA:". | One shared style file, `shared/templates/medora-style.puml`, now defines colors, fonts, actors, notes, states, activities and sequence frames. All 27 PlantUML diagrams include it and keep only their own dpi, font size and wrap width. Titles use "MEDORA: ...". | Use-case, state, activity, domain and sequence figures re-opened: one color identity, no default colors left. |
 | 24 | Domain model showed PlantUML's green class icon, which clashes with the ECB class notation of `ref/l04` (stereotype in a compartment, no icon). | `hide circle`; the stereotype `<<entity>>` stays in the header, as on the lecture's analysis-class slides. | Re-opened. |
 | 25 | The three salt wireframes could not use the shared file; one had mis-parsed buttons. | Colours set inline; buttons separated with `|`. | Re-opened. |
 
@@ -105,14 +105,30 @@ Checked: `l04-Analysis & Design.pdf` (54 slides) and `l05-Architecture (1).pdf` 
 | Package, component and deployment notation (`l05`) | Section 4 of the report | Not applicable yet: see below |
 | ECB analysis classes (boundary, control, entity icons), analysis sequence with boundary, control, entity lifelines, unified class model | Section 4, "Use Case-oriented Design" | Not applicable yet: see below |
 
-**Gap that no figure edit can close.** Section 4 of `paper.tex` ("System Design and Structural Modeling", about 30 lines) contains only empty headings: logical and deployment architecture, layered design, API design, ERD and schema, class diagrams, package, component and deployment diagrams, and use-case-oriented design. The report therefore has no ECB analysis, no architecture decision record and none of the structural diagrams that `l04` and `l05` teach. The 30 existing figures conform to the reference; the missing ones are missing, not wrong. AGENT.md Section 16 gates 3 (traceability) and 6 (architecture) cannot pass until this section is written.
+**Gap that no figure edit can close.** Section 4 of `paper.tex` ("System Design and Structural Modeling") contains only empty headings. Appendix B records that it is reserved for the Chapter 4 contributor, so this audit does not fill it. The headings are: logical and deployment architecture, layered design, API design, ERD and schema, class diagrams, package, component and deployment diagrams, and use-case-oriented design. The report therefore has no ECB analysis, no architecture decision record and none of the structural diagrams that `l04` and `l05` teach. The 30 existing figures conform to the reference; the missing ones are missing, not wrong. AGENT.md Section 16 gates 3 (traceability) and 6 (architecture) cannot pass until this section is written.
+
+## 4b. Prose review of `paper.tex` and `appendices.tex`
+
+Method: the full text was read once for naturalness (AGENT.md Section 9), then every hedge or disclaimer was marked in red with `\weak{...}` (defined in the preamble) so the author can decide whether to keep, soften or remove it. The report was not compiled; brace balance of all red spans was checked by script.
+
+| Change | Count |
+| --- | --- |
+| Spelling unified to US English across the report, the appendices, all figure sources and the inventory (behavior, center, catalog, canceled, organize, modeled and similar). A side effect, "catalogd", was found and fixed. | whole set |
+| Repeated or promotional sentences rewritten: the waiting-time statistics stated twice, "safer today and easier tomorrow", the repeated MVP scope sentence, "is important" filler, claims that cited nothing | 9 |
+| Statements that were wrong after earlier corrections: the report said no wireframes existed (three wireframe figures are now in Section 5.4); the state machines were said to formalize WorkStation statuses that WorkStation does not name; the functional decomposition heading promised a package structure it does not show; the business-process table caption promised a baseline it does not contain; the entity glossary omitted Refund | 5 |
+| Conclusion and limitation paragraphs recast: results first, then the limit, each in short sentences | 3 |
+| Disclaimers marked in red | 68 in `paper.tex`, 22 in `appendices.tex` |
+
+What the red marks cover: "not implemented", "no application code", "Not Run" and "Not measured" status cells, "cannot establish" sentences, "not claims of production performance", "pending approval", "to be decided" and open-decision sentences. They are honest statements required by AGENT.md Section 11, so none was deleted; a few redundant ones were removed instead (for example "are not implementation claims" after use cases that never claimed implementation).
+
+Not changed: the requirement tables use grouped rows, not the per-requirement fields that AGENT.md Sections 12.2 and 12.3 describe. This is structure, not wording, and is the author's call.
 
 ## 5. Remaining limits (not defects)
 
 - The sequence diagrams show the dashed lifeline faintly behind a few guard labels. This is the PlantUML layout; the lines are light and do not hide any text.
 - The payment idempotency key is a proposed control (NFR-15), not an existing API contract. The report already says so.
 - The design decisions D-1 to D-5 are the analyst's, taken on the owner's instruction; a clinic stakeholder has not reviewed them.
-- All figures describe specified or designed behaviour. None shows implemented or verified behaviour.
+- All figures describe specified or designed behavior. None shows implemented or verified behavior.
 
 ## 6. Section 16 gate
 

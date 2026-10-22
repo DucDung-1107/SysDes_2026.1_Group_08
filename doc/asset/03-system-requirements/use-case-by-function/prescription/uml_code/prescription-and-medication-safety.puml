@@ -11,14 +11,14 @@ actor "Clinic Manager" as manager
 rectangle "MEDORA System\nPrescription and Medication Safety" {
   usecase "UC-043\nCreate Prescription\nDraft" as draft
   usecase "UC-044\nAdd Medicine\nand Directions" as item
-  usecase "UC-045\nSearch Approved\nMedicine Catalogue" as medicine
+  usecase "UC-045\nSearch Approved\nMedicine Catalog" as medicine
   usecase "UC-046\nCheck Medication\nSafety Rules" as warning
   usecase "UC-047\nOverride Safety\nWarning with Reason" as override
   usecase "UC-048\nValidate and Issue\nPrescription" as issue
   usecase "UC-049\nPrint or Export\nPrescription" as print
   usecase "UC-050\nAmend or Cancel\nPrescription" as amend
   usecase "UC-051\nRecord Dispensing\nor Administration" as administer
-  usecase "UC-052\nManage Medicine\nCatalogue and Rules" as catalogue
+  usecase "UC-052\nManage Medicine\nCatalog and Rules" as catalog
 }
 
 doctor -- draft
@@ -28,7 +28,7 @@ doctor -- print
 doctor -- amend
 doctor -- override
 pharmacist -- administer
-manager -- catalogue
+manager -- catalog
 
 item .> medicine : <<include>>
 override .> issue : <<extend>>\n[blocking warning raised]
