@@ -121,6 +121,8 @@
 \providecommand{\statuspartial}{\textbf{Một phần}}
 \providecommand{\noevidence}{\textbf{Chưa thấy công bố}}
 \newcommand{\code}[1]{\nolinkurl{#1}}
+% Disclaimer or hedging wording that weakens a claim; shown in red for author review.
+\newcommand{\weak}[1]{\textcolor{red}{#1}}
 \newcommand{\implemented}{\textcolor{mondaiyteal}{\textbf{Đã triển khai trong mã nguồn}}}
 \newcommand{\warningnote}[1]{%
     \begin{quote}
@@ -352,7 +354,7 @@
 \renewcommand{\footrulewidth}{0pt}
 
 \begin{abstract}
-MEDORA is a proposed integrated clinic-management and electronic medical-record (EMR) system for outpatient clinics and small healthcare facilities. It addresses workflow fragmentation across patient registration, appointment scheduling, check-in, clinical documentation, prescriptions, service execution, billing and operational reporting. The proposed solution centres on a shared patient and encounter record, explicit workflow states, role-based access control and an audit trail for sensitive actions. This report develops the business model, domain concepts, business rules, functional and non-functional requirements, use-case model and traceability needed to guide the subsequent system design and evaluation. The scope is deliberately limited to internal clinic operations; clinical decision-making, insurer settlement, national interoperability and production compliance certification remain outside the current project boundary.
+MEDORA is a proposed integrated clinic-management and electronic medical-record (EMR) system for outpatient clinics and small healthcare facilities. It addresses workflow fragmentation across patient registration, appointment scheduling, check-in, clinical documentation, prescriptions, service execution, billing and operational reporting. The proposed solution centers on a shared patient and encounter record, explicit workflow states, role-based access control and an audit trail for sensitive actions. This report develops the business model, domain concepts, business rules, functional and non-functional requirements, use-case model and traceability needed to guide the subsequent system design and evaluation. The scope is deliberately limited to internal clinic operations; clinical decision-making, insurer settlement, national interoperability and production compliance certification remain outside the current project boundary.
 
 \vspace{0.4em}
 \noindent\textbf{Keywords:} electronic medical records, clinic management, outpatient workflow, role-based access control, system analysis and design.
@@ -369,20 +371,66 @@ MEDORA is a proposed integrated clinic-management and electronic medical-record 
 \addcontentsline{toc}{section}{List of Tables}
 \listoftables
 \clearpage
+\phantomsection
+\addcontentsline{toc}{section}{List of Abbreviations}
+\section*{List of Abbreviations}
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}>{\bfseries}p{0.20\textwidth}p{0.76\textwidth}@{}}
+\toprule
+Abbreviation & Meaning \\
+\midrule
+\endhead
+ADR & Architecture Decision Record \\
+API & Application Programming Interface \\
+BR & Business Rule (identifier prefix, for example BR-001) \\
+DTO & Data Transfer Object \\
+e2e & End-to-end (test level) \\
+EMR & Electronic Medical Record \\
+ERD & Entity--Relationship Diagram \\
+FR & Functional Requirement (identifier prefix, for example FR-001) \\
+HTTPS & Hypertext Transfer Protocol Secure \\
+ID & Identifier \\
+LTS & Long-Term Support \\
+MVP & Minimum Viable Product \\
+NFR & Non-functional Requirement (identifier prefix, for example NFR-01) \\
+OECD & Organisation for Economic Co-operation and Development \\
+OpenAPI & OpenAPI Specification, a format for describing REST APIs \\
+P0, P1, P2 & Requirement priority: P0 is required for the MVP, P1 is a controlled extension, P2 depends on a later decision or integration contract \\
+p95 & 95th percentile \\
+PNG & Portable Network Graphics \\
+RBAC & Role-Based Access Control \\
+REST & Representational State Transfer \\
+RPO & Recovery Point Objective \\
+RTO & Recovery Time Objective \\
+S3 & Simple Storage Service, an object-storage interface \\
+SMART & Specific, Measurable, Achievable, Relevant, Time-bound \\
+TC & Test Case (identifier prefix, for example TC-001) \\
+TLS & Transport Layer Security \\
+UC & Use Case (identifier prefix, for example UC-021) \\
+UI & User Interface \\
+UML & Unified Modeling Language \\
+WHO & World Health Organization \\
+\bottomrule
+\end{longtable}
+\endgroup
+\clearpage
+
 
 \section{Introduction and Problem Definition}
 
 \subsection{Background and Existing System}
-Healthcare delivery is becoming a coordination problem as much as a clinical one. Across countries, providers are expected to offer safer, more continuous and more patient-centred care while dealing with rising demand, constrained staff capacity and increasingly complex information flows. The World Health Organization (WHO) estimates that approximately one in ten patients is harmed during health care and that more than half of this harm is preventable; medication-related harm accounts for a substantial share of the preventable cases \citep{WHO2023Safety}. These figures do not imply that software can replace clinical judgement. They do, however, show why reliable identification, complete records, clear hand-offs and traceable actions are system-level concerns rather than administrative details.
+Healthcare delivery is becoming a coordination problem as much as a clinical one. Across countries, providers are expected to offer safer, more continuous and more patient-centered care while dealing with rising demand, constrained staff capacity and increasingly complex information flows. The World Health Organization (WHO) estimates that approximately one in ten patients is harmed during health care and that more than half of this harm is preventable; medication-related harm accounts for a substantial share of the preventable cases \citep{WHO2023Safety}. These figures do not imply that software can replace clinical judgment. They do, however, show why reliable identification, complete records, clear hand-offs and traceable actions are system-level concerns rather than administrative details.
 
-Digital health is therefore moving from a collection of isolated applications towards an integrated operating capability. The WHO describes digital health as a means of aligning organizational, human and technological resources around better health outcomes, not simply as the deployment of another application \citep{WHO2021Digital}. Yet digitalisation can reproduce the same fragmentation when applications are implemented as disconnected, supply-driven tools; WHO identifies integration over isolation, data governance and protection of privacy as essential conditions for useful digital transformation \citep{WHO2021DataGovernance,WHO2024DigitalTransformation}. In a clinic, this distinction is important: an appointment calendar, a patient database and a billing screen may each work in isolation while the overall journey still depends on repeated data entry, informal communication and manual reconciliation. The result is a fragile process in which a patient can be correctly registered in one place but remain invisible to the next person who must act.
+Digital health is therefore moving from a collection of isolated applications toward an integrated operating capability. The WHO describes digital health as a means of aligning organizational, human and technological resources around better health outcomes, not simply as the deployment of another application \citep{WHO2021Digital}. Yet digitalization can reproduce the same fragmentation when applications are implemented as disconnected, supply-driven tools; WHO identifies integration over isolation, data governance and protection of privacy as essential conditions for useful digital transformation \citep{WHO2021DataGovernance,WHO2024DigitalTransformation}. In a clinic the difference is concrete: an appointment calendar, a patient database and a billing screen may each work in isolation while the overall journey still depends on repeated data entry, informal communication and manual reconciliation. The result is a fragile process in which a patient can be correctly registered in one place but remain invisible to the next person who must act.
 
 The persistence of legacy workflows is not unique to one country. The OECD reports that 75\% of global fax traffic is used for medical services and that evidence-based innovations can take as long as 17 years to become routine practice, illustrating the distance between available technology and dependable day-to-day adoption \citep{OECD2023DigitalHealth}. For a small clinic, the implication is practical: the priority is not to buy the most sophisticated technology, but to design a coherent system that staff can use consistently and that can exchange trustworthy data when the organization grows.
 
-The Vietnamese context makes this challenge particularly tangible. Viet Nam entered the ageing phase in 2011; people aged 60 and over represented 11.9\% of the population in 2019, and this share is projected to exceed 25\% by 2050 \citep{UNFPA2021Ageing}. An ageing population increases the need for repeated visits, longitudinal clinical histories and coordination across services. At the point of care, operational friction is already measurable. In a study of 7,931 outpatient visits at Thong Nhat Hospital, the mean total waiting time was 104.1 minutes, with departments handling roughly 150--250 patients per day while clinic capacity and staffing remained comparatively stable \citep{Nguyen2018Waiting}. A separate study across Vietnamese health facilities reported average waits of 32.58 minutes at district hospitals and 11.58 minutes at commune health centres before patients met clinical staff \citep{Nguyen2020Outpatient}. These are not merely comfort issues: long queues consume staff time, obscure workload, increase opportunities for transcription errors and weaken patients' confidence in the service.
+The Vietnamese context makes this challenge particularly tangible. Viet Nam entered the aging phase in 2011; people aged 60 and over represented 11.9\% of the population in 2019, and this share is projected to exceed 25\% by 2050 \citep{UNFPA2021Ageing}. An aging population increases the need for repeated visits, longitudinal clinical histories and coordination across services. At the point of care the friction is already measurable; the waiting-time studies are summarized in the next subsection. Long queues are more than a comfort issue: they consume staff time, hide workload, create openings for transcription errors and weaken patients' confidence in the service.
 
 \subsection{Problem Statement and Motivation}
-The need for an electronic medical-record system is visible in three connected indicators. First, outpatient flow is slow: a study of 7,931 visits at a Vietnamese national hospital reported a mean total waiting time of 104.1 minutes, while departments handled approximately 150--250 patients per day without proportional capacity growth \citep{Nguyen2018Waiting}. A broader study reported average waits of 32.58 minutes at district hospitals and 11.58 minutes at commune health centres before patients met clinical staff \citep{Nguyen2020Outpatient}. Second, patient-safety risk remains material: the WHO estimates that one in ten patients is harmed in health care and that more than half of this harm is preventable \citep{WHO2023Safety}. Third, medication errors alone are estimated to cost about US\$42 billion globally each year \citep{WHO2017Medication}.
+The need for an electronic medical-record system is visible in three connected indicators. First, outpatient flow is slow: a study of 7,931 visits at a Vietnamese national hospital reported a mean total waiting time of 104.1 minutes, while departments handled approximately 150--250 patients per day without proportional capacity growth \citep{Nguyen2018Waiting}. A broader study reported average waits of 32.58 minutes at district hospitals and 11.58 minutes at commune health centers before patients met clinical staff \citep{Nguyen2020Outpatient}. Second, patient-safety risk remains material: the WHO estimates that one in ten patients is harmed in health care and that more than half of this harm is preventable \citep{WHO2023Safety}. Third, medication errors alone are estimated to cost about US\$42 billion globally each year \citep{WHO2017Medication}.
 
 These figures do not prove that every clinic has the same performance. They establish why the workflow deserves system-level attention. When identity, appointments, clinical notes, orders and payment are split across paper forms, spreadsheets or isolated applications, the following problems become likely:
 
@@ -395,9 +443,9 @@ These figures do not prove that every clinic has the same performance. They esta
     \item limited management visibility into waiting, workload, service progress and payment status.
 \end{itemize}
 
-WHO identifies fragmented data governance and weak exchange mechanisms as barriers to timely, high-quality use of health data \citep{WHO2021DataGovernance}. MEDORA addresses this coordination gap by providing one patient identity, one encounter context and explicit workflow states across authorized roles. Its ``smart'' behaviour is deliberately bounded: the system applies rules, warnings, validation and audit trails at the right step, while diagnosis and treatment decisions remain with qualified clinicians.
+WHO identifies fragmented data governance and weak exchange mechanisms as barriers to timely, high-quality use of health data \citep{WHO2021DataGovernance}. MEDORA addresses this coordination gap by providing one patient identity, one encounter context and explicit workflow states across authorized roles. Its ``smart'' behavior is deliberately bounded: the system applies rules, warnings, validation and audit trails at the right step, while diagnosis and treatment decisions remain with qualified clinicians.
 
-The architecture is part of the motivation. Separating presentation, application rules, domain entities and persistence prevents a new screen from bypassing clinical or access-control rules. Explicit services and state transitions make double-booking prevention, signed-record amendment, authorization and auditability testable. The result is a system that is safer to operate today and easier to extend tomorrow, rather than a set of screens that merely digitizes existing fragmentation.
+The architecture is part of the motivation. Separating presentation, application rules, domain entities and persistence prevents a new screen from bypassing clinical or access-control rules. Explicit services and state transitions make double-booking prevention, signed-record amendment, authorization and auditability testable. The intended result is a system that is easier to audit and to extend than a set of screens that merely digitizes the existing fragmentation.
 
 \subsection{Project Objectives and Success Criteria}
 This project proposes MEDORA, an integrated clinic-management and electronic medical-record system for a clinic or small healthcare facility. Its objective is to turn a fragmented sequence of tasks into a controlled, observable and reusable workflow. The project pursues five linked outcomes:
@@ -420,12 +468,12 @@ Success is specified using SMART criteria so that the prototype can be evaluated
     \item demonstrate that 100\% of negative authorization test cases are rejected at the API/server boundary, while the principal happy-path workflow completes successfully in the agreed test environment.
 \end{itemize}
 
-Each target is specific to a defined workflow, measurable through test evidence, achievable for the course-project scope, relevant to the stated pain points and time-bound to the final evaluation cycle. The figures are prototype acceptance targets, not claims of production performance; a real deployment would first establish a site-specific baseline and then revalidate them with clinical and operational stakeholders.
+Each target is specific to a defined workflow, measurable through test evidence, achievable for the course-project scope, relevant to the stated pain points and time-bound to the final evaluation cycle. The figures are prototype acceptance targets. \weak{They are not claims of production performance;} a real deployment would first establish a site-specific baseline and revalidate them with clinical and operational stakeholders.
 
 \subsection{System Scope, Assumptions, and Constraints}
 MEDORA is an internal web system for a clinic or small healthcare facility. It supports the outpatient journey from patient identification and appointment or walk-in reception to check-in, screening, consultation, prescription or service order, execution, encounter closure and payment status.
 
-Receptionists manage identity, appointments and queues; nurses record screening; doctors own clinical decisions; technicians and medicine staff record actual execution; cashiers record financial events; managers, administrators and auditors supervise operations, configuration and accountability. The system preserves the difference between planned and completed work: an appointment is not an encounter, a prescription is not a medicine event, an order is not a result, and an invoice is not a payment.
+Receptionists manage identity, appointments and queues; nurses record screening; doctors own clinical decisions; technicians and medicine staff record actual execution; cashiers record payments; and authorized finance staff assess and execute permitted refunds. Managers, administrators and auditors supervise operations, configuration and accountability. The system preserves the difference between planned and completed work: an appointment is not an encounter, a prescription is not a medicine event, an order is not a result, and an invoice is not a payment.
 
 The MVP focuses on internal operations, basic billing, reporting and governance. Patient self-service, external diagnostic systems, insurer settlement and advanced inventory are later-stage extensions. Every sensitive action is constrained by role, scope and workflow state; signed notes are amended rather than overwritten, and concurrent booking must not create a conflict.
 
@@ -455,7 +503,7 @@ Table~\ref{tab:product-definition} defines the product by capability. Each row s
         Prescription and medication safety & Doctors, medicine staff & Issue prescriptions with directions and configured safety checks; retain amendment and medicine-event history. & Safer hand-offs between prescribing and dispensing. \\
         Procedure, service and resource coordination & Doctors, nurses, technicians & Create orders, allocate constrained resources and record execution/result. & Prevents double-booking and links decision to outcome. \\
         Billing and payment status & Cashiers, managers & Create invoices and retain payment/refund history separately from clinical content. & Clear financial accountability and reconciliation. \\
-        Administration and role-based access & Administrators, managers, auditors & Manage users, permissions, catalogues, schedules and scope. & Least privilege and adaptable operations. \\
+        Administration and role-based access & Administrators, managers, auditors & Manage users, permissions, catalogs, schedules and scope. & Least privilege and adaptable operations. \\
         Dashboards, reports and audit trail & Managers, auditors & Present operational indicators, controlled export and sensitive-event history. & Evidence for decisions and investigation. \\
         Attachments and notifications & Assigned staff; patient portal (Phase~2) & Store controlled documents and send privacy-aware operational notifications. & Reliable follow-up with lower privacy exposure. \\
         \bottomrule
@@ -471,16 +519,16 @@ The solution uses four cooperating layers:
     \item \textbf{Data:} persistent patient, encounter, order, resource, invoice and audit entities with integrity constraints and history.
 \end{itemize}
 
-Each workflow step has an explicit state and accountable actor. Backend authorisation, controlled attachments and audit history protect the record while the modular structure leaves a clear path for later portal, diagnostic and interoperability extensions.
+Each workflow step has an explicit state and accountable actor. Backend authorization, controlled attachments and audit history protect the record while the modular structure leaves a clear path for later portal, diagnostic and interoperability extensions.
 
 \section{Business Analysis and Domain Modeling}
 
 \subsection{Business Context and Operational Overview}
-MEDORA is an internal web system for an outpatient clinic or small healthcare facility. It coordinates one outpatient episode from patient identification and appointment handling to consultation, service execution, payment status and operational reporting. Its central design principle is continuity: every authorised role works from the same patient and encounter context rather than from disconnected records.
+MEDORA is an internal web system for an outpatient clinic or small healthcare facility. It coordinates one outpatient episode from patient identification and appointment handling to consultation, service execution, payment status and operational reporting. Its central design principle is continuity: every authorized role works from the same patient and encounter context rather than from disconnected records.
 
 Four distinctions protect that continuity. An Appointment reserves time, while an Encounter represents the visit that actually occurs. A prescription is a clinical decision; dispensing or administration is a later, accountable event. A service order is not an execution result. An Invoice records charges, whereas a Payment or refund records a financial transaction. These distinctions prevent the system from reporting planned work as completed work.
 
-The MVP covers internal clinic operations, basic billing, reporting and governance. Patient self-service, external laboratory or imaging interfaces, insurer settlement and other integrations are later-stage capabilities.
+The MVP stops at internal operations, basic billing, reporting and governance. Patient self-service, laboratory and imaging interfaces and insurer settlement come later.
 
 \begin{table}[H]
 \centering
@@ -497,7 +545,7 @@ Execution and finance & Record allocation, service execution, invoice and paymen
 Governance & Apply scoped access, controlled export and auditable sensitive actions. \\
 \bottomrule
 \end{tabularx}
-\caption{Business baseline and target operating model}
+\caption{Target operating model by business area}
 \label{tab:business-as-is-to-be}
 \end{table}
 
@@ -516,9 +564,11 @@ Receptionist & Identify/register patients; manage appointments, arrivals and que
 Nurse & Record screening, vital signs and assigned care activity. & Cannot alter diagnosis or signed prescriptions. \\
 Doctor & Consult, document, diagnose, prescribe, order services and close encounters. & Owns clinical decisions for assigned encounters. \\
 Technician / Pharmacist & Execute assigned service work or record the medicine event. & Records execution; does not create the clinical decision. \\
-Cashier & Create eligible invoices and record payments or refunds. & Cannot edit clinical content. \\
+Cashier & Create eligible invoices and record payments. & Cannot edit clinical content or approve refunds. \\
+Authorized Finance Staff & Review refund requests and execute permitted refunds. & Requires the finance authority and approval rule defined for the request. \\
+Authorized Registrar & Review flagged duplicates and perform approved record merges. & Merge authority only; cannot edit clinical content. \\
 Manager & Monitor capacity, services, revenue and reports. & Uses scoped operational information. \\
-Administrator / Auditor & Configure access/catalogues or review audit evidence. & Administration and audit are separate from clinical authority. \\
+Administrator / Auditor & Configure access/catalogs or review audit evidence. & Administration and audit are separate from clinical authority. \\
 Patient (Phase~2) & Request appointments and view released documents. & Accesses only verified, explicitly released information. \\
 \bottomrule
 \end{tabularx}
@@ -537,7 +587,9 @@ Actor & Main system interaction & Boundary \\
 Receptionist & Patient search, registration, appointment, check-in and queue. & No clinical decision editing. \\
 Nurse / Doctor & Assigned encounter, clinical history, screening, documentation and orders. & Access is assignment- and role-scoped. \\
 Technician / Pharmacist & Assigned service execution or medicine event. & Cannot create the originating clinical decision. \\
-Cashier & Invoice, payment, refund and payment status. & Cannot modify clinical records. \\
+Cashier & Invoice, payment and payment status. & Cannot modify clinical records or approve refunds. \\
+Authorized Finance Staff & Refund request, approval status and completed refund. & Cannot modify clinical records; authority is limited to approved finance actions. \\
+Authorized Registrar & Merge request review and record merge, with merge history preserved. & Cannot edit clinical content; a Receptionist may request a merge but cannot perform it. \\
 Manager / Administrator / Auditor & Reports, configuration or audit review. & Each role has a separate scope. \\
 Patient (Phase~2) & Appointment request and released-document viewing. & Verified self-service only. \\
 \bottomrule
@@ -551,14 +603,14 @@ Figure~\ref{fig:outpatient-patient-journey} shows the normal outpatient journey.
 
 \begin{figure}[p]
     \centering
-    \includegraphics[height=0.84\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png}
+    \includegraphics[height=0.93\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png}
     \caption{Target business workflow for a standard outpatient journey}
     \label{fig:outpatient-patient-journey}
 \end{figure}
 
 \begin{figure}[p]
     \centering
-    \includegraphics[height=0.86\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png}
+    \includegraphics[width=\textwidth,height=0.89\textheight,keepaspectratio]{asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png}
     \caption{Appointment and check-in workflow with alternative and exception paths}
     \label{fig:appointment-check-in-workflow}
 \end{figure}
@@ -599,15 +651,18 @@ Closure and finance & Encounter summary plus invoice/payment status. & Incomplet
 \renewcommand{\arraystretch}{1.14}
 \begin{tabularx}{\textwidth}{@{}P{0.12\textwidth}P{0.28\textwidth}Y@{}}
 \toprule
-ID & Rule & Required behaviour \\
+ID & Rule & Required behavior \\
 \midrule
 BR-001 & Patient identity & Use a stable identifier, flag possible duplicates and preserve merge history. \\
 BR-002 & Availability & Validate provider, room, staff and required resources before booking or allocation. \\
 BR-003 & Encounter integrity & Prevent duplicate active encounters and maintain role-scoped queues. \\
-BR-004 & Authorisation and audit & Enforce role, scope and state checks at the server boundary; retain sensitive-event evidence. \\
-BR-005 & Clinical-record integrity & Preserve signed notes; record corrections as linked amendments with a reason. \\
-BR-006 & Clinical safety and execution & Warnings inform clinicians without deciding treatment; prescriptions, orders and actual execution remain distinct. \\
-BR-007 & Financial history & Keep invoices, payments and refunds separate from clinical records and retain transaction history. \\
+BR-004 & Least-privilege action control & Enforce role, scope and state checks at the server boundary. \\
+BR-005 & Signed-note integrity & Preserve signed notes; record corrections as linked amendments with a reason. \\
+BR-006 & Bounded clinical warnings & Warnings inform clinicians without deciding treatment; an override needs a permitted role and a reason. \\
+BR-007 & Order versus execution & An order is not a result; resources are committed only for a valid allocation and execution is recorded separately. \\
+BR-008 & Prescription versus medicine event & Issuing a prescription creates no dispensing or administration event. \\
+BR-009 & Financial separation and history & Keep invoices, payments and refunds separate from clinical records; a refund is its own event that refers to the original payment and never edits it. \\
+BR-010 & Evidence of sensitive activity & Retain audit evidence of sensitive reads and writes, including merges, amendments, overrides and refunds. \\
 \bottomrule
 \end{tabularx}
 \caption{Core business rules}
@@ -615,12 +670,12 @@ BR-007 & Financial history & Keep invoices, payments and refunds separate from c
 \end{table}
 
 \subsection{Domain Model and Core Entities}
-Figure~\ref{fig:conceptual-domain-model} presents the clinical core. The remaining operational and governance concepts extend this core without changing its central relationship: the Encounter contextualises the clinical work performed for one Patient.
+Figure~\ref{fig:conceptual-domain-model} presents the clinical core and the financial chain of Invoice, Payment and Refund. The remaining operational and governance concepts extend this core without changing its central relationship: the Encounter contextualizes the clinical work performed for one Patient. A Refund refers to one original Payment and never edits it, and an Encounter has at most one Invoice.
 
 \begin{figure}[p]
     \centering
     \includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png}
-    \caption{Core clinical conceptual domain model}
+    \caption{Core clinical and financial conceptual domain model}
     \label{fig:conceptual-domain-model}
 \end{figure}
 
@@ -634,9 +689,9 @@ Entity group & Purpose \\
 \midrule
 Patient and MedicalRecord & Stable identity and longitudinal clinical context. \\
 Appointment and Encounter & Planned visit versus actual outpatient episode. \\
-ClinicalNote, Diagnosis and Prescription & Authorised clinical documentation and decisions. \\
+ClinicalNote, Diagnosis and Prescription & Authorized clinical documentation and decisions. \\
 ProcedureOrder and ResourceBooking & Requested service, constrained allocation and execution context. \\
-Invoice and Payment & Charges and financial transactions without clinical mutation. \\
+Invoice, Payment and Refund & Charges and financial transactions, each its own record, without clinical mutation. \\
 UserAccount, Role, Attachment and AuditLog & Scoped access, controlled documents and accountability evidence. \\
 \bottomrule
 \end{tabularx}
@@ -675,8 +730,8 @@ Business need & System implication & Trace \\
 Reliable identity & Search, duplicate control, merge history and longitudinal record. & BR-001; FR-003--FR-004 \\
 Conflict-free coordination & Transactional availability, queue state and resource allocation. & BR-002--BR-003; FR-005--FR-006, FR-015 \\
 Accountable care & Signed-note amendments, warnings and separate execution events. & BR-005--BR-008; FR-009--FR-018 \\
-Financial accountability & Invoice, payment and refund history separate from clinical data. & BR-007; FR-022--FR-023 \\
-Governance & Least privilege, audit trail, reports and controlled export. & BR-004; FR-026--FR-030 \\
+Financial accountability & Invoice, payment and refund history separate from clinical data. & BR-009; FR-022--FR-023 \\
+Governance & Least privilege, audit trail, reports and controlled export. & BR-004, BR-010; FR-026--FR-030 \\
 \bottomrule
 \end{tabularx}
 \caption{Business-to-system traceability}
@@ -684,7 +739,7 @@ Governance & Least privilege, audit trail, reports and controlled export. & BR-0
 \end{table}
 
 \section{System Requirements Analysis}
-\subsection{Functional Decomposition and Package Structure}
+\subsection{Functional Decomposition}
 Figure~\ref{fig:functional-decomposition} groups MEDORA by business capability rather than user interface. It provides the functional boundary for the requirements and use-case model.
 
 \begin{figure}[p]
@@ -694,7 +749,7 @@ Figure~\ref{fig:functional-decomposition} groups MEDORA by business capability r
     \label{fig:functional-decomposition}
 \end{figure}
 
-Identity and Access provides the stable patient and user context on which all other capabilities rely. Scheduling and Reception controls planned appointments, walk-ins, queues and resource availability. Clinical Care records the actual encounter; Orders and Execution preserves the distinction between a decision and the action carried out. Finance and Operations handles eligible charges and operational visibility, while Governance applies cross-cutting controls for attachments, audit evidence and exports. The package dependencies are deliberately not shown in Figure~\ref{fig:functional-decomposition}: they would duplicate the logical architecture and reduce readability.
+Identity and Access provides the stable patient and user context on which all other capabilities rely. Scheduling and Reception controls planned appointments, walk-ins, queues and resource availability. Clinical Care records the actual encounter; Orders and Execution preserves the distinction between a decision and the action carried out. Finance and Operations handles eligible charges and operational visibility, while Governance applies cross-cutting controls for attachments, audit evidence and exports. The figure shows grouping only; it draws no dependencies between the groups.
 
 \subsection{Actors and Overall Use Case Model}
 The overall use-case model in Figure~\ref{fig:overall-use-case-model} gives a bounded view of actor goals. Patient self-service is explicitly Phase~2; in the MVP, reception staff perform appointment and check-in work on the patient's behalf. No insurer, payment gateway, laboratory information system, imaging system or messaging provider is shown as an actor because no approved integration contract exists.
@@ -709,7 +764,7 @@ The overall use-case model in Figure~\ref{fig:overall-use-case-model} gives a bo
     \label{fig:overall-use-case-model}
 \end{figure}
 \subsection{Use Case Diagrams by Functional Group}
-The focused diagrams below decompose the overview without changing the actor boundary. Solid associations identify participating external roles. A dashed \texttt{<<include>>} relationship is mandatory reusable behaviour; \texttt{<<extend>>} is conditional behaviour that leaves the base use case valid. UC-054 (operational notification) and UC-055 (released-document viewing) are explicitly scoped as P1/Phase~2 capabilities and are not implementation claims. The sources and mappings are maintained in the model inventory under \texttt{doc/asset/03-system-requirements/use-case-model}.
+The focused diagrams below decompose the overview without changing the actor boundary. Solid associations identify participating external roles. A dashed \texttt{<<include>>} relationship is mandatory reusable behavior; \texttt{<<extend>>} is conditional behavior that leaves the base use case valid. UC-054 (operational notification) and UC-055 (released-document viewing) belong to P1 and Phase~2. The sources and mappings are maintained in the model inventory under \texttt{doc/asset/03-system-requirements/use-case-model}.
 
 \subsubsection{Patient Management}
 \begin{figure}[H]
@@ -785,7 +840,7 @@ The six use cases below carry the principal state, safety or financial risk. Eac
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Receptionist; a patient and service/provider context are selected; the actor is authorised. \\
+Actor, trigger and preconditions & Receptionist; a patient and service/provider context are selected; the actor is authorized. \\
 Success flow & Select slot; validate provider, room, duration and required resources; atomically create the Appointment and audit-relevant metadata. \\
 Alternative and exception flow & Rescheduling repeats validation and preserves history. An unavailable slot, unresolved identity or invalid scope creates no appointment. \\
 Postconditions and data & One valid Appointment exists; no Encounter is created by booking alone. \\
@@ -800,7 +855,7 @@ Rules and trace & BR-002, BR-004; FR-005, FR-017; UC-026; NFR-06, NFR-15. \\
 Actor, trigger and preconditions & Receptionist receives an identified booked patient or an accepted walk-in. \\
 Success flow & Confirm arrival; check the active-encounter rule; create/activate the Encounter; assign the role-scoped queue state. \\
 Alternative and exception flow & An accepted walk-in follows the same queue rule. A conflicting active encounter, rejected walk-in or invalid scope creates no duplicate encounter. \\
-Postconditions and data & The relevant Appointment is updated and one active Encounter with queue status is available to authorised roles. \\
+Postconditions and data & The relevant Appointment is updated and one active Encounter with queue status is available to authorized roles. \\
 Rules and trace & BR-003, BR-004; FR-006; UC-029; NFR-06, NFR-15. \\
 \bottomrule
 \end{longtable}
@@ -809,7 +864,7 @@ Rules and trace & BR-003, BR-004; FR-006; UC-029; NFR-06, NFR-15. \\
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Authorised Doctor; a draft note belongs to an assigned Encounter. \\
+Actor, trigger and preconditions & Authorized Doctor; a draft note belongs to an assigned Encounter. \\
 Success flow & Validate required content and state; sign the note with actor/time. A correction creates a linked amendment with a reason. \\
 Alternative and exception flow & A draft may be saved for later. Missing fields, invalid state, invalid scope or a concurrent update prevents signing or requires reconciliation. \\
 Postconditions and data & Signed content remains intact; each amendment retains author, time, reason and linkage. \\
@@ -821,7 +876,7 @@ Rules and trace & BR-004, BR-005; FR-009, FR-020, FR-032; UC-042; NFR-06, NFR-07
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Authorised Doctor requests issue for a valid encounter with complete medicine items. \\
+Actor, trigger and preconditions & Authorized Doctor requests issue for a valid encounter with complete medicine items. \\
 Success flow & Validate dose and directions; evaluate configured safety rules; address a warning or record a permitted override; issue the prescription. \\
 Alternative and exception flow & The Doctor may retain a draft. Missing fields, an unresolved required warning or invalid scope blocks issue; unavailable source data does not create an invented warning. \\
 Postconditions and data & An issued prescription and item history exist; no dispensing or administration event is inferred. \\
@@ -845,40 +900,40 @@ Rules and trace & BR-002, BR-004, BR-007; FR-014--FR-018; NFR-06, NFR-15. \\
 \begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
 \toprule Item & Specification \\
 \midrule
-Actor, trigger and preconditions & Cashier records payment for an eligible Invoice; authorised Finance Staff records a refund or adjustment. \\
-Success flow & Verify outstanding status; record method, amount and time; update the Invoice. Refunds record the prior transaction, reason and required approval. \\
-Alternative and exception flow & Partial payment leaves an outstanding balance. Invalid amount/status, invalid scope or duplicate submission produces no financial effect. \\
-Postconditions and data & Payment/refund history and invoice status are updated; clinical content is unchanged. \\
-Rules and trace & BR-004, BR-007; FR-022--FR-023; UC-064, UC-066; NFR-06, NFR-07, NFR-15. \\
+Actor, trigger and preconditions & Cashier records payment for an eligible Invoice. Authorized Finance Staff submits a refund request for an identifiable original transaction, amount and reason. \\
+Success flow & For payment, validate invoice state, amount, method and request key; record one payment event and return the transaction reference and invoice status. For a refund, validate the original transaction, amount, authority and policy; record a separate refund event only when the request is authorized and permitted. \\
+Alternative and exception flow & Partial payment leaves an outstanding balance. An invalid payment/refund request, invalid scope or duplicate submission is rejected with no financial effect. A valid refund that requires approval returns a pending-approval status; it is neither rejected nor completed and no resulting balance is reported. \\
+Postconditions and data & A successful payment or completed refund updates its own history and the resulting invoice status. The original transaction is retained and clinical content is unchanged. \\
+Rules and trace & BR-004, BR-009, BR-010; FR-022--FR-023; UC-064, UC-066; NFR-06, NFR-07, NFR-15. \\
 \bottomrule
 \end{longtable}
 
 \subsection{Functional Requirements}
-Table~\ref{tab:functional-requirements} groups related requirements without changing their identifiers. P0 is required for the MVP; P1 is a controlled extension; P2 depends on a later organisational decision or integration contract.
+Table~\ref{tab:functional-requirements} groups related requirements without changing their identifiers. P0 is required for the MVP; P1 is a controlled extension; P2 depends on a later organizational decision or integration contract.
 
 \begingroup
 \scriptsize
 \renewcommand{\arraystretch}{1.10}
 \begin{longtable}{@{}p{0.14\textwidth}p{0.28\textwidth}p{0.42\textwidth}p{0.08\textwidth}@{}}
-\caption{Functional requirements catalogue}\label{tab:functional-requirements}\\
-\toprule ID & Capability & Observable system behaviour & Priority \\
+\caption{Functional requirements catalog}\label{tab:functional-requirements}\\
+\toprule ID & Capability & Observable system behavior & Priority \\
 \midrule
 \endfirsthead
-\toprule ID & Capability & Observable system behaviour & Priority \\
+\toprule ID & Capability & Observable system behavior & Priority \\
 \midrule
 \endhead
-FR-001--FR-002 & Authentication and access & Authenticate individual accounts; manage roles, facility scope and sensitive-session controls; enforce authorisation at the server boundary. & P0 \\
-FR-003--FR-004 & Patient identity & Create/search patient profiles, flag duplicates and preserve authorised merge evidence. & P0/P1 \\
+FR-001--FR-002 & Authentication and access & Authenticate individual accounts; manage roles, facility scope and sensitive-session controls; enforce authorization at the server boundary. & P0 \\
+FR-003--FR-004 & Patient identity & Create/search patient profiles, flag duplicates and preserve authorized merge evidence. & P0/P1 \\
 FR-005--FR-006 & Appointment and reception & Manage appointment status, availability, walk-ins, check-in and role-scoped queues. & P0 \\
 FR-007--FR-010 & Encounter documentation & Record screening, history, clinical notes, symptoms, diagnoses and follow-up in encounter context. & P0 \\
 FR-011--FR-013 & Prescription and medicine event & Validate configured safety rules; issue prescriptions; record dispensing/administration separately. & P0/P1 \\
 FR-014--FR-018 & Service order and execution & Create orders; allocate rooms, staff and resources; record execution status and result. & P0 \\
 FR-019 & Diagnostic request & Support an approved manual request/result attachment or later adapter. & P1 \\
 FR-020--FR-021 & Encounter conclusion & Record conclusion and follow-up; support configured leave/discharge review where applicable. & P0/P1 \\
-FR-022--FR-023 & Catalogue, invoice and payment & Maintain effective service/price data; create invoices and retain payment/refund history. & P0 \\
+FR-022--FR-023 & Catalog, invoice and payment & Maintain effective service/price data; create invoices and retain payment/refund history. & P0 \\
 FR-024--FR-025 & Notification and patient portal & Send configured operational notifications; support verified portal self-service only when enabled. & P1 / Phase 2 \\
 FR-026--FR-027 & Dashboard, reports and export & Present scoped operational indicators and log controlled report exports. & P0 \\
-FR-028--FR-031 & Administration, attachment and search & Maintain reference catalogues, controlled attachments, audit evidence and scoped search. & P0 \\
+FR-028--FR-031 & Administration, attachment and search & Maintain reference catalogs, controlled attachments, audit evidence and scoped search. & P0 \\
 FR-032 & Draft and recovery & Preserve drafts and unsaved-change state; report success only after server confirmation. & P1 \\
 FR-033--FR-034 & Facility and external integration & Apply approved facility scope and provide logged connectors only for approved contracts. & P2 \\
 \bottomrule
@@ -889,15 +944,15 @@ FR-033--FR-034 & Facility and external integration & Apply approved facility sco
 The table defines the quality targets used for design and later verification.
 
 \begin{longtable}{@{}p{0.15\textwidth}p{0.24\textwidth}p{0.45\textwidth}p{0.09\textwidth}@{}}
-\caption{Non-functional requirements catalogue}\label{tab:nonfunctional-requirements}\\
+\caption{Non-functional requirements catalog}\label{tab:nonfunctional-requirements}\\
 \toprule ID & Attribute & Requirement / acceptance basis & Status \\
 \midrule
 \endfirsthead
 \toprule ID & Attribute & Requirement / acceptance basis & Status \\
 \midrule
 \endhead
-NFR-01--NFR-03 & Performance, availability and recovery & Target p95 ordinary screen $\leq$ 2 seconds, search $\leq$ 3 seconds; define availability, RPO and RTO before deployment. & Target \\
-NFR-04--NFR-07 & Security and auditability & Use protected transport/storage, server-side RBAC, least privilege, time-synchronised sensitive-event evidence and retention policy. & Specified \\
+NFR-01--NFR-03 & Performance, availability and recovery & Target p95 ordinary screen $\leq$ 2 seconds, search $\leq$ 3 seconds; \weak{availability, RPO and RTO are still to be defined before deployment.} & Target \\
+NFR-04--NFR-07 & Security and auditability & Use protected transport/storage, server-side RBAC, least privilege, time-synchronized sensitive-event evidence and retention policy. & Specified \\
 NFR-08--NFR-09 & Resilience and scale & Preserve confirmed data through dependency failure; use bounded queries, pagination and modular APIs. & Specified \\
 NFR-10--NFR-11 & Compatibility and accessibility & Support current Chrome/Edge desktop/tablet use with keyboard operation, labels, contrast and clear errors. & Target \\
 NFR-12--NFR-13 & Maintainability and observability & Use controlled migrations, documentation and structured operational metrics/logs. & Specified \\
@@ -907,7 +962,7 @@ NFR-16 & Testability & Maintain unit, integration and end-to-end tests with non-
 \end{longtable}
 
 \subsection{Role-based Access Control Matrix}
-Table~\ref{tab:rbac-matrix} records the intended minimum business permissions. It is a requirements baseline, not an implementation claim. \textbf{R}, \textbf{C}, \textbf{U}, \textbf{S}, \textbf{A} and \textbf{F} respectively mean read, create, update, sign/finalise, approve/override and finance transaction. A dash means no routine access. All non-dash permissions remain subject to facility, assignment and lifecycle state; Section~4 must enforce them at the server boundary.
+Table~\ref{tab:rbac-matrix} records the intended minimum business permissions. \weak{It is a requirements baseline, not an implementation claim.} \textbf{R}, \textbf{C}, \textbf{U}, \textbf{S}, \textbf{A} and \textbf{F} respectively mean read, create, update, sign/finalize, approve/override and finance transaction. A dash means no routine access. All non-dash permissions remain subject to facility, assignment and lifecycle state, and the server must enforce them at its boundary.
 
 \begin{table}[p]
 \centering
@@ -920,6 +975,7 @@ Table~\ref{tab:rbac-matrix} records the intended minimum business permissions. I
 Capability / data domain & Rec. & Nurse & Doctor & Tech. & Pharm. \\
 \midrule
 Patient administrative profile & R/C/U & R & R & R$^{\dagger}$ & R$^{\dagger}$ \\
+Patient record merge$^{c}$ & C (request) & -- & -- & -- & -- \\
 Appointment, check-in and queue & R/C/U & R & R & R$^{\dagger}$ & -- \\
 Screening and vital signs & R & C/U & R & R$^{\dagger}$ & -- \\
 Clinical note and diagnosis & R$^{\dagger}$ & R$^{\dagger}$ & R/C/U/S & R$^{\dagger}$ & R$^{\dagger}$ \\
@@ -927,33 +983,34 @@ Prescription and medicine event & R$^{\dagger}$ & R$^{\dagger}$ & R/C/U/S/A & --
 Service order and execution result & R$^{\dagger}$ & R/C/U$^{\dagger}$ & R/C/U/S & R/C/U & -- \\
 Invoice, payment and refund & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- & -- \\
 Dashboard and scoped reports & -- & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & -- \\
-User, role and catalogue configuration & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ \\
+User, role and catalog configuration & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ \\
 Audit log and controlled export & -- & -- & R$^{\dagger}$ & -- & -- \\
 \bottomrule
 \end{tabular}
 \par\vspace{0.35cm}
 \textbf{Finance, governance and patient roles}\par\vspace{0.15cm}
-\begin{tabular}{@{}p{0.30\textwidth}*{5}{>{\centering\arraybackslash}p{0.115\textwidth}}@{}}
+\begin{tabular}{@{}p{0.27\textwidth}*{6}{>{\centering\arraybackslash}p{0.105\textwidth}}@{}}
 \toprule
-Capability / data domain & Cash. & Manager & Admin & Auditor & Patient$^{*}$ \\
+Capability / data domain & Cash. & Finance & Manager & Admin & Auditor & Patient$^{*}$ \\
 \midrule
-Patient administrative profile & R$^{\dagger}$ & R$^{\dagger}$ & -- & R$^{\dagger}$ & R/U \\
-Appointment, check-in and queue & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & R/C/U \\
-Screening and vital signs & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
-Clinical note and diagnosis & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
-Prescription and medicine event & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
-Service order and execution result & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
-Invoice, payment and refund & R/C/U/F & R/A$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
-Dashboard and scoped reports & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & -- \\
-User, role and catalogue configuration & R$^{\dagger}$ & R/U$^{\dagger}$ & R/C/U/A & R$^{\dagger}$ & -- \\
-Audit log and controlled export & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R & -- \\
+Patient administrative profile & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & -- & R$^{\dagger}$ & R/U \\
+Patient record merge$^{c}$ & -- & -- & -- & -- & R$^{\dagger}$ & -- \\
+Appointment, check-in and queue & R$^{\dagger}$ & -- & R & -- & R$^{\dagger}$ & R/C/U \\
+Screening and vital signs & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
+Clinical note and diagnosis & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Prescription and medicine event & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Service order and execution result & -- & -- & R$^{\dagger}$ & -- & R$^{\dagger}$ & R$^{\ddagger}$ \\
+Invoice, payment and refund & R/C/U/F$^{a}$ & R/C/A/F$^{b}$ & R/A$^{\dagger}$ & -- & R$^{\dagger}$ & -- \\
+Dashboard and scoped reports & R$^{\dagger}$ & R$^{\dagger}$ & R & -- & R$^{\dagger}$ & -- \\
+User, role and catalog configuration & R$^{\dagger}$ & -- & R/U$^{\dagger}$ & R/C/U/A & R$^{\dagger}$ & -- \\
+Audit log and controlled export & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R$^{\dagger}$ & R & -- \\
 \bottomrule
 \end{tabular}
 \caption{Target role-based access-control matrix}
 \label{tab:rbac-matrix}
 \vspace{0.2cm}
 \begin{minipage}{0.90\textwidth}\tiny
-$^{*}$Phase~2 only. $^{\dagger}$Only within assigned, facility or approved scope. $^{\ddagger}$Only information expressly released through the portal. Administrative configuration does not confer clinical-edit authority; Auditor access is read-only and itself may be logged.
+$^{*}$Phase~2 only. $^{\dagger}$Only within assigned, facility or approved scope. $^{\ddagger}$Only information expressly released through the portal. $^{a}$Payment transactions only; Cashier cannot request, approve or execute a refund. $^{b}$Refunds only after validation and any required approval; pending approval is not a completed refund, and the approver is a Manager or Authorized Finance Staff member other than the requester. $^{c}$Merge is performed only by the Authorized Registrar (a role without its own column); other roles may not execute a merge. Administrative configuration does not confer clinical-edit authority; Auditor access is read-only and itself may be logged.
 \end{minipage}
 \end{table}
 
@@ -971,7 +1028,7 @@ Table~\ref{tab:requirements-traceability} links the business rationale to requir
 \toprule Business rule/need & Requirement & Use cases & Domain/design focus & Planned verification \\
 \midrule
 \endhead
-BR-001 identity continuity & FR-003, FR-004, FR-031 & UC-010--UC-018 & Patient, MedicalRecord, AuditLog; unique identifier and merge history. & Duplicate-search, unauthorised-merge and merge-history test cases. \\
+BR-001 identity continuity & FR-003, FR-004, FR-031 & UC-010--UC-018 & Patient, MedicalRecord, AuditLog; unique identifier and merge history. & Duplicate-search, unauthorized-merge and merge-history test cases. \\
 BR-002 conflict-free allocation & FR-005, FR-015--FR-017; NFR-15 & UC-021--UC-026, UC-039 & Appointment, ResourceBooking, schedule/room/staff constraints. & Concurrent booking/reschedule tests; zero accepted conflict target. \\
 BR-003 controlled arrival & FR-006 & UC-027--UC-030 & Appointment--Encounter relationship and queue state. & Duplicate-active-encounter and role-scoped queue tests. \\
 BR-005 signed-record integrity & FR-009, FR-032; NFR-07, NFR-15 & UC-036--UC-038, UC-041--UC-042 & ClinicalNote draft/signed/amendment lifecycle. & Missing-field, amendment and concurrent-edit tests. \\
@@ -979,13 +1036,13 @@ BR-006 bounded warning & FR-011, FR-012 & UC-043--UC-048 & Prescription, Prescri
 BR-007 accountable execution & FR-014--FR-018 & UC-039--UC-040 & ProcedureOrder, ResourceBooking and execution result. & Assignment, unavailable-resource, delay/cancel and result tests. \\
 BR-008 separate medicine event & FR-012, FR-013 & UC-048--UC-051 & PrescriptionItem versus MedicationAdministration. & Verify issue alone creates no administration event. \\
 BR-009 financial history & FR-022, FR-023; NFR-15 & UC-060--UC-069 & Invoice, Payment and refund/adjustment history. & Partial-payment, duplicate-submission and refund-reason tests. \\
-BR-004 / BR-010 governance & FR-001, FR-002, FR-027, FR-030; NFR-06, NFR-07 & UC-001, UC-070--UC-079 & UserAccount, Role, AuditLog and controlled export. & Negative API authorisation and audit-completeness tests. \\
+BR-004 / BR-010 governance & FR-001, FR-002, FR-027, FR-030; NFR-06, NFR-07 & UC-001, UC-070--UC-079 & UserAccount, Role, AuditLog and controlled export. & Negative API authorization and audit-completeness tests. \\
 Operational visibility & FR-026, FR-027 & UC-075--UC-076 & Scoped measures, report filters and export audit. & Role-scope/report-reconciliation tests. \\
 \bottomrule
 \end{longtable}
 \endgroup
 
-\textit{Open decisions.} The clinic will confirm clinical-warning sources, consent and retention policy, refund approval thresholds, branch scope and portal publication rules before deployment.
+\textit{Open decisions.} \weak{The clinic still has to confirm clinical-warning sources, consent and retention policy, refund approval thresholds, branch scope and portal publication rules before deployment.}
 
 
 \section{System Design and Structural Modeling}
@@ -1019,10 +1076,10 @@ Operational visibility & FR-026, FR-027 & UC-075--UC-076 & Scoped measures, repo
 \section{Behavioral Modeling and System Implementation}
 
 \subsection{Behavioral UML Diagrams}
-The behavioral models in this section refine the business rules and use cases in Sections 2 and 3. They describe proposed observable system behavior, not calls observed in an implemented application. The six system-sequence diagrams use MEDORA as a black-box boundary so that no unapproved controller, repository, API, or persistence technology is implied. The activity and state models focus on exception handling, lifecycle integrity, and separation of clinical and financial records.
+The behavioral models in this section refine the business rules and use cases in Sections 2 and 3. They describe the observable behavior the system is designed to show; \weak{no implemented application has been observed.} The six system-sequence diagrams treat MEDORA as one black box, so they imply no controller, repository, API or persistence technology, and every message carries a sequence number that the test cases can cite. The activity and state models focus on exception handling, lifecycle integrity, and separation of clinical and financial records.
 
 \subsubsection{Sequence Diagrams for Key Use Cases}
-The sequence views cover appointment booking (UC-021), patient check-in (UC-027), signing and amending a clinical note (UC-037/UC-038), prescription issue (UC-048), service scheduling and execution (UC-039/UC-040), and payment/refund (UC-063/UC-065). Rejected operations leave no partial business effect; successful transitions record the relevant accountable event. The request key in the payment view is a proposed idempotency control derived from NFR-15, not an existing API contract.
+The sequence views cover appointment booking (UC-021), patient check-in (UC-027), signing and amending a clinical note (UC-037/UC-038), prescription issue (UC-048), service scheduling and execution (UC-039/UC-040), and payment/refund (UC-063/UC-065). Rejected operations leave no partial business effect; successful transitions record the relevant accountable event. The request key in the payment view is an idempotency control derived from NFR-15; \weak{it is not an existing API contract.}
 
 \begin{figure}[p]
     \centering
@@ -1084,19 +1141,40 @@ Figure~\ref{fig:activity-service-order} shows the service lifecycle from clinici
 \end{figure}
 
 \subsubsection{State Machine Diagrams for Lifecycle-driven Entities}
-The state machines formalize the status proposals in WorkStation Sections 5 and 9 and the domain distinctions in Section 2. They are design constraints for later implementation and policy review. In particular, rescheduling preserves the prior appointment history, a clinical-note correction creates a linked version, and refunds remain separate financial transactions.
+The state machines turn the lifecycle distinctions of Section 2 into explicit constraints for implementation and policy review. In particular, rescheduling preserves the prior appointment history, a clinical-note correction creates a linked version, and refunds remain separate financial transactions.
+
+WorkStation names a status field for the Appointment only, so we fixed the state sets below as design decisions. Table~\ref{tab:lifecycle-states} lists the values that the five figures use. A completed refund returns the invoice to Partially Paid or Issued according to the net paid amount; a refund still pending approval changes no invoice state.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}Y@{}}
+\toprule
+Entity & States \\
+\midrule
+Appointment & Draft, Booked, Confirmed, CheckedIn, NoShow, Canceled \\
+Encounter & Waiting, In Consultation, Awaiting Service, Awaiting Closure, Completed \\
+Clinical-note version & Draft, Signed, Amendment Draft, Amended Signed Version \\
+Procedure order & Created, Pending Allocation, Scheduled, Delayed, In Progress, Completed, Not Performed, Canceled \\
+Invoice & Draft, Issued, Partially Paid, Paid \\
+\bottomrule
+\end{tabularx}
+\caption{Lifecycle states by entity}
+\label{tab:lifecycle-states}
+\end{table}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png}
-    \caption{Proposed appointment lifecycle and terminal outcomes}
+    \caption{Appointment lifecycle and terminal outcomes}
     \label{fig:state-appointment}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png}
-    \caption{Proposed encounter lifecycle from check-in to clinical completion}
+    \caption{Encounter lifecycle from check-in to clinical completion}
     \label{fig:state-encounter}
 \end{figure}
 
@@ -1110,19 +1188,19 @@ The state machines formalize the status proposals in WorkStation Sections 5 and 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png}
-    \caption{Proposed procedure-order lifecycle with allocation and execution outcomes}
+    \caption{Procedure-order lifecycle with allocation and execution outcomes}
     \label{fig:state-procedure-order}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.96\textwidth,height=0.72\textheight,keepaspectratio]{asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png}
-    \caption{Proposed invoice lifecycle for unpaid, partial-payment, and paid states}
+    \caption{Invoice lifecycle with payment and completed-refund transitions}
     \label{fig:state-invoice}
 \end{figure}
 
 \subsection{Source Code Organization and Module Structure}
-The repository contains no application code yet. To make the design actionable, this section proposes a TypeScript modular-monolith implementation baseline: Next.js for the role-specific web client, a NestJS REST API, PostgreSQL persistence through Prisma migrations, private object storage for attachments, and Docker Compose for local development. This stack is a recommendation, not an approved or implemented technology decision; the team should record approval as ADR-001 before scaffolding. The API remains the sole authorization and state-transition boundary; the browser must not access persistence directly.
+\weak{The repository contains no application code yet.} To make the design actionable, this section proposes a TypeScript modular-monolith baseline: Next.js for the role-specific web client, a NestJS REST API, PostgreSQL persistence through Prisma migrations, private object storage for attachments and Docker Compose for local development. \weak{The stack is a recommendation, not an approved or implemented decision;} the team should record approval as ADR-001 before scaffolding. The API stays the only authorization and state-transition boundary, and the browser never reaches persistence directly.
 
 \begin{lstlisting}[language={},caption={Proposed source layout for the first implementation},label={lst:proposed-source-layout}]
 medora/
@@ -1153,21 +1231,21 @@ Each API module owns its use cases and validation. Shared contracts contain requ
 \toprule
 Evidence item & Repository observation & Status / implication \\
 \midrule
-Application source & \texttt{src/README.md} is a placeholder asking for source code. & No application modules or implemented behavior are evidenced. \\
-Build/dependency manifest & No application package manifest or runtime build configuration is present. & Next.js/NestJS/TypeScript is the recommended ADR-001 baseline, pending team approval. \\
-Persistence and API & No database schema, migration, API contract, or service implementation is present. & PostgreSQL/Prisma and the versioned REST contract are proposals, not implementation facts. \\
-Behavioral assets & PlantUML sources and rendered figures are stored under \texttt{doc/asset/05-behavioral-modeling-implementation/}. & These are proposed behavioral models; they are not executable application code. \\
-Deployment & No container, server, environment, or deployment configuration is present. & Production topology, hosting, and operational controls are not yet determined. \\
+Application source & \texttt{src/README.md} is a placeholder asking for source code. & \weak{No application modules or implemented behavior are evidenced.} \\
+Build/dependency manifest & No application package manifest or runtime build configuration is present. & Next.js, NestJS and TypeScript are the recommended ADR-001 baseline, \weak{pending team approval.} \\
+Persistence and API & No database schema, migration, API contract, or service implementation is present. & PostgreSQL, Prisma and the versioned REST contract are \weak{proposals, not implementation facts.} \\
+Behavioral assets & PlantUML sources and rendered figures are stored under \texttt{doc/asset/05-behavioral-modeling-implementation/}. & These are behavioral models, \weak{not executable application code.} \\
+Deployment & No container, server, environment, or deployment configuration is present. & \weak{Production topology, hosting and operational controls are not yet determined.} \\
 \bottomrule
 \end{tabularx}
 \caption{Implementation and deployment evidence available in the repository}
 \label{tab:implementation-evidence}
 \end{table}
 
-The source layout above maps the report's logical layers and functional groups to a buildable project structure while preserving the current evidence boundary. No listed directory, package, or module should be described as implemented until it exists and is reviewed in the repository.
+The layout maps the logical layers and functional groups to a buildable project structure. \weak{No listed directory, package or module exists in the repository yet.}
 
 \subsection{Implementation of Core Functionalities}
-The following implementation slices turn the requirements into an ordered build plan. All are currently \textbf{Not Implemented}; the invariant column defines the minimum behavior each slice must preserve before it can be accepted.
+The slices below turn the requirements into an ordered build plan. The invariant column states the minimum behavior each slice must keep before it is accepted. \weak{All six slices are currently Not Implemented.}
 
 \begin{table}[H]
 \centering
@@ -1177,12 +1255,12 @@ The following implementation slices turn the requirements into an ordered build 
 \toprule
 Implementation slice & Trace & Acceptance invariant & Status \\
 \midrule
-Identity and authorization & FR-001--FR-004; NFR-06 & Server rejects out-of-scope reads/writes; patient duplicate review precedes merge. & Not Implemented \\
-Scheduling and reception & FR-005--FR-006, FR-017 & Concurrent conflicts do not commit; accepted check-in creates one active encounter. & Not Implemented \\
-Encounter and clinical records & FR-007--FR-010, FR-020, FR-032 & Signed versions are immutable; encounter close validates required work. & Not Implemented \\
-Prescription and service orders & FR-011--FR-019 & Configured safety checks are bounded; orders, bookings, and actual events remain distinct. & Not Implemented \\
-Finance and reporting & FR-022--FR-027 & Price is snapshotted; payment/refund are idempotent append-only events. & Not Implemented \\
-Governance and attachments & FR-028--FR-031; NFR-07 & Sensitive actions are scoped and audited; files are private and access-controlled. & Not Implemented \\
+Identity and authorization & FR-001--FR-004; NFR-06 & Server rejects out-of-scope reads/writes; patient duplicate review precedes merge. & \weak{Not Implemented} \\
+Scheduling and reception & FR-005--FR-006, FR-017 & Concurrent conflicts do not commit; accepted check-in creates one active encounter. & \weak{Not Implemented} \\
+Encounter and clinical records & FR-007--FR-010, FR-020, FR-032 & Signed versions are immutable; encounter close validates required work. & \weak{Not Implemented} \\
+Prescription and service orders & FR-011--FR-019 & Configured safety checks are bounded; orders, bookings, and actual events remain distinct. & \weak{Not Implemented} \\
+Finance and reporting & FR-022--FR-027 & Price is snapshotted; payment/refund are idempotent append-only events. & \weak{Not Implemented} \\
+Governance and attachments & FR-028--FR-031; NFR-07 & Sensitive actions are scoped and audited; files are private and access-controlled. & \weak{Not Implemented} \\
 \bottomrule
 \end{tabularx}
 \caption{Proposed implementation slices and acceptance invariants}
@@ -1190,7 +1268,7 @@ Governance and attachments & FR-028--FR-031; NFR-07 & Sensitive actions are scop
 \end{table}
 
 \subsection{Development and Deployment Environment}
-Table~\ref{tab:proposed-environments} defines a reproducible target environment without implying any environment currently exists. Secrets, patient data, and production records must never be placed in the local development stack. Production hosting, availability design, data residency, backup retention, and incident ownership require explicit approval.
+Table~\ref{tab:proposed-environments} defines a reproducible target environment. \weak{No such environment exists yet.} Secrets, patient data and production records must never enter the local development stack. Production hosting, availability design, data residency, backup retention and incident ownership still need explicit approval.
 
 \begin{table}[H]
 \centering
@@ -1203,17 +1281,38 @@ Environment & Proposed services and configuration & Data / release controls \\
 Local development & Node.js LTS toolchain; web and API; PostgreSQL; private S3-compatible storage emulator; Docker Compose. & Synthetic fixtures only; local secrets in ignored environment files; migrations applied from source. \\
 Automated test & Ephemeral database and private file store; isolated test accounts; unit, integration, and Playwright end-to-end suites. & No real patient data; reset between runs; deterministic seeds and retained test logs. \\
 Staging & One controlled application deployment behind HTTPS reverse proxy; restricted database and private attachment store; monitoring and backup/restore rehearsal. & De-identified/synthetic data only; role access reviewed; release build and migration version recorded. \\
-Production target & Hosting provider and topology TBD after capacity, privacy, recovery, and cost review; separate app, database, object storage, and protected backup boundaries. & TLS, managed secrets, least-privilege service accounts, audit retention, restore exercises, and approved operational ownership. \\
+Production target & Hosting provider and topology \weak{to be decided} after capacity, privacy, recovery and cost review; separate app, database, object storage, and protected backup boundaries. & TLS, managed secrets, least-privilege service accounts, audit retention, restore exercises, and approved operational ownership. \\
 \bottomrule
 \end{tabularx}
 \caption{Proposed development and deployment environment matrix}
 \label{tab:proposed-environments}
 \end{table}
 
-The proposed environment matrix above captures the intended trust boundaries without selecting a vendor topology. The local LaTeX/PlantUML/Kroki tools used to produce this report are documentation tooling and are not part of the MEDORA runtime.
+The matrix fixes the intended trust boundaries without choosing a vendor topology. The LaTeX, PlantUML and Kroki tools that produce this report are documentation tooling and are not part of the MEDORA runtime.
 
 \subsection{Proposed User Interfaces and API Evidence}
-No UI/API screenshots or proposed wireframe images are included because there is no running application. WorkStation Section 7 provides a screen inventory that can guide later UX design; Appendix C provides proposed API/data examples, not captured responses from an existing endpoint. A future implementation evidence package must pair a redacted screen/API capture with build ID, actor role, workflow state, and test-case ID.
+Figures~\ref{fig:wireframe-front-desk}--\ref{fig:wireframe-cashier} sketch the three screens with the highest workflow and financial risk. They follow the screen inventory in WorkStation Section 7 and use the canonical states and role boundaries of Sections 2 and 3: the Cashier screen offers no refund control, and Record payment stays unavailable until the invoice is issued. \weak{No running application exists, so no screen or API capture is available;} Appendix C gives API and data examples that are \weak{not captured responses from an existing endpoint.} A later evidence package must pair each redacted screen or API capture with the build ID, actor role, workflow state and test-case ID.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth,keepaspectratio]{asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/front-desk-queue-wireframe.png}
+    \caption{Front desk and queue wireframe}
+    \label{fig:wireframe-front-desk}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth,keepaspectratio]{asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/clinician-encounter-wireframe.png}
+    \caption{Clinician encounter workspace wireframe}
+    \label{fig:wireframe-clinician}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth,keepaspectratio]{asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/cashier-invoice-wireframe.png}
+    \caption{Cashier invoice and payment wireframe}
+    \label{fig:wireframe-cashier}
+\end{figure}
 
 \begin{warningbox}[Evidence required before implementation claims]
 After implementation, capture redacted UI, API, and workflow evidence from a running non-production build. Record build/version, actor role, workflow state, and linked test case. API evidence should include the approved endpoint/schema, authorization context, sanitized request/response, and observed result. Never include real patient data or secrets.
@@ -1222,9 +1321,9 @@ After implementation, capture redacted UI, API, and workflow evidence from a run
 \section{System Testing and Evaluation}
 
 \subsection{Testing Strategy and Test Environment}
-Testing is planned around the business risks and acceptance criteria in WorkStation and Sections 2--3. The strategy combines workflow, authorization, integrity, concurrency, and quality-attribute verification; it does not treat a rendered diagram or a successful report build as evidence that the application works.
+Testing follows the business risks and acceptance criteria in WorkStation and Sections 2--3. It combines workflow, authorization, integrity, concurrency and quality-attribute checks. A rendered diagram or a successful report build is not evidence that the application works.
 
-The repository contains no application under test, database, API, automated test suite, test dataset, or deployment environment. Consequently, the test environment is not yet established and execution is blocked. When an application exists, testing should use an isolated non-production environment, synthetic patient data, controlled user roles, reproducible configuration, and a recorded build identifier. Performance and recovery checks additionally require an agreed workload and a provisioned environment representative of the intended deployment.
+\weak{The repository contains no application under test, database, API, automated test suite, test dataset or deployment environment, so execution is blocked.} Once a build exists, testing should run in an isolated non-production environment with synthetic patient data, controlled roles, reproducible configuration and a recorded build identifier. Performance and recovery checks also need an agreed workload and an environment that represents the intended deployment.
 
 \begin{table}[H]
 \centering
@@ -1234,11 +1333,11 @@ The repository contains no application under test, database, API, automated test
 \toprule
 Test level & Planned purpose & Current evidence \\
 \midrule
-Unit / domain & Validate lifecycle guards, calculations, authorization decisions, and invariants. & Not available; no implementation or unit tests. \\
-Integration & Verify transactions across encounter, order, resource, invoice, payment, and audit boundaries. & Not available; no database or service integrations. \\
-End-to-end workflow & Exercise the reception-to-encounter, clinical, service, and financial paths by role. & Not available; no running application or test environment. \\
-Security / negative access & Send unauthorized requests directly to protected server operations and verify safe rejection. & Not available; no API or identity implementation. \\
-Quality attributes & Measure response time, accessibility, locale behavior, availability, and restore objectives. & Not available; targets remain proposed and unmeasured. \\
+Unit / domain & Validate lifecycle guards, calculations, authorization decisions, and invariants. & \weak{Not available; no implementation or unit tests.} \\
+Integration & Verify transactions across encounter, order, resource, invoice, payment, and audit boundaries. & \weak{Not available; no database or service integrations.} \\
+End-to-end workflow & Exercise the reception-to-encounter, clinical, service, and financial paths by role. & \weak{Not available; no running application or test environment.} \\
+Security / negative access & Send unauthorized requests directly to protected server operations and verify safe rejection. & \weak{Not available; no API or identity implementation.} \\
+Quality attributes & Measure response time, accessibility, locale behavior, availability, and restore objectives. & \weak{Not available; targets remain proposed and unmeasured.} \\
 \bottomrule
 \end{tabularx}
 \caption{Planned verification levels and present evidence boundary}
@@ -1246,7 +1345,7 @@ Quality attributes & Measure response time, accessibility, locale behavior, avai
 \end{table}
 
 \subsection{Test Scenarios and Test Case Design}
-The following test cases translate high-risk requirements and use cases into executable checks. Expected outcomes are specifications for future tests; the status column records that none has been executed.
+The following test cases translate high-risk requirements and use cases into executable checks. Expected outcomes are specifications for future tests. \weak{The status column records that none has been executed.}
 
 \begingroup
 \scriptsize
@@ -1259,25 +1358,25 @@ The following test cases translate high-risk requirements and use cases into exe
 \toprule ID & Scenario and expected result & Trace & Status \\
 \midrule
 \endhead
-TC-001 & Call a protected patient/clinical operation without the required role or scope; reject the request without returning protected data or applying a state change. & FR-001--FR-002; NFR-06; UC-001 & Not Run \\
-TC-002 & Register a patient matching an existing identity; flag a possible duplicate and prevent an unauthorized merge. & FR-003--FR-004; BR-001; UC-010--UC-018 & Not Run \\
-TC-003 & Submit concurrent bookings for the same constrained provider, room, or resource; accept no conflicting allocation and preserve rejected requests without a booking. & FR-005, FR-015, FR-017; NFR-15; UC-021--UC-026 & Not Run \\
-TC-004 & Check in an accepted walk-in and attempt a second active encounter for the same patient; create one valid encounter/queue and reject the duplicate. & FR-006; BR-003; UC-027--UC-030 & Not Run \\
-TC-005 & Sign a note with missing required content, then amend a signed note; block incomplete signing and retain the original signed version with a linked, reasoned amendment. & FR-009, FR-020, FR-032; NFR-07; UC-037--UC-042 & Not Run \\
-TC-006 & Issue a prescription with a configured safety warning; require the permitted response/override evidence and verify issue alone creates no dispensing or administration event. & FR-011--FR-013; BR-006, BR-008; UC-043--UC-052 & Not Run \\
-TC-007 & Allocate a service order with unavailable or conflicting resources, then complete a valid execution; do not commit a conflict and do not mark complete without required results. & FR-014--FR-018; NFR-15; UC-039--UC-040 & Not Run \\
-TC-008 & Record partial and repeated payment submissions; maintain the correct balance and prevent a duplicate request from applying a second financial effect. & FR-022--FR-023; NFR-15; UC-060--UC-069 & Not Run \\
-TC-009 & Request a refund with invalid authority, amount, or reason; reject or hold it for approved review and retain the original transaction history. & FR-023, FR-030; BR-009; UC-065--UC-066 & Not Run \\
-TC-010 & Export a scoped report and review its audit evidence; enforce the actor's scope and record the controlled export event. & FR-026--FR-027, FR-030; NFR-06--NFR-07; UC-076--UC-079 & Not Run \\
-TC-011 & Measure ordinary-screen and search response times under an agreed representative workload; compare p95 values with the provisional targets. & NFR-01; WorkStation Section 10 & Not Run \\
-TC-012 & Restore a protected backup and measure data loss and recovery time against approved RPO/RTO; a backup log alone is insufficient evidence. & NFR-02--NFR-03; WorkStation Section 10 & Not Run \\
-TC-013 & Verify keyboard operation, labels, contrast, Vietnamese text, configured date/time, and currency formats on supported browsers. & NFR-10--NFR-11, NFR-14 & Not Run \\
+TC-001 & Call a protected patient/clinical operation without the required role or scope; reject the request without returning protected data or applying a state change. & FR-001--FR-002; NFR-06; UC-001 & \weak{Not Run} \\
+TC-002 & Register a patient matching an existing identity; flag a possible duplicate and prevent an unauthorized merge. & FR-003--FR-004; BR-001; UC-010--UC-018 & \weak{Not Run} \\
+TC-003 & Submit concurrent bookings for the same constrained provider, room, or resource; accept no conflicting allocation and preserve rejected requests without a booking. & FR-005, FR-015, FR-017; NFR-15; UC-021--UC-026 & \weak{Not Run} \\
+TC-004 & Check in an accepted walk-in and attempt a second active encounter for the same patient; create one valid encounter/queue and reject the duplicate. & FR-006; BR-003; UC-027--UC-030 & \weak{Not Run} \\
+TC-005 & Sign a note with missing required content, then amend a signed note; block incomplete signing and retain the original signed version with a linked, reasoned amendment. & FR-009, FR-020, FR-032; NFR-07; UC-037--UC-042 & \weak{Not Run} \\
+TC-006 & Issue a prescription with a configured safety warning; require the permitted response/override evidence and verify issue alone creates no dispensing or administration event. & FR-011--FR-013; BR-006, BR-008; UC-043--UC-052 & \weak{Not Run} \\
+TC-007 & Allocate a service order with unavailable or conflicting resources, then complete a valid execution; do not commit a conflict and do not mark complete without required results. & FR-014--FR-018; NFR-15; UC-039--UC-040 & \weak{Not Run} \\
+TC-008 & Record partial and repeated payment submissions; maintain the correct balance and prevent a duplicate request from applying a second financial effect. & FR-022--FR-023; NFR-15; UC-060--UC-069 & \weak{Not Run} \\
+TC-009 & Submit an invalid refund request (authority, original transaction, amount or reason) and verify rejection with no financial effect; submit a valid request requiring approval and verify a pending status with no completed refund/balance; then verify that only an authorized, permitted request creates one separate refund event. & FR-023, FR-030; BR-009; UC-065--UC-066 & \weak{Not Run} \\
+TC-010 & Export a scoped report and review its audit evidence; enforce the actor's scope and record the controlled export event. & FR-026--FR-027, FR-030; NFR-06--NFR-07; UC-076--UC-079 & \weak{Not Run} \\
+TC-011 & Measure ordinary-screen and search response times under an agreed representative workload; compare p95 values with the provisional targets. & NFR-01; WorkStation Section 10 & \weak{Not Run} \\
+TC-012 & Restore a protected backup and measure data loss and recovery time against approved RPO/RTO; a backup log alone is insufficient evidence. & NFR-02--NFR-03; WorkStation Section 10 & \weak{Not Run} \\
+TC-013 & Verify keyboard operation, labels, contrast, Vietnamese text, configured date/time, and currency formats on supported browsers. & NFR-10--NFR-11, NFR-14 & \weak{Not Run} \\
 \bottomrule
 \end{longtable}
 \endgroup
 
 \subsection{Functional Testing and Use Case Coverage}
-The planned cases cover representative paths across identity/access, scheduling/reception, clinical documentation, prescribing, service execution, finance, and governance. They are a first execution set, not proof of exhaustive FR-001--FR-034 coverage. Before implementation acceptance, each requirement and detailed use case must be mapped to one or more test cases, including negative authorization and exception cases.
+The planned cases cover representative paths across identity/access, scheduling/reception, clinical documentation, prescribing, service execution, finance, and governance. They are a first execution set and \weak{do not cover FR-001--FR-034 exhaustively.} Before implementation acceptance, each requirement and detailed use case must be mapped to one or more test cases, including negative authorization and exception cases.
 
 \begin{table}[H]
 \centering
@@ -1287,12 +1386,12 @@ The planned cases cover representative paths across identity/access, scheduling/
 \toprule
 Requirement group & Representative tests & Coverage status \\
 \midrule
-FR-001--FR-004, FR-028--FR-031 & TC-001--TC-002, TC-010 & Specified; implementation and execution not evidenced. \\
-FR-005--FR-006, FR-017 & TC-003--TC-004 & Specified; implementation and execution not evidenced. \\
-FR-007--FR-010, FR-020--FR-021, FR-032 & TC-004--TC-005 & Specified; implementation and execution not evidenced. \\
-FR-011--FR-019 & TC-006--TC-007 & Specified; implementation and execution not evidenced. \\
-FR-022--FR-027, FR-030 & TC-008--TC-010 & Specified; implementation and execution not evidenced. \\
-NFR-01--NFR-16 & TC-001, TC-003, TC-005--TC-013 & Verification methods proposed; no measurements or results available. \\
+FR-001--FR-004, FR-028--FR-031 & TC-001--TC-002, TC-010 & Specified; \weak{not yet implemented or run.} \\
+FR-005--FR-006, FR-017 & TC-003--TC-004 & Specified; \weak{not yet implemented or run.} \\
+FR-007--FR-010, FR-020--FR-021, FR-032 & TC-004--TC-005 & Specified; \weak{not yet implemented or run.} \\
+FR-011--FR-019 & TC-006--TC-007 & Specified; \weak{not yet implemented or run.} \\
+FR-022--FR-027, FR-030 & TC-008--TC-010 & Specified; \weak{not yet implemented or run.} \\
+NFR-01--NFR-16 & TC-001, TC-003, TC-005--TC-013 & Verification methods proposed; \weak{no measurements or results.} \\
 \bottomrule
 \end{tabularx}
 \caption{Representative functional and quality-requirement test coverage}
@@ -1300,11 +1399,11 @@ NFR-01--NFR-16 & TC-001, TC-003, TC-005--TC-013 & Verification methods proposed;
 \end{table}
 
 \subsection{Exception Handling, Authorization, and Data Integrity Testing}
-The highest-risk checks are rejection paths that must leave no invalid partial state: unauthorized access (TC-001), duplicate identity/encounter handling (TC-002 and TC-004), concurrent resource allocation (TC-003 and TC-007), incomplete signing and append-only amendments (TC-005), bounded prescription overrides (TC-006), and idempotent payment/refund handling (TC-008--TC-009). Expected behavior is specified, but the corresponding server-side controls and transactional boundaries cannot be verified until they exist in code.
+The highest-risk checks are rejection paths that must leave no invalid partial state: unauthorized access (TC-001), duplicate identity/encounter handling (TC-002 and TC-004), concurrent resource allocation (TC-003 and TC-007), incomplete signing and append-only amendments (TC-005), bounded prescription overrides (TC-006), and idempotent payment/refund handling (TC-008--TC-009). TC-009 deliberately distinguishes rejection, pending approval and completed refund because these outcomes have different state, evidence and follow-up. The expected behavior is specified; \weak{the server-side controls and transactional boundaries cannot be verified until they exist in code.}
 
 \subsection{Test Execution Results and Evidence}
 \begin{warningbox}[Execution status: Not Run]
-As of this report revision, there is no runnable MEDORA application, test harness, database, or configured test environment in the repository. All 13 cases in Table~\ref{tab:planned-test-cases} are therefore \textbf{Not Run}. No case is reported as Pass or Fail, no coverage percentage is claimed, and no execution screenshot or log is available. Execution is blocked pending an implemented build and test environment.
+\weak{This revision has no runnable MEDORA application, test harness, database or test environment. All 13 cases in Table~\ref{tab:planned-test-cases} are therefore \textbf{Not Run}.} No case is reported as Pass or Fail, no coverage percentage is claimed, and no execution log exists.
 \end{warningbox}
 
 \begin{table}[H]
@@ -1325,7 +1424,7 @@ Not Run & 13 & No system under test or execution environment. \\
 \end{table}
 
 \subsection{Evaluation Against Functional and Non-functional Requirements}
-Functional requirements are specified and traced to use cases, but none is verified as implemented. The quality targets below come from WorkStation and remain proposed acceptance criteria pending owner confirmation and measurement.
+Functional requirements are specified and traced to use cases. \weak{None is verified as implemented.} The quality targets below come from WorkStation and are \weak{proposed acceptance criteria that still need owner confirmation and measurement.}
 
 \begin{table}[H]
 \centering
@@ -1335,13 +1434,13 @@ Functional requirements are specified and traced to use cases, but none is verif
 \toprule
 Evaluation measure & Proposed acceptance basis & Current evaluation \\
 \midrule
-Registration-to-completion time & Reduce median by at least 25\% against a documented baseline for the representative scenario. & Not measured; no baseline or executable workflow. \\
-Conflicting allocations & Zero accepted conflicts in all defined concurrency cases. & Not measured; no scheduling implementation. \\
-Encounter completeness & At least 95\% of configured mandatory fields for tested completed visits. & Not measured; no configured forms or visits. \\
-Sensitive-event traceability & 100\% of tested sensitive events have actor, time, action, and target evidence. & Not measured; no audit implementation. \\
-Authorization & 100\% of negative authorization cases rejected at the server/API boundary. & Not measured; no API or access-control implementation. \\
-Response time & p95 ordinary screens $\leq$ 2 seconds and search $\leq$ 3 seconds under an agreed workload. & Proposed only; no deployment or load test. \\
-Availability and recovery & Provisional 99.5\% monthly availability, RPO $\leq$ 15 minutes, and RTO $\leq$ 4 hours. & Proposed only; no operational environment or restore exercise. \\
+Registration-to-completion time & Reduce median by at least 25\% against a documented baseline for the representative scenario. & \weak{Not measured; no baseline or executable workflow.} \\
+Conflicting allocations & Zero accepted conflicts in all defined concurrency cases. & \weak{Not measured; no scheduling implementation.} \\
+Encounter completeness & At least 95\% of configured mandatory fields for tested completed visits. & \weak{Not measured; no configured forms or visits.} \\
+Sensitive-event traceability & 100\% of tested sensitive events have actor, time, action, and target evidence. & \weak{Not measured; no audit implementation.} \\
+Authorization & 100\% of negative authorization cases rejected at the server/API boundary. & \weak{Not measured; no API or access-control implementation.} \\
+Response time & p95 ordinary screens $\leq$ 2 seconds and search $\leq$ 3 seconds under an agreed workload. & \weak{Proposed only; no deployment or load test.} \\
+Availability and recovery & Provisional 99.5\% monthly availability, RPO $\leq$ 15 minutes, and RTO $\leq$ 4 hours. & \weak{Proposed only; no operational environment or restore exercise.} \\
 \bottomrule
 \end{tabularx}
 \caption{Evaluation criteria and evidence status}
@@ -1349,15 +1448,15 @@ Availability and recovery & Provisional 99.5\% monthly availability, RPO $\leq$ 
 \end{table}
 
 \subsection{Limitations and Outstanding Issues}
-The principal evaluation limitation is absence of an implemented system. The proposed test cases cannot establish behavior, performance, security, accessibility, recovery, or user acceptance. The clinic must also confirm clinical templates and warning sources, retention and consent rules, merge/refund/override approvals, branch scope, and patient-portal release policy before those behaviors can be treated as definitive acceptance requirements. No legal or certification compliance is claimed.
+\weak{The main limitation is that no system has been implemented, so the proposed test cases cannot establish behavior, performance, security, accessibility, recovery or user acceptance.} The clinic must also confirm clinical templates and warning sources, retention and consent rules, merge, refund and override approvals, branch scope and the patient-portal release policy before these behaviors become firm acceptance requirements. \weak{No legal or certification compliance is claimed.}
 
 \section{Conclusion and Future Work}
 
 \subsection{Summary of Achievements}
-The current deliverable establishes a clinic-focused business and requirements baseline, a traceable use-case model, and a set of behavioral models for appointment booking, check-in, clinical-note integrity, prescription safety, service execution, encounter closure, and payment history. It also defines a practical test plan with expected outcomes and explicit status reporting. These are analysis and design achievements; they do not demonstrate that MEDORA has been implemented, deployed, or tested.
+This report delivers a clinic-focused business and requirements baseline, a traceable use-case model and behavioral models for appointment booking, check-in, clinical-note integrity, prescription safety, service execution, encounter closure and payment history. It also provides a test plan that states each expected outcome and its execution status. \weak{These are analysis and design results; MEDORA itself has not been implemented, deployed or tested.}
 
 \subsection{Limitations of the Current System}
-There is no application implementation in the repository, so MEDORA should be described as a specified/proposed system rather than an operational product. No source modules, persistent schema, API, user interface, deployment topology, test execution evidence, or user feedback are available. The use-case, activity, sequence, and state diagrams express intended behavior; they remain subject to policy confirmation and later reconciliation with code. Performance, availability, recovery, and success-rate values are targets only. Clinical rule sources, data retention, consent, approval thresholds, multi-branch operation, and portal publication remain open decisions.
+\weak{MEDORA is a specified system, not an operational product: the repository holds no application code, schema, API, user interface, deployment topology, test evidence or user feedback.} The use-case, activity, sequence and state diagrams express intended behavior and will need reconciling with code once it exists. Performance, availability, recovery and success-rate values are targets. \weak{Clinical rule sources, data retention, consent, approval thresholds, multi-branch operation and portal publication remain open decisions.}
 
 \subsection{Future Improvements and Extensions}
 Future work should proceed in evidence-producing stages:
@@ -1373,11 +1472,11 @@ Future work should proceed in evidence-producing stages:
 This sequence keeps the report aligned with the project's clinic scope and makes each future claim auditable against source code, test results, or operational evidence.
 
 \appendix
-% Appendices for the proposed MEDORA system-analysis and design report.
-% All API contracts and test cases below are specifications, not execution evidence.
+% Appendices for the MEDORA system-analysis and design report.
+% All API contracts and test cases below are specifications; none is execution evidence.
 
 \section{Detailed Use Case Specifications}
-The following specifications expand the highest-risk use cases from Section 3. They are the proposed behavior baseline for implementation and verification. Facility policies, clinical rules, approval thresholds, and retention requirements must be approved before the corresponding behavior is considered final.
+The following specifications expand the highest-risk use cases from Section 3. They are the behavior baseline for implementation and verification. \weak{Facility policies, clinical rules, approval thresholds and retention requirements must be approved before the matching behavior is final.}
 
 \subsection{UC-021 Book Appointment}
 \begin{description}[leftmargin=2.6cm,style=nextline]
@@ -1468,7 +1567,7 @@ The following specifications expand the highest-risk use cases from Section 3. T
 \item[Goal] Coordinate a requested service with valid resources and record its actual outcome.
 \item[Primary actors] Doctor creates the order; assigned Service Staff records execution.
 \item[Trigger] Doctor adds a service/procedure to an active Encounter.
-\item[Preconditions] The Encounter is active; service catalogue and resource requirements are configured; actors have relevant scope.
+\item[Preconditions] The Encounter is active; service catalog and resource requirements are configured; actors have relevant scope.
 \item[Main success flow]
 \begin{enumerate}[leftmargin=1.4em]
   \item Doctor records service, reason, priority, and required preparation.
@@ -1507,7 +1606,7 @@ The following specifications expand the highest-risk use cases from Section 3. T
 \end{description}
 
 \section{Supplementary UML Diagrams}
-The editable sources, rendered figures, and traceability inventory are catalogued in Table~\ref{tab:uml-artifact-inventory}. The diagrams are proposed models and are not implementation evidence. Structural diagrams for architecture, components, classes, and ERDs are in Section 4; workflow and lifecycle diagrams are in Section 5.
+Table~\ref{tab:uml-artifact-inventory} catalogs the editable sources, rendered figures and traceability inventory. \weak{The diagrams are models, not implementation evidence.} Section 4 is reserved for the architecture, component, class and ERD diagrams; workflow and lifecycle diagrams are in Section 5.
 
 \begin{longtable}{@{}p{0.26\textwidth}p{0.16\textwidth}p{0.42\textwidth}p{0.09\textwidth}@{}}
 \caption{UML source and rendered-figure inventory}\label{tab:uml-artifact-inventory}\\
@@ -1519,19 +1618,19 @@ The editable sources, rendered figures, and traceability inventory are catalogue
 \endhead
 Section 2 business analysis & Activity 2; domain 1 & Outpatient journey, appointment/check-in exceptions, and clinical domain concepts. & Rendered \\
 Section 3 requirements & Functional 1; overall use case 1; focused use case 9 & Capability groups, system boundary, actors, and detailed actor goals. & Rendered \\
-Section 4 architecture & Reserved for Chapter 4 owner & This contribution restores the original Chapter 4 outline; no Chapter 4 UML is claimed here. & Pending \\
-Section 4 persistence & Reserved for Chapter 4 owner & ERD and schema artifacts remain with the Chapter 4 contributor. & Pending \\
-Section 4 classes & Reserved for Chapter 4 owner & Structural class artifacts remain with the Chapter 4 contributor. & Pending \\
+Section 4 architecture & Reserved for Chapter 4 owner & This contribution restores the original Chapter 4 outline and claims no Chapter 4 UML. & \weak{Pending} \\
+Section 4 persistence & Reserved for Chapter 4 owner & ERD and schema artifacts remain with the Chapter 4 contributor. & \weak{Pending} \\
+Section 4 classes & Reserved for Chapter 4 owner & Structural class artifacts remain with the Chapter 4 contributor. & \weak{Pending} \\
 Section 5 interaction & System sequence 6 & Actor-visible success, alternative, and rejection outcomes for high-risk use cases. & Rendered \\
 Section 5 process/lifecycle & Activity 2; state machine 5 & Service execution, closure/finance separation, and entity transitions. & Rendered \\
-Section 5 UI evidence & WorkStation screen inventory & No UI images are included; capture actual screens after implementation. & Not available \\
+Section 5 UI wireframes & Wireframe 3 & Front desk and queue, clinician encounter, and cashier invoice and payment screens. Captures of a running application come after implementation. & Rendered \\
 \bottomrule
 \end{longtable}
 
-The PlantUML source is stored in the matching \code{uml_code/} folder and the rendered PNG in \code{figure/}. Parsing and rendering validate syntax and support visual review; they do not establish implementation, clinical approval, or user acceptance.
+The PlantUML source is stored in the matching \code{uml_code/} folder and the rendered PNG in \code{figure/}. Rendering checks syntax and supports visual review; \weak{it does not establish implementation, clinical approval or user acceptance.}
 
 \section{API Specifications and Data Schemas}
-API request/response examples and a common error schema are proposed in this appendix and Chapter 5. The examples below provide representative persisted data shapes for implementation planning. All IDs and values are synthetic.
+This appendix and Chapter 5 propose API request and response examples and a common error schema. The examples below show representative persisted data shapes for implementation planning; all IDs and values are synthetic.
 
 \subsection{Representative Appointment Data}
 \begin{lstlisting}[language=json,caption={Proposed Appointment resource shape},label={lst:appointment-resource}]
@@ -1576,10 +1675,10 @@ API request/response examples and a common error schema are proposed in this app
 }
 \end{lstlisting}
 
-These shapes are illustrative contract baselines. The approved OpenAPI schema, database types, retention rules, field-level access policy, and migration definitions must be authored and reviewed before implementation.
+These shapes are illustrative contract baselines. \weak{The approved OpenAPI schema, database types, retention rules, field-level access policy and migration definitions still have to be written and reviewed before implementation.}
 
 \section{Detailed Test Cases and Execution Results}
-Detailed test procedures and expected outcomes are listed in Table~\ref{tab:detailed-test-procedures}. The actual-result, tester, execution timestamp, build identifier, and evidence fields are intentionally not populated: all 13 cases remain \textbf{Not Run} because no application or test environment exists. No pass/fail result is claimed.
+Detailed test procedures and expected outcomes are listed in Table~\ref{tab:detailed-test-procedures}. The actual-result, tester, timestamp, build and evidence fields are left empty. \weak{All 13 cases remain \textbf{Not Run} because no application or test environment exists, and no pass or fail result is claimed.}
 
 \begingroup
 \scriptsize
@@ -1592,24 +1691,24 @@ Detailed test procedures and expected outcomes are listed in Table~\ref{tab:deta
 \toprule ID & Setup & Procedure & Expected result / evidence to capture & Status \\
 \midrule
 \endhead
-TC-001 & Synthetic patient; authenticated user without clinical permission. & Call protected patient/clinical read and write endpoints directly, bypassing the UI. & Reject both requests; disclose no protected fields; create no mutation; retain sanitized response and audit-policy evidence. & Not Run \\
-TC-002 & One synthetic patient; registrar and ordinary receptionist accounts. & Register a matching identity, then request merge as receptionist. & Flag possible duplicate; deny unauthorized merge; preserve source records and history. & Not Run \\
-TC-003 & One provider/room/resource slot; two concurrent clients. & Submit conflicting bookings with separate idempotency keys at the same time. & At most one booking commits; losing request receives conflict/alternatives; no orphan resource reservation remains. & Not Run \\
-TC-004 & Patient with no active encounter and an accepted appointment or walk-in. & Check in once; repeat check-in while the first encounter remains active. & First call creates one encounter/queue assignment; second is rejected without duplicate state. & Not Run \\
-TC-005 & Assigned doctor; incomplete draft and then corrected note. & Attempt signing while required content is missing; correct, sign, then append an amendment with reason. & Incomplete signing is blocked; signed source remains immutable; amendment links predecessor and records actor/time/reason. & Not Run \\
-TC-006 & Synthetic, clinician-approved safety-rule fixture; doctor and medicine staff roles. & Issue with a warning; test dismissal and permitted override; inspect medication events. & Apply configured warning behavior; require authorized override reason; prescription issue alone creates no administration event. & Not Run \\
-TC-007 & Valid order and two requests competing for the same resource. & Attempt conflicting allocations; submit incomplete execution result and then a valid result. & Conflict does not commit; incomplete result cannot complete order; valid result records performer/time and releases resources by policy. & Not Run \\
-TC-008 & Issued invoice with known total; cashier in authorized facility. & Post partial payment; retry same key; attempt another payment with a new key. & Same key returns original event; permitted new payment updates balance exactly once; reconciliation matches transaction history. & Not Run \\
-TC-009 & Paid synthetic invoice; cashier and authorized finance role. & Request refund with unauthorized role, invalid amount, missing reason, then valid approval. & Invalid requests have no financial effect; valid refund appends event and preserves original payment. & Not Run \\
-TC-010 & Two facility scopes with synthetic report data. & Query and export through auditor/manager roles across authorized and unauthorized scopes. & Enforce scope; audit actor, time, filter, and target; do not duplicate protected clinical content in logs. & Not Run \\
-TC-011 & Staging-like environment, agreed synthetic dataset, representative concurrent load. & Measure ordinary screens and search; record sample size, p95, build, and configuration. & Compare results with owner-approved targets; retain sanitized measurements; do not infer production capacity. & Not Run \\
-TC-012 & Encrypted synthetic backup and clean recovery environment. & Restore database and private files; verify checksums and measure data loss and recovery time. & Compare measured RPO/RTO with approved objectives; retain restore log and timestamps. & Not Run \\
-TC-013 & Supported browsers and synthetic Vietnamese names, dates, currencies; keyboard-only user. & Complete core workflows using keyboard; review labels, errors, contrast, date/time, and currency formats. & Record browser/version and findings; no blocking accessibility or localization defect remains at acceptance. & Not Run \\
+TC-001 & Synthetic patient; authenticated user without clinical permission. & Call protected patient/clinical read and write endpoints directly, bypassing the UI. & Reject both requests; disclose no protected fields; create no mutation; retain sanitized response and audit-policy evidence. & \weak{Not Run} \\
+TC-002 & One synthetic patient; registrar and ordinary receptionist accounts. & Register a matching identity, then request merge as receptionist. & Flag possible duplicate; deny unauthorized merge; preserve source records and history. & \weak{Not Run} \\
+TC-003 & One provider/room/resource slot; two concurrent clients. & Submit conflicting bookings with separate idempotency keys at the same time. & At most one booking commits; losing request receives conflict/alternatives; no orphan resource reservation remains. & \weak{Not Run} \\
+TC-004 & Patient with no active encounter and an accepted appointment or walk-in. & Check in once; repeat check-in while the first encounter remains active. & First call creates one encounter/queue assignment; second is rejected without duplicate state. & \weak{Not Run} \\
+TC-005 & Assigned doctor; incomplete draft and then corrected note. & Attempt signing while required content is missing; correct, sign, then append an amendment with reason. & Incomplete signing is blocked; signed source remains immutable; amendment links predecessor and records actor/time/reason. & \weak{Not Run} \\
+TC-006 & Synthetic, clinician-approved safety-rule fixture; doctor and medicine staff roles. & Issue with a warning; test dismissal and permitted override; inspect medication events. & Apply configured warning behavior; require authorized override reason; prescription issue alone creates no administration event. & \weak{Not Run} \\
+TC-007 & Valid order and two requests competing for the same resource. & Attempt conflicting allocations; submit incomplete execution result and then a valid result. & Conflict does not commit; incomplete result cannot complete order; valid result records performer/time and releases resources by policy. & \weak{Not Run} \\
+TC-008 & Issued invoice with known total; cashier in authorized facility. & Post partial payment; retry same key; attempt another payment with a new key. & Same key returns original event; permitted new payment updates balance exactly once; reconciliation matches transaction history. & \weak{Not Run} \\
+TC-009 & Paid synthetic invoice; cashier and authorized finance role. & Request refund with unauthorized role, invalid amount, missing reason, then valid approval. & Invalid requests have no financial effect; valid refund appends event and preserves original payment. & \weak{Not Run} \\
+TC-010 & Two facility scopes with synthetic report data. & Query and export through auditor/manager roles across authorized and unauthorized scopes. & Enforce scope; audit actor, time, filter, and target; do not duplicate protected clinical content in logs. & \weak{Not Run} \\
+TC-011 & Staging-like environment, agreed synthetic dataset, representative concurrent load. & Measure ordinary screens and search; record sample size, p95, build, and configuration. & Compare results with owner-approved targets; retain sanitized measurements; do not infer production capacity. & \weak{Not Run} \\
+TC-012 & Encrypted synthetic backup and clean recovery environment. & Restore database and private files; verify checksums and measure data loss and recovery time. & Compare measured RPO/RTO with approved objectives; retain restore log and timestamps. & \weak{Not Run} \\
+TC-013 & Supported browsers and synthetic Vietnamese names, dates, currencies; keyboard-only user. & Complete core workflows using keyboard; review labels, errors, contrast, date/time, and currency formats. & Record browser/version and findings; no blocking accessibility or localization defect remains at acceptance. & \weak{Not Run} \\
 \bottomrule
 \end{longtable}
 \endgroup
 
-For an executed run, add actual result, tester, timestamp, build ID, environment, evidence link, and defect ID if applicable. A test may then be marked Pass, Fail, or Blocked. Until those fields are supported by real execution evidence, the status remains Not Run.
+For an executed run, add the actual result, tester, timestamp, build ID, environment, evidence link and, where relevant, defect ID. The test may then be marked Pass, Fail or Blocked. \weak{Until real execution evidence supports those fields, the status stays Not Run.}
 
 \clearpage
 \phantomsection

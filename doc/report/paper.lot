@@ -1,23 +1,24 @@
-\contentsline {table}{\numberline {1}{\ignorespaces MEDORA product definition and value proposition}}{10}{table*.12}%
-\contentsline {table}{\numberline {2}{\ignorespaces Business baseline and target operating model}}{12}{table.caption.15}%
-\contentsline {table}{\numberline {3}{\ignorespaces Stakeholder responsibilities and authority boundaries}}{13}{table.caption.17}%
-\contentsline {table}{\numberline {4}{\ignorespaces Role-to-activity mapping and interaction boundaries}}{13}{table.caption.18}%
-\contentsline {table}{\numberline {5}{\ignorespaces Major business processes, outcomes and controlled alternatives}}{14}{table.caption.27}%
-\contentsline {table}{\numberline {6}{\ignorespaces Core business rules}}{17}{table.caption.29}%
-\contentsline {table}{\numberline {7}{\ignorespaces Core entity glossary}}{17}{table.caption.32}%
-\contentsline {table}{\numberline {8}{\ignorespaces Core domain relationships}}{19}{table.caption.33}%
-\contentsline {table}{\numberline {9}{\ignorespaces Business-to-system traceability}}{19}{table.caption.34}%
-\contentsline {table}{\numberline {16}{\ignorespaces Functional requirements catalogue}}{32}{table*.68}%
-\contentsline {table}{\numberline {17}{\ignorespaces Non-functional requirements catalogue}}{33}{table*.70}%
-\contentsline {table}{\numberline {19}{\ignorespaces Requirements traceability and planned verification}}{33}{table*.74}%
-\contentsline {table}{\numberline {18}{\ignorespaces Target role-based access-control matrix}}{35}{table.caption.72}%
-\contentsline {table}{\numberline {20}{\ignorespaces Implementation and deployment evidence available in the repository}}{50}{table.caption.133}%
-\contentsline {table}{\numberline {21}{\ignorespaces Proposed implementation slices and acceptance invariants}}{51}{table.caption.135}%
-\contentsline {table}{\numberline {22}{\ignorespaces Proposed development and deployment environment matrix}}{52}{table.caption.137}%
-\contentsline {table}{\numberline {23}{\ignorespaces Planned verification levels and present evidence boundary}}{53}{table.caption.141}%
-\contentsline {table}{\numberline {24}{\ignorespaces Planned test cases and current execution status}}{54}{table*.143}%
-\contentsline {table}{\numberline {25}{\ignorespaces Representative functional and quality-requirement test coverage}}{55}{table.caption.145}%
-\contentsline {table}{\numberline {26}{\ignorespaces Test execution summary at report time}}{55}{table.caption.148}%
-\contentsline {table}{\numberline {27}{\ignorespaces Evaluation criteria and evidence status}}{56}{table.caption.150}%
-\contentsline {table}{\numberline {28}{\ignorespaces UML source and rendered-figure inventory}}{63}{table*.201}%
-\contentsline {table}{\numberline {29}{\ignorespaces Detailed test procedures and expected outcomes}}{65}{table*.241}%
+\contentsline {table}{\numberline {2}{\ignorespaces MEDORA product definition and value proposition}}{11}{table*.15}%
+\contentsline {table}{\numberline {3}{\ignorespaces Target operating model by business area}}{13}{table.caption.18}%
+\contentsline {table}{\numberline {4}{\ignorespaces Stakeholder responsibilities and authority boundaries}}{14}{table.caption.20}%
+\contentsline {table}{\numberline {5}{\ignorespaces Role-to-activity mapping and interaction boundaries}}{15}{table.caption.21}%
+\contentsline {table}{\numberline {6}{\ignorespaces Major business processes, outcomes and controlled alternatives}}{18}{table.caption.30}%
+\contentsline {table}{\numberline {7}{\ignorespaces Core business rules}}{18}{table.caption.32}%
+\contentsline {table}{\numberline {8}{\ignorespaces Core entity glossary}}{20}{table.caption.35}%
+\contentsline {table}{\numberline {9}{\ignorespaces Core domain relationships}}{20}{table.caption.36}%
+\contentsline {table}{\numberline {10}{\ignorespaces Business-to-system traceability}}{20}{table.caption.37}%
+\contentsline {table}{\numberline {17}{\ignorespaces Functional requirements catalog}}{35}{table*.71}%
+\contentsline {table}{\numberline {18}{\ignorespaces Non-functional requirements catalog}}{36}{table*.73}%
+\contentsline {table}{\numberline {19}{\ignorespaces Target role-based access-control matrix}}{37}{table.caption.75}%
+\contentsline {table}{\numberline {20}{\ignorespaces Requirements traceability and planned verification}}{38}{table*.77}%
+\contentsline {table}{\numberline {21}{\ignorespaces Lifecycle states by entity}}{40}{table.caption.113}%
+\contentsline {table}{\numberline {22}{\ignorespaces Implementation and deployment evidence available in the repository}}{49}{table.caption.137}%
+\contentsline {table}{\numberline {23}{\ignorespaces Proposed implementation slices and acceptance invariants}}{50}{table.caption.139}%
+\contentsline {table}{\numberline {24}{\ignorespaces Proposed development and deployment environment matrix}}{51}{table.caption.141}%
+\contentsline {table}{\numberline {25}{\ignorespaces Planned verification levels and present evidence boundary}}{53}{table.caption.148}%
+\contentsline {table}{\numberline {26}{\ignorespaces Planned test cases and current execution status}}{54}{table*.150}%
+\contentsline {table}{\numberline {27}{\ignorespaces Representative functional and quality-requirement test coverage}}{55}{table.caption.152}%
+\contentsline {table}{\numberline {28}{\ignorespaces Test execution summary at report time}}{55}{table.caption.155}%
+\contentsline {table}{\numberline {29}{\ignorespaces Evaluation criteria and evidence status}}{56}{table.caption.157}%
+\contentsline {table}{\numberline {30}{\ignorespaces UML source and rendered-figure inventory}}{63}{table*.208}%
+\contentsline {table}{\numberline {31}{\ignorespaces Detailed test procedures and expected outcomes}}{65}{table*.248}%

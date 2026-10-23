@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2026.10.16)  23 OCT 2026 13:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2026.10.16)  23 OCT 2026 13:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1036,30 +1036,30 @@ File: tikzlibrarycalc.code.tex 2026-08-01 v3.1.12 (3.1.12)
 ) (E:\Download\miktex\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryfit.code.tex
 File: tikzlibraryfit.code.tex 2026-08-01 v3.1.12 (3.1.12)
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 155.
+Package hyperref Info: Option `colorlinks' set `true' on input line 157.
  (paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 157.
-LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
  (E:\Download\miktex\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count388
@@ -1123,13 +1123,13 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 157.
-Package microtype Info: Applying patch `item' on input line 157.
-Package microtype Info: Applying patch `toc' on input line 157.
-Package microtype Info: Applying patch `eqnum' on input line 157.
-Package microtype Info: Applying patch `footnote' on input line 157.
-Package microtype Info: Applying patch `verbatim' on input line 157.
-LaTeX Info: Redefining \microtypesetup on input line 157.
+LaTeX Info: Redefining \microtypecontext on input line 159.
+Package microtype Info: Applying patch `item' on input line 159.
+Package microtype Info: Applying patch `toc' on input line 159.
+Package microtype Info: Applying patch `eqnum' on input line 159.
+Package microtype Info: Applying patch `footnote' on input line 159.
+Package microtype Info: Applying patch `verbatim' on input line 159.
+LaTeX Info: Redefining \microtypesetup on input line 159.
 Package microtype Info: Generating PDF output.
 Package microtype Info: No character protrusion.
 Package microtype Info: No font expansion.
@@ -1140,35 +1140,35 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
 \c@lstlisting=\count394
-Package hyperref Info: Link coloring ON on input line 157.
+Package hyperref Info: Link coloring ON on input line 159.
  (paper.out) (paper.out)
 \@outlinefile=\write4
 \openout4 = `paper.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 169.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 273.
+Package hyperref Info: Option `pageanchor' set `false' on input line 171.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 275.
  (E:\Download\miktex\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (E:\Download\miktex\tex/latex/microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 273.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 275.
  (E:\Download\miktex\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (E:\Download\miktex\tex/latex/microtype\mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-<soict.png, id=402, 448.67625pt x 448.67625pt>
+<soict.png, id=406, 448.67625pt x 448.67625pt>
 File: soict.png Graphic file (type png)
 <use soict.png>
-Package pdftex.def Info: soict.png  used on input line 281.
+Package pdftex.def Info: soict.png  used on input line 283.
 (pdftex.def)             Requested size: 176.407pt x 44.47209pt.
 
 
 [1
 
 {C:/Users/xiqhq/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./soict.png>]
-Package hyperref Info: Option `pageanchor' set `true' on input line 349.
+Package hyperref Info: Option `pageanchor' set `true' on input line 351.
 
 
 [1
@@ -1207,244 +1207,263 @@ Package hyperref Info: Option `pageanchor' set `true' on input line 349.
 
 ]
 
-[8]
+[8
 
-[9] [10]
+]
 
-[11]
+[9]
+
+[10] [11]
 
 [12]
-<../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png, id=705, 634.37pt x 1505.625pt>
-File: ../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png Graphic file (type png)
-<use ../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png>
-Package pdftex.def Info: ../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png  used on input line 559.
-(pdftex.def)             Requested size: 264.8461pt x 628.5757pt.
-
 
 [13]
-<../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png, id=710, 875.27pt x 1223.57124pt>
-File: ../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png Graphic file (type png)
-<use ../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png>
-Package pdftex.def Info: ../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png  used on input line 566.
-(pdftex.def)             Requested size: 460.35168pt x 643.54506pt.
-
 
 [14]
+<../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png, id=724, 2600.71625pt x 3873.47125pt>
+File: ../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png Graphic file (type png)
+<use ../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png>
+Package pdftex.def Info: ../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png  used on input line 611.
+(pdftex.def)             Requested size: 467.23569pt x 695.92065pt.
+<../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png, id=725, 1982.40625pt x 2824.5525pt>
+File: ../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png Graphic file (type png)
+<use ../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png>
+Package pdftex.def Info: ../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png  used on input line 618.
+(pdftex.def)             Requested size: 467.40823pt x 665.968pt.
 
-[15 <../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png (PNG copy)>]
 
-[16 <../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png (PNG copy)>]
-<../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png, id=729, 1006.76125pt x 775.89874pt>
+[15]
+
+[16 <../asset/02-business-analysis/business-processes/figure/outpatient-patient-journey.png (PNG copy)>]
+
+[17 <../asset/02-business-analysis/business-processes/figure/appointment-and-check-in-exceptions.png (PNG copy)>]
+<../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png, id=744, 1535.7375pt x 2606.73875pt>
 File: ../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png Graphic file (type png)
 <use ../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png>
-Package pdftex.def Info: ../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png  used on input line 627.
-(pdftex.def)             Requested size: 483.70076pt x 372.78235pt.
+Package pdftex.def Info: ../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png  used on input line 682.
+(pdftex.def)             Requested size: 326.24031pt x 553.75562pt.
 
 
-[17]
+[18]
 
-[18 <../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png (PNG copy)>]
-<../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png, id=741, 1320.935pt x 722.7pt>
+[19 <../asset/02-business-analysis/domain-model/figure/conceptual-domain-model.png>]
+<../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png, id=757, 455.301pt x 332.26132pt>
 File: ../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png Graphic file (type png)
 <use ../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png>
-Package pdftex.def Info: ../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png  used on input line 697.
-(pdftex.def)             Requested size: 483.69934pt x 264.63794pt.
-<../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png, id=744, 691.58376pt x 1293.83376pt>
-File: ../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png Graphic file (type png)
-<use ../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png  used on input line 712.
-(pdftex.def)             Requested size: 351.98546pt x 658.50401pt.
-
-
-[19]
-LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 717.
- (E:\Download\miktex\tex/latex/vntex\t5cmtt.fd
-File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-<../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png, id=749, 472.76625pt x 1102.1175pt>
-File: ../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png Graphic file (type png)
-<use ../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png  used on input line 722.
-(pdftex.def)             Requested size: 250.38457pt x 583.67906pt.
+Package pdftex.def Info: ../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png  used on input line 752.
+(pdftex.def)             Requested size: 483.71443pt x 352.99635pt.
 
 
 [20]
-<../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png, id=755, 436.63126pt x 782.925pt>
+<../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png, id=764, 2236.355pt x 2375.87625pt>
+File: ../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png Graphic file (type png)
+<use ../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png>
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png  used on input line 767.
+(pdftex.def)             Requested size: 483.67337pt x 513.8487pt.
+LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 772.
+ (E:\Download\miktex\tex/latex/vntex\t5cmtt.fd
+File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+<../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png, id=765, 1368.11125pt x 2540.49126pt>
+File: ../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png Graphic file (type png)
+<use ../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png>
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png  used on input line 777.
+(pdftex.def)             Requested size: 314.32497pt x 583.67906pt.
+
+
+[21]
+
+[22 <../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png>]
+
+[23 <../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png>]
+<../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png, id=781, 896.34875pt x 1708.3825pt>
 File: ../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png  used on input line 730.
-(pdftex.def)             Requested size: 300.48972pt x 538.78244pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png  used on input line 785.
+(pdftex.def)             Requested size: 282.6796pt x 538.78244pt.
 
 
-[21 <../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png>]
-<../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png, id=761, 440.64626pt x 462.72874pt>
+[24 <../asset/03-system-requirements/use-case-by-function/patient-management/figure/patient-management.png>]
+<../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png, id=788, 881.2925pt x 957.5775pt>
 File: ../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png  used on input line 737.
-(pdftex.def)             Requested size: 441.80836pt x 463.9471pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png  used on input line 792.
+(pdftex.def)             Requested size: 426.98259pt x 463.9471pt.
 
 
-[22 <../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png>]
-<../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png, id=767, 396.48125pt x 572.1375pt>
+[25 <../asset/03-system-requirements/use-case-by-function/appointment/figure/appointment-and-queue.png>]
+<../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png, id=794, 792.9625pt x 1176.395pt>
 File: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png  used on input line 745.
-(pdftex.def)             Requested size: 373.37pt x 538.78244pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png  used on input line 800.
+(pdftex.def)             Requested size: 363.17003pt x 538.78244pt.
 
 
-[23 <../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png>]
-<../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png, id=773, 486.81876pt x 576.1525pt>
+[26 <../asset/03-system-requirements/use-case-by-function/appointment/figure/check-in-and-queue.png>]
+<../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png, id=800, 973.6375pt x 1184.425pt>
 File: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png  used on input line 752.
-(pdftex.def)             Requested size: 392.02571pt x 463.9471pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png  used on input line 807.
+(pdftex.def)             Requested size: 381.38103pt x 463.9471pt.
 
 
-[24 <../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png>]
-<../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png, id=780, 498.86375pt x 465.74pt>
+[27 <../asset/03-system-requirements/use-case-by-function/medical-examination/figure/medical-examination.png>]
+<../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png, id=806, 997.7275pt x 1022.82124pt>
 File: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png  used on input line 759.
-(pdftex.def)             Requested size: 400.7738pt x 374.15384pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png  used on input line 814.
+(pdftex.def)             Requested size: 364.96677pt x 374.15384pt.
 
 
-[25 <../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png>]
-<../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png, id=786, 465.74pt x 1088.065pt>
+[28 <../asset/03-system-requirements/use-case-by-function/medical-examination/figure/clinical-note-lifecycle.png>]
+<../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png, id=812, 1108.14pt x 2240.37pt>
 File: ../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png  used on input line 767.
-(pdftex.def)             Requested size: 230.63084pt x 538.78244pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png  used on input line 822.
+(pdftex.def)             Requested size: 266.5001pt x 538.78244pt.
 
 
-[26 <../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png>]
-<../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png, id=792, 451.6875pt x 1090.0725pt>
+[29 <../asset/03-system-requirements/use-case-by-function/medical-examination/figure/service-order-execution.png>]
+<../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png, id=818, 1210.5225pt x 2144.01pt>
 File: ../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png  used on input line 774.
-(pdftex.def)             Requested size: 223.25172pt x 538.78244pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png  used on input line 829.
+(pdftex.def)             Requested size: 304.19992pt x 538.78244pt.
 
 
-[27 <../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png>]
-<../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png, id=798, 557.08125pt x 1032.85875pt>
+[30 <../asset/03-system-requirements/use-case-by-function/prescription/figure/prescription-and-medication-safety.png>]
+<../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png, id=825, 1260.71pt x 2097.8375pt>
 File: ../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png Graphic file (type png)
 <use ../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png>
-Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png  used on input line 781.
-(pdftex.def)             Requested size: 290.60196pt x 538.78244pt.
+Package pdftex.def Info: ../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png  used on input line 836.
+(pdftex.def)             Requested size: 323.7756pt x 538.78244pt.
 
 
-[28 <../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png>] [29 <../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png>]
+[31 <../asset/03-system-requirements/use-case-by-function/billing/figure/billing-and-payment.png>] [32 <../asset/03-system-requirements/use-case-by-function/administration/figure/administration-and-governance.png>]
 
-[30] [31]
+[33] [34] [35]
 
-[32] [33]
-
-[34]
-
-[35 <../asset/03-system-requirements/functional-decomposition/figure/functional-decomposition.png>]
-
-[36 <../asset/03-system-requirements/use-case-model/figure/overall-use-case-model.png>]
+[36]
 
 [37]
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png, id=860, 1193.45876pt x 1166.3575pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png  used on input line 1034.
-(pdftex.def)             Requested size: 464.3544pt x 453.80977pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png, id=861, 1203.49625pt x 1166.3575pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png  used on input line 1041.
-(pdftex.def)             Requested size: 464.34833pt x 450.01897pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png, id=862, 1404.24625pt x 1548.78625pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png  used on input line 1048.
-(pdftex.def)             Requested size: 464.34549pt x 512.14088pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png, id=863, 1480.53125pt x 1477.52pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png  used on input line 1055.
-(pdftex.def)             Requested size: 464.3592pt x 463.41475pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png, id=864, 1594.95876pt x 1444.39626pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png  used on input line 1062.
-(pdftex.def)             Requested size: 464.35149pt x 420.51717pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png, id=865, 1478.52374pt x 1296.845pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png  used on input line 1069.
-(pdftex.def)             Requested size: 464.3387pt x 407.28146pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png, id=870, 2015.53pt x 2919.90875pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png  used on input line 1079.
-(pdftex.def)             Requested size: 392.55008pt x 568.68933pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png, id=871, 2296.58pt x 1951.29pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png  used on input line 1086.
-(pdftex.def)             Requested size: 464.35405pt x 394.53857pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png, id=872, 2790.425pt x 1988.42876pt>
-File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png Graphic file (type png)
-<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png  used on input line 1096.
-(pdftex.def)             Requested size: 464.31747pt x 330.86795pt.
-
 
 [38]
 
-[39 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png>]
+[39]
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png, id=882, 1506.62875pt x 831.105pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png  used on input line 1091.
+(pdftex.def)             Requested size: 464.33736pt x 256.14345pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png, id=883, 1460.45625pt x 831.105pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png  used on input line 1098.
+(pdftex.def)             Requested size: 464.3471pt x 264.24701pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png, id=884, 1760.5775pt x 1484.54625pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png  used on input line 1105.
+(pdftex.def)             Requested size: 464.34795pt x 391.5454pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png, id=885, 1360.08125pt x 1364.09625pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png  used on input line 1112.
+(pdftex.def)             Requested size: 464.35155pt x 465.72234pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png, id=886, 1854.93pt x 1778.645pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png  used on input line 1119.
+(pdftex.def)             Requested size: 464.35405pt x 445.25723pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png, id=887, 2102.85625pt x 1340.00626pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png  used on input line 1126.
+(pdftex.def)             Requested size: 464.33041pt x 295.88597pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png, id=892, 2422.04875pt x 3012.25375pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png  used on input line 1136.
+(pdftex.def)             Requested size: 457.27441pt x 568.70308pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png, id=893, 2423.0525pt x 1842.885pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png  used on input line 1143.
+(pdftex.def)             Requested size: 464.34085pt x 353.16064pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png, id=895, 1351.0475pt x 1396.21625pt>
+File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png  used on input line 1174.
+(pdftex.def)             Requested size: 464.33899pt x 479.86295pt.
 
-[40 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png>]
 
-[41 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png>]
+[40]
 
-[42 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png>]
+[41 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/appointment-booking.png> <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/appointment/figure/patient-check-in.png>]
 
-[43 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png>]
+[42 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/sign-and-amend-clinical-note.png>]
 
-[44 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png>]
+[43 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/prescription/figure/issue-prescription-safely.png>]
 
-[45 <../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png (PNG copy)>]
-
-[46 <../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png>]
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png, id=917, 2910.875pt x 1235.61626pt>
+[44 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/medical-examination/figure/schedule-and-execute-service-order.png>]
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png, id=922, 2047.65pt x 1036.87375pt>
 File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png Graphic file (type png)
 <use ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png  used on input line 1103.
-(pdftex.def)             Requested size: 464.3282pt x 197.0993pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png, id=918, 2540.49126pt x 1235.61626pt>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png  used on input line 1181.
+(pdftex.def)             Requested size: 464.32574pt x 235.12181pt.
+
+
+[45 <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png>]
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png, id=928, 1484.54625pt x 1113.15875pt>
 File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png Graphic file (type png)
 <use ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png  used on input line 1110.
-(pdftex.def)             Requested size: 464.32388pt x 225.83275pt.
-
-
-[47 <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/appointment-lifecycle.png> <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png>]
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png, id=925, 3010.24625pt x 1663.21375pt>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png  used on input line 1188.
+(pdftex.def)             Requested size: 464.34996pt x 348.18398pt.
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png, id=929, 2585.66pt x 1937.2375pt>
 File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png Graphic file (type png)
 <use ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png  used on input line 1117.
-(pdftex.def)             Requested size: 464.33266pt x 256.55191pt.
-<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png, id=926, 2503.3525pt x 1667.22874pt>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png  used on input line 1195.
+(pdftex.def)             Requested size: 464.33347pt x 347.88959pt.
+
+
+[46 <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/encounter-lifecycle.png> <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png>]
+<../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png, id=936, 2776.3725pt x 1740.5025pt>
 File: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png Graphic file (type png)
 <use ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png>
-Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png  used on input line 1124.
-(pdftex.def)             Requested size: 464.3353pt x 309.24657pt.
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png  used on input line 1202.
+(pdftex.def)             Requested size: 464.35158pt x 291.10109pt.
 
 
-[48 <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/clinical-note-version-lifecycle.png> <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png>]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 1132.
+[47 <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/procedure-order-lifecycle.png> <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png>]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 1210.
 
 
-[49 <../asset/05-behavioral-modeling-implementation/behavioral-uml/state-machine-by-entity/figure/invoice-lifecycle.png>]
+[48]
+
+[49]
 
 [50]
+<../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/front-desk-queue-wireframe.png, id=977, 935.495pt x 529.98pt>
+File: ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/front-desk-queue-wireframe.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/front-desk-queue-wireframe.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/front-desk-queue-wireframe.png  used on input line 1303.
+(pdftex.def)             Requested size: 396.63496pt x 224.70073pt.
+
 
 [51]
+<../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/clinician-encounter-wireframe.png, id=982, 1173.38374pt x 578.16pt>
+File: ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/clinician-encounter-wireframe.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/clinician-encounter-wireframe.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/clinician-encounter-wireframe.png  used on input line 1310.
+(pdftex.def)             Requested size: 396.63496pt x 195.43376pt.
+<../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/cashier-invoice-wireframe.png, id=983, 1391.1975pt x 507.8975pt>
+File: ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/cashier-invoice-wireframe.png Graphic file (type png)
+<use ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/cashier-invoice-wireframe.png>
+Package pdftex.def Info: ../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/cashier-invoice-wireframe.png  used on input line 1317.
+(pdftex.def)             Requested size: 396.63496pt x 144.79878pt.
 
-[52]
+
+[52 <../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/front-desk-queue-wireframe.png> <../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/clinician-encounter-wireframe.png> <../asset/05-behavioral-modeling-implementation/ui-api-evidence/ui/figure/cashier-invoice-wireframe.png>]
 
 [53]
 
@@ -1468,9 +1487,15 @@ Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on in
 
 [64] [65])
 
-[66] (paper.bbl)
+[66]
 
-[67
+[67 <../asset/05-behavioral-modeling-implementation/behavioral-uml/sequence-by-function/billing/figure/record-payment-and-refund.png>]
+
+[68 <../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/service-order-execution.png (PNG copy)>]
+
+[69 <../asset/05-behavioral-modeling-implementation/behavioral-uml/activity-by-workflow/figure/encounter-closure-and-finance.png>] (paper.bbl)
+
+[70
 
 ] (paper.aux)
  ***********
@@ -1478,20 +1503,20 @@ LaTeX2e <2026-06-01>
 L3 programming layer <2026-09-09>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 0AFFA7FA6D2D95D495F89C44B704FC64;21334.
+(rerunfilecheck)             Checksum: 54AB8A72DA4567F95A8B3681CF9006B7;21385.
  ) 
 Here is how much of TeX's memory you used:
- 36892 strings out of 467395
- 748781 string characters out of 5418268
- 1331760 words of memory out of 5000000
- 65306 multiletter control sequences out of 15000+600000
+ 36936 strings out of 467395
+ 751992 string characters out of 5418268
+ 1343046 words of memory out of 5000000
+ 65340 multiletter control sequences out of 15000+600000
  654534 words of font info for 89 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 92i,13n,104p,1210b,2057s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vnti10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vntt10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnr6.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnbx8.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnti12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vntt12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnr8.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi864\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi720\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vnr10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vnbx10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnr12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi950\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi1150\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi800\vnbx12.pk><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmsy10.pfb><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmsy5.pfb><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on paper.pdf (68 pages, 2271662 bytes).
+ 92i,13n,104p,1150b,2057s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vnti10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vntt10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnti12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnr6.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnbx8.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vntt12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnr8.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi864\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi720\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vnr10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi657\vnbx10.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnr12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi950\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi1150\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi600\vnbx12.pk> <C:\Users\xiqhq\AppData\Local\MiKTeX\fonts/pk/ljfour/vntex/vnr/dpi800\vnbx12.pk><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmmi5.pfb><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmmi6.pfb><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmsy10.pfb><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmsy5.pfb><E:/Download/miktex/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
+Output written on paper.pdf (71 pages, 3864444 bytes).
 PDF statistics:
- 1946 PDF objects out of 2073 (max. 8388607)
- 320 named destinations out of 1000 (max. 500000)
- 1023 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2011 PDF objects out of 2073 (max. 8388607)
+ 330 named destinations out of 1000 (max. 500000)
+ 1046 words of extra memory for PDF output out of 10000 (max. 10000000)
 

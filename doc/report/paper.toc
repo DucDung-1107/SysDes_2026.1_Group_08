@@ -1,90 +1,91 @@
 \contentsline {section}{List of Figures}{5}{section*.2}%
 \contentsline {section}{List of Tables}{6}{section*.4}%
-\contentsline {section}{\numberline {1}Introduction and Problem Definition}{7}{section*.6}%
-\contentsline {subsection}{\numberline {1.1}Background and Existing System}{7}{subsection*.7}%
-\contentsline {subsection}{\numberline {1.2}Problem Statement and Motivation}{8}{subsection*.8}%
-\contentsline {subsection}{\numberline {1.3}Project Objectives and Success Criteria}{9}{subsection*.9}%
-\contentsline {subsection}{\numberline {1.4}System Scope, Assumptions, and Constraints}{10}{subsection*.10}%
-\contentsline {subsection}{\numberline {1.5}Proposed Solution and System Overview}{10}{subsection*.11}%
-\contentsline {section}{\numberline {2}Business Analysis and Domain Modeling}{12}{section*.13}%
-\contentsline {subsection}{\numberline {2.1}Business Context and Operational Overview}{12}{subsection*.14}%
-\contentsline {subsection}{\numberline {2.2}Stakeholders and Responsibilities}{12}{subsection*.16}%
-\contentsline {subsection}{\numberline {2.3}Business Workflow and Controls}{14}{subsection*.19}%
-\contentsline {subsection}{\numberline {2.4}Business Rules}{17}{subsection*.28}%
-\contentsline {subsection}{\numberline {2.5}Domain Model and Core Entities}{17}{subsection*.30}%
-\contentsline {section}{\numberline {3}System Requirements Analysis}{19}{section*.35}%
-\contentsline {subsection}{\numberline {3.1}Functional Decomposition and Package Structure}{19}{subsection*.36}%
-\contentsline {subsection}{\numberline {3.2}Actors and Overall Use Case Model}{20}{subsection*.38}%
-\contentsline {subsection}{\numberline {3.3}Use Case Diagrams by Functional Group}{20}{subsection*.40}%
-\contentsline {subsubsection}{\numberline {3.3.1}Patient Management}{21}{subsubsection*.41}%
-\contentsline {subsubsection}{\numberline {3.3.2}Appointment, Check-in and Queue Management}{22}{subsubsection*.43}%
-\contentsline {subsubsection}{\numberline {3.3.3}Medical Examination and Encounter Management}{24}{subsubsection*.46}%
-\contentsline {subsubsection}{\numberline {3.3.4}Prescription, Billing and Governance}{27}{subsubsection*.50}%
-\contentsline {subsection}{\numberline {3.4}Detailed Use Case Specifications}{29}{subsection*.54}%
-\contentsline {subsubsection}{\numberline {3.4.1}UC-021 Book Appointment}{29}{subsubsection*.55}%
-\contentsline {subsubsection}{\numberline {3.4.2}UC-027 Check In Patient}{30}{subsubsection*.57}%
-\contentsline {subsubsection}{\numberline {3.4.3}UC-037/UC-038 Sign and Amend a Clinical Note}{30}{subsubsection*.59}%
-\contentsline {subsubsection}{\numberline {3.4.4}UC-048 Validate and Issue Prescription}{31}{subsubsection*.61}%
-\contentsline {subsubsection}{\numberline {3.4.5}UC-039/UC-040 Service Order, Allocation and Result}{31}{subsubsection*.63}%
-\contentsline {subsubsection}{\numberline {3.4.6}UC-063/UC-065 Record Payment and Refund}{31}{subsubsection*.65}%
-\contentsline {subsection}{\numberline {3.5}Functional Requirements}{32}{subsection*.67}%
-\contentsline {subsection}{\numberline {3.6}Non-functional Requirements}{32}{subsection*.69}%
-\contentsline {subsection}{\numberline {3.7}Role-based Access Control Matrix}{33}{subsection*.71}%
-\contentsline {subsection}{\numberline {3.8}Requirements Traceability and Use Case Validation}{33}{subsection*.73}%
-\contentsline {section}{\numberline {4}System Design and Structural Modeling}{37}{section*.75}%
-\contentsline {subsection}{\numberline {4.1}System Architecture}{37}{subsection*.76}%
-\contentsline {subsubsection}{\numberline {4.1.1}Logical Architecture}{37}{subsubsection*.77}%
-\contentsline {subsubsection}{\numberline {4.1.2}Deployment Architecture}{37}{subsubsection*.78}%
-\contentsline {subsection}{\numberline {4.2}Layered Design and Design Patterns}{37}{subsection*.79}%
-\contentsline {subsubsection}{\numberline {4.2.1}Presentation, Business Logic, and Data Access Layers}{37}{subsubsection*.80}%
-\contentsline {subsubsection}{\numberline {4.2.2}API and Web Service Design}{37}{subsubsection*.81}%
-\contentsline {subsection}{\numberline {4.3}Database Design and Data Integrity}{37}{subsection*.82}%
-\contentsline {subsubsection}{\numberline {4.3.1}Entity--Relationship Diagram}{37}{subsubsection*.83}%
-\contentsline {subsubsection}{\numberline {4.3.2}Relational Schema and Normalization}{37}{subsubsection*.84}%
-\contentsline {subsubsection}{\numberline {4.3.3}Persistent Classes and Database Mapping}{37}{subsubsection*.85}%
-\contentsline {subsubsection}{\numberline {4.3.4}Keys, Constraints, Data Types, and Multiplicities}{37}{subsubsection*.86}%
-\contentsline {subsection}{\numberline {4.4}Structural UML Diagrams}{37}{subsection*.87}%
-\contentsline {subsubsection}{\numberline {4.4.1}Overall Class Diagram}{37}{subsubsection*.88}%
-\contentsline {subsubsection}{\numberline {4.4.2}Class Diagrams by Use Case Group}{37}{subsubsection*.89}%
-\contentsline {subsubsection}{\numberline {4.4.3}Package Diagram}{37}{subsubsection*.90}%
-\contentsline {subsubsection}{\numberline {4.4.4}Component Diagram}{37}{subsubsection*.91}%
-\contentsline {subsubsection}{\numberline {4.4.5}Deployment Diagram}{37}{subsubsection*.92}%
-\contentsline {subsubsection}{\numberline {4.4.6}Object Diagram (if required)}{37}{subsubsection*.93}%
-\contentsline {subsection}{\numberline {4.5}Use Case-oriented Design}{37}{subsection*.94}%
-\contentsline {subsubsection}{\numberline {4.5.1}Participating Classes and Their Responsibilities}{37}{subsubsection*.95}%
-\contentsline {subsubsection}{\numberline {4.5.2}Collaboration Between System Components}{37}{subsubsection*.96}%
-\contentsline {section}{\numberline {5}Behavioral Modeling and System Implementation}{37}{section*.97}%
-\contentsline {subsection}{\numberline {5.1}Behavioral UML Diagrams}{37}{subsection*.98}%
-\contentsline {subsubsection}{\numberline {5.1.1}Sequence Diagrams for Key Use Cases}{38}{subsubsection*.99}%
-\contentsline {subsubsection}{\numberline {5.1.2}Activity Diagrams for Complex Workflows}{38}{subsubsection*.106}%
-\contentsline {subsubsection}{\numberline {5.1.3}State Machine Diagrams for Lifecycle-driven Entities}{38}{subsubsection*.109}%
-\contentsline {subsection}{\numberline {5.2}Source Code Organization and Module Structure}{49}{subsection*.115}%
-\contentsline {subsection}{\numberline {5.3}Implementation of Core Functionalities}{51}{subsection*.134}%
-\contentsline {subsection}{\numberline {5.4}Development and Deployment Environment}{51}{subsection*.136}%
-\contentsline {subsection}{\numberline {5.5}Proposed User Interfaces and API Evidence}{52}{subsection*.138}%
-\contentsline {section}{\numberline {6}System Testing and Evaluation}{53}{section*.139}%
-\contentsline {subsection}{\numberline {6.1}Testing Strategy and Test Environment}{53}{subsection*.140}%
-\contentsline {subsection}{\numberline {6.2}Test Scenarios and Test Case Design}{53}{subsection*.142}%
-\contentsline {subsection}{\numberline {6.3}Functional Testing and Use Case Coverage}{54}{subsection*.144}%
-\contentsline {subsection}{\numberline {6.4}Exception Handling, Authorization, and Data Integrity Testing}{55}{subsection*.146}%
-\contentsline {subsection}{\numberline {6.5}Test Execution Results and Evidence}{55}{subsection*.147}%
-\contentsline {subsection}{\numberline {6.6}Evaluation Against Functional and Non-functional Requirements}{56}{subsection*.149}%
-\contentsline {subsection}{\numberline {6.7}Limitations and Outstanding Issues}{56}{subsection*.151}%
-\contentsline {section}{\numberline {7}Conclusion and Future Work}{57}{section*.152}%
-\contentsline {subsection}{\numberline {7.1}Summary of Achievements}{57}{subsection*.153}%
-\contentsline {subsection}{\numberline {7.2}Limitations of the Current System}{57}{subsection*.154}%
-\contentsline {subsection}{\numberline {7.3}Future Improvements and Extensions}{57}{subsection*.155}%
-\contentsline {section}{\numberline {A}Detailed Use Case Specifications}{58}{section*.162}%
-\contentsline {subsection}{\numberline {A.1}UC-021 Book Appointment}{58}{subsection*.163}%
-\contentsline {subsection}{\numberline {A.2}UC-027 Check In Patient}{59}{subsection*.169}%
-\contentsline {subsection}{\numberline {A.3}UC-037/UC-038 Sign and Amend Clinical Note}{59}{subsection*.175}%
-\contentsline {subsection}{\numberline {A.4}UC-048 Validate and Issue Prescription}{60}{subsection*.181}%
-\contentsline {subsection}{\numberline {A.5}UC-039/UC-040 Schedule and Execute Service Order}{61}{subsection*.187}%
-\contentsline {subsection}{\numberline {A.6}UC-063/UC-065 Record Payment and Refund}{62}{subsection*.194}%
-\contentsline {section}{\numberline {B}Supplementary UML Diagrams}{63}{section*.200}%
-\contentsline {section}{\numberline {C}API Specifications and Data Schemas}{64}{section*.202}%
-\contentsline {subsection}{\numberline {C.1}Representative Appointment Data}{64}{subsection*.203}%
-\contentsline {subsection}{\numberline {C.2}Representative Encounter Data}{64}{subsection*.216}%
-\contentsline {subsection}{\numberline {C.3}Representative Audit Event Data}{65}{subsection*.227}%
-\contentsline {section}{\numberline {D}Detailed Test Cases and Execution Results}{65}{section*.240}%
-\contentsline {section}{References}{67}{section*.242}%
+\contentsline {section}{List of Abbreviations}{7}{section*.6}%
+\contentsline {section}{\numberline {1}Introduction and Problem Definition}{8}{section*.9}%
+\contentsline {subsection}{\numberline {1.1}Background and Existing System}{8}{subsection*.10}%
+\contentsline {subsection}{\numberline {1.2}Problem Statement and Motivation}{9}{subsection*.11}%
+\contentsline {subsection}{\numberline {1.3}Project Objectives and Success Criteria}{9}{subsection*.12}%
+\contentsline {subsection}{\numberline {1.4}System Scope, Assumptions, and Constraints}{10}{subsection*.13}%
+\contentsline {subsection}{\numberline {1.5}Proposed Solution and System Overview}{11}{subsection*.14}%
+\contentsline {section}{\numberline {2}Business Analysis and Domain Modeling}{13}{section*.16}%
+\contentsline {subsection}{\numberline {2.1}Business Context and Operational Overview}{13}{subsection*.17}%
+\contentsline {subsection}{\numberline {2.2}Stakeholders and Responsibilities}{13}{subsection*.19}%
+\contentsline {subsection}{\numberline {2.3}Business Workflow and Controls}{15}{subsection*.22}%
+\contentsline {subsection}{\numberline {2.4}Business Rules}{18}{subsection*.31}%
+\contentsline {subsection}{\numberline {2.5}Domain Model and Core Entities}{18}{subsection*.33}%
+\contentsline {section}{\numberline {3}System Requirements Analysis}{21}{section*.38}%
+\contentsline {subsection}{\numberline {3.1}Functional Decomposition}{21}{subsection*.39}%
+\contentsline {subsection}{\numberline {3.2}Actors and Overall Use Case Model}{21}{subsection*.41}%
+\contentsline {subsection}{\numberline {3.3}Use Case Diagrams by Functional Group}{21}{subsection*.43}%
+\contentsline {subsubsection}{\numberline {3.3.1}Patient Management}{24}{subsubsection*.44}%
+\contentsline {subsubsection}{\numberline {3.3.2}Appointment, Check-in and Queue Management}{25}{subsubsection*.46}%
+\contentsline {subsubsection}{\numberline {3.3.3}Medical Examination and Encounter Management}{27}{subsubsection*.49}%
+\contentsline {subsubsection}{\numberline {3.3.4}Prescription, Billing and Governance}{30}{subsubsection*.53}%
+\contentsline {subsection}{\numberline {3.4}Detailed Use Case Specifications}{32}{subsection*.57}%
+\contentsline {subsubsection}{\numberline {3.4.1}UC-021 Book Appointment}{32}{subsubsection*.58}%
+\contentsline {subsubsection}{\numberline {3.4.2}UC-027 Check In Patient}{33}{subsubsection*.60}%
+\contentsline {subsubsection}{\numberline {3.4.3}UC-037/UC-038 Sign and Amend a Clinical Note}{33}{subsubsection*.62}%
+\contentsline {subsubsection}{\numberline {3.4.4}UC-048 Validate and Issue Prescription}{34}{subsubsection*.64}%
+\contentsline {subsubsection}{\numberline {3.4.5}UC-039/UC-040 Service Order, Allocation and Result}{34}{subsubsection*.66}%
+\contentsline {subsubsection}{\numberline {3.4.6}UC-063/UC-065 Record Payment and Refund}{34}{subsubsection*.68}%
+\contentsline {subsection}{\numberline {3.5}Functional Requirements}{35}{subsection*.70}%
+\contentsline {subsection}{\numberline {3.6}Non-functional Requirements}{36}{subsection*.72}%
+\contentsline {subsection}{\numberline {3.7}Role-based Access Control Matrix}{36}{subsection*.74}%
+\contentsline {subsection}{\numberline {3.8}Requirements Traceability and Use Case Validation}{38}{subsection*.76}%
+\contentsline {section}{\numberline {4}System Design and Structural Modeling}{39}{section*.78}%
+\contentsline {subsection}{\numberline {4.1}System Architecture}{39}{subsection*.79}%
+\contentsline {subsubsection}{\numberline {4.1.1}Logical Architecture}{39}{subsubsection*.80}%
+\contentsline {subsubsection}{\numberline {4.1.2}Deployment Architecture}{39}{subsubsection*.81}%
+\contentsline {subsection}{\numberline {4.2}Layered Design and Design Patterns}{39}{subsection*.82}%
+\contentsline {subsubsection}{\numberline {4.2.1}Presentation, Business Logic, and Data Access Layers}{39}{subsubsection*.83}%
+\contentsline {subsubsection}{\numberline {4.2.2}API and Web Service Design}{39}{subsubsection*.84}%
+\contentsline {subsection}{\numberline {4.3}Database Design and Data Integrity}{39}{subsection*.85}%
+\contentsline {subsubsection}{\numberline {4.3.1}Entity--Relationship Diagram}{39}{subsubsection*.86}%
+\contentsline {subsubsection}{\numberline {4.3.2}Relational Schema and Normalization}{39}{subsubsection*.87}%
+\contentsline {subsubsection}{\numberline {4.3.3}Persistent Classes and Database Mapping}{39}{subsubsection*.88}%
+\contentsline {subsubsection}{\numberline {4.3.4}Keys, Constraints, Data Types, and Multiplicities}{39}{subsubsection*.89}%
+\contentsline {subsection}{\numberline {4.4}Structural UML Diagrams}{39}{subsection*.90}%
+\contentsline {subsubsection}{\numberline {4.4.1}Overall Class Diagram}{39}{subsubsection*.91}%
+\contentsline {subsubsection}{\numberline {4.4.2}Class Diagrams by Use Case Group}{39}{subsubsection*.92}%
+\contentsline {subsubsection}{\numberline {4.4.3}Package Diagram}{39}{subsubsection*.93}%
+\contentsline {subsubsection}{\numberline {4.4.4}Component Diagram}{39}{subsubsection*.94}%
+\contentsline {subsubsection}{\numberline {4.4.5}Deployment Diagram}{39}{subsubsection*.95}%
+\contentsline {subsubsection}{\numberline {4.4.6}Object Diagram (if required)}{39}{subsubsection*.96}%
+\contentsline {subsection}{\numberline {4.5}Use Case-oriented Design}{39}{subsection*.97}%
+\contentsline {subsubsection}{\numberline {4.5.1}Participating Classes and Their Responsibilities}{39}{subsubsection*.98}%
+\contentsline {subsubsection}{\numberline {4.5.2}Collaboration Between System Components}{39}{subsubsection*.99}%
+\contentsline {section}{\numberline {5}Behavioral Modeling and System Implementation}{39}{section*.100}%
+\contentsline {subsection}{\numberline {5.1}Behavioral UML Diagrams}{39}{subsection*.101}%
+\contentsline {subsubsection}{\numberline {5.1.1}Sequence Diagrams for Key Use Cases}{40}{subsubsection*.102}%
+\contentsline {subsubsection}{\numberline {5.1.2}Activity Diagrams for Complex Workflows}{40}{subsubsection*.109}%
+\contentsline {subsubsection}{\numberline {5.1.3}State Machine Diagrams for Lifecycle-driven Entities}{40}{subsubsection*.112}%
+\contentsline {subsection}{\numberline {5.2}Source Code Organization and Module Structure}{48}{subsection*.119}%
+\contentsline {subsection}{\numberline {5.3}Implementation of Core Functionalities}{49}{subsection*.138}%
+\contentsline {subsection}{\numberline {5.4}Development and Deployment Environment}{50}{subsection*.140}%
+\contentsline {subsection}{\numberline {5.5}Proposed User Interfaces and API Evidence}{51}{subsection*.142}%
+\contentsline {section}{\numberline {6}System Testing and Evaluation}{53}{section*.146}%
+\contentsline {subsection}{\numberline {6.1}Testing Strategy and Test Environment}{53}{subsection*.147}%
+\contentsline {subsection}{\numberline {6.2}Test Scenarios and Test Case Design}{54}{subsection*.149}%
+\contentsline {subsection}{\numberline {6.3}Functional Testing and Use Case Coverage}{54}{subsection*.151}%
+\contentsline {subsection}{\numberline {6.4}Exception Handling, Authorization, and Data Integrity Testing}{55}{subsection*.153}%
+\contentsline {subsection}{\numberline {6.5}Test Execution Results and Evidence}{55}{subsection*.154}%
+\contentsline {subsection}{\numberline {6.6}Evaluation Against Functional and Non-functional Requirements}{56}{subsection*.156}%
+\contentsline {subsection}{\numberline {6.7}Limitations and Outstanding Issues}{56}{subsection*.158}%
+\contentsline {section}{\numberline {7}Conclusion and Future Work}{57}{section*.159}%
+\contentsline {subsection}{\numberline {7.1}Summary of Achievements}{57}{subsection*.160}%
+\contentsline {subsection}{\numberline {7.2}Limitations of the Current System}{57}{subsection*.161}%
+\contentsline {subsection}{\numberline {7.3}Future Improvements and Extensions}{57}{subsection*.162}%
+\contentsline {section}{\numberline {A}Detailed Use Case Specifications}{58}{section*.169}%
+\contentsline {subsection}{\numberline {A.1}UC-021 Book Appointment}{58}{subsection*.170}%
+\contentsline {subsection}{\numberline {A.2}UC-027 Check In Patient}{59}{subsection*.176}%
+\contentsline {subsection}{\numberline {A.3}UC-037/UC-038 Sign and Amend Clinical Note}{59}{subsection*.182}%
+\contentsline {subsection}{\numberline {A.4}UC-048 Validate and Issue Prescription}{60}{subsection*.188}%
+\contentsline {subsection}{\numberline {A.5}UC-039/UC-040 Schedule and Execute Service Order}{61}{subsection*.194}%
+\contentsline {subsection}{\numberline {A.6}UC-063/UC-065 Record Payment and Refund}{62}{subsection*.201}%
+\contentsline {section}{\numberline {B}Supplementary UML Diagrams}{63}{section*.207}%
+\contentsline {section}{\numberline {C}API Specifications and Data Schemas}{64}{section*.209}%
+\contentsline {subsection}{\numberline {C.1}Representative Appointment Data}{64}{subsection*.210}%
+\contentsline {subsection}{\numberline {C.2}Representative Encounter Data}{64}{subsection*.223}%
+\contentsline {subsection}{\numberline {C.3}Representative Audit Event Data}{65}{subsection*.234}%
+\contentsline {section}{\numberline {D}Detailed Test Cases and Execution Results}{65}{section*.247}%
+\contentsline {section}{References}{70}{section*.249}%
