@@ -1,44 +1,89 @@
 @startuml
-title MEDORA -- Core Clinical Domain Model
-top to bottom direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam class {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
+title MEDORA: Core Clinical and Financial Domain Analysis Model
+!include ../../../shared/templates/medora-style.puml
+skinparam dpi 192
+skinparam defaultFontSize 16
+skinparam titleFontSize 20
+
+class Patient <<entity>> {
+  patientId
+  fullName
+  dateOfBirth
 }
-class Patient <<person>>
-class MedicalRecord <<longitudinal record>>
-class Appointment <<planned visit>>
-class Encounter <<actual visit>>
-class ClinicalNote <<clinical record>>
-class Diagnosis <<clinical record>>
-class Prescription <<clinical order>>
-class PrescriptionItem <<clinical order line>>
-class Medication <<catalogue>>
-class ProcedureOrder <<clinical order>>
-class ClinicService <<catalogue>>
+class MedicalRecord <<entity>> {
+  recordNumber
+  allergySummary
+  activeAlerts
+}
+class Appointment <<entity>> {
+  scheduledStart
+  status
+}
+class Encounter <<entity>> {
+  encounterNumber
+  checkInTime
+  status
+}
+class ClinicalNote <<entity>> {
+  noteType
+  signedAt
+  versionStatus
+}
+class Prescription <<entity>> {
+  issuedAt
+  status
+}
+class ProcedureOrder <<entity>> {
+  priority
+  status
+}
+class PrescriptionItem <<entity>> {
+  dosage
+  frequency
+}
+class Medication <<entity>> {
+  medicationCode
+  name
+}
+class ClinicService <<entity>> {
+  serviceCode
+  name
+}
 
-Patient "1" -- "1" MedicalRecord : owns
-Patient "1" -- "0..*" Appointment : requests / attends
-Patient "1" -- "0..*" Encounter : receives
-Appointment "0..1" -- "0..1" Encounter : may lead to
+class Invoice <<entity>> {
+  invoiceNumber
+  status
+  balance
+}
+class Payment <<entity>> {
+  transactionRef
+  amount
+  receivedAt
+}
+class Refund <<entity>> {
+  refundRef
+  amount
+  reason
+  status
+}
 
-Encounter "1" *-- "0..*" ClinicalNote : contains
-Encounter "1" *-- "0..*" Diagnosis : records
-Encounter "1" *-- "0..*" Prescription : produces
-Encounter "1" *-- "0..*" ProcedureOrder : produces
+Patient "1" -- "1" MedicalRecord : has >
+Patient "1" -- "0..*" Appointment : books >
+Patient "1" -- "0..*" Encounter : attends >
+Appointment "0..1" --> "0..1" Encounter : results in >
+Encounter "1" *-- "0..*" ClinicalNote : contains >
+Encounter "1" *-- "0..*" Prescription : issues >
+Encounter "1" *-- "0..*" ProcedureOrder : creates >
+Prescription "1" *-- "1..*" PrescriptionItem : contains >
+PrescriptionItem "0..*" --> "1" Medication : selects >
+ProcedureOrder "0..*" --> "1" ClinicService : requests >
 
-Prescription "1" *-- "1..*" PrescriptionItem : contains
-PrescriptionItem "0..*" --> "1" Medication : selects
-ProcedureOrder "0..*" --> "1" ClinicService : requests
+Encounter "1" -- "0..1" Invoice : is billed by >
+Invoice "1" *-- "0..*" Payment : receives >
+Payment "1" -- "0..*" Refund : is reversed by >
 
-note right of MedicalRecord
-  Conceptual aggregate of longitudinal health information;
-  not a claim about a final database table.
+note bottom of Refund
+  A Refund is its own accountable event. It refers to one original
+  Payment and never edits it.
 end note
 @enduml

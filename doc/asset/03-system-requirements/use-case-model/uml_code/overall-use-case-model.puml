@@ -1,38 +1,13 @@
 @startuml
-title MEDORA -- Overall Use-Case Model
+title MEDORA: Overall Use-Case Model
+!include ../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam packageStyle rectangle
-skinparam ArrowColor #2563A6
-skinparam usecase {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam actor {
-  BorderColor #163A5F
-  FontColor #183247
-}
-skinparam rectangle {
-  BackgroundColor #F5F9FE
-  BorderColor #163A5F
-  FontColor #163A5F
-}
 
 actor Patient as patient
-actor "Authenticated\nInternal User" as user
 actor Receptionist as reception
-actor Nurse as nurse
-actor Doctor as doctor
-actor "Technician /\nService Staff" as technician
-actor "Pharmacist /\nMedicine Staff" as pharmacist
-actor Cashier as cashier
-actor "Clinic Manager" as manager
-actor "System Administrator" as admin
-actor Auditor as auditor
+actor "Clinical Care Staff\n(Nurse, Doctor, Service Staff,\nand Medicine Staff)" as clinical
+actor "Financial Staff\n(Cashier and Authorized\nFinance Staff)" as financial
 
 rectangle "MEDORA -- Integrated Clinic Management and EMR System" {
   package "Patient and Access" {
@@ -48,30 +23,42 @@ rectangle "MEDORA -- Integrated Clinic Management and EMR System" {
   package "Operations and Governance" {
     usecase "Manage Invoice\nand Payment" as UCBilling
     usecase "View Dashboard\nand Reports" as UCReporting
-    usecase "Administer Access\nand Catalogues" as UCAdmin
+    usecase "Administer Access\nand Catalogs" as UCAdmin
     usecase "Review Audit Trail" as UCAudit
   }
 }
 
-patient -- UCAppointment : phased portal
-user -- UCAuth
+actor "Clinic Manager" as manager
+actor "System Administrator" as admin
+actor Auditor as auditor
+
+patient -- UCAppointment
 reception -- UCPatient
 reception -- UCAppointment
-reception -- UCBilling
-nurse -- UCPatient
-nurse -- UCEncounter
-doctor -- UCPatient
-doctor -- UCEncounter
-doctor -- UCPrescription
-doctor -- UCService
-technician -- UCService
-pharmacist -- UCPrescription
-cashier -- UCBilling
+clinical -- UCPatient
+clinical -- UCEncounter
+clinical -- UCPrescription
+clinical -- UCService
+financial -- UCBilling
 manager -- UCReporting
 manager -- UCAdmin
 admin -- UCAdmin
 admin -- UCAudit
 auditor -- UCAudit
 
+note right of patient
+  Patient self-service is proposed for Phase 2;
+  it is not an MVP capability.
+end note
+
+note right of UCAuth
+  Every staff actor authenticates before using
+  any role-scoped function.
+end note
+
+note bottom of clinical
+  Role groups are used only in this overview.
+  Focused diagrams retain canonical role names.
+end note
 
 @enduml

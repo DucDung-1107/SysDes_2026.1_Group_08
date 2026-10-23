@@ -1,8 +1,8 @@
-% Appendices for the proposed MEDORA system-analysis and design report.
-% All API contracts and test cases below are specifications, not execution evidence.
+% Appendices for the MEDORA system-analysis and design report.
+% All API contracts and test cases below are specifications; none is execution evidence.
 
 \section{Detailed Use Case Specifications}
-The following specifications expand the highest-risk use cases from Section 3. They are the proposed behavior baseline for implementation and verification. Facility policies, clinical rules, approval thresholds, and retention requirements must be approved before the corresponding behavior is considered final.
+The following specifications expand the highest-risk use cases from Section 3. They are the behavior baseline for implementation and verification. \weak{Facility policies, clinical rules, approval thresholds and retention requirements must be approved before the matching behavior is final.}
 
 \subsection{UC-021 Book Appointment}
 \begin{description}[leftmargin=2.6cm,style=nextline]
@@ -93,7 +93,7 @@ The following specifications expand the highest-risk use cases from Section 3. T
 \item[Goal] Coordinate a requested service with valid resources and record its actual outcome.
 \item[Primary actors] Doctor creates the order; assigned Service Staff records execution.
 \item[Trigger] Doctor adds a service/procedure to an active Encounter.
-\item[Preconditions] The Encounter is active; service catalogue and resource requirements are configured; actors have relevant scope.
+\item[Preconditions] The Encounter is active; service catalog and resource requirements are configured; actors have relevant scope.
 \item[Main success flow]
 \begin{enumerate}[leftmargin=1.4em]
   \item Doctor records service, reason, priority, and required preparation.
@@ -132,7 +132,7 @@ The following specifications expand the highest-risk use cases from Section 3. T
 \end{description}
 
 \section{Supplementary UML Diagrams}
-The editable sources, rendered figures, and traceability inventory are catalogued in Table~\ref{tab:uml-artifact-inventory}. The diagrams are proposed models and are not implementation evidence. Structural diagrams for architecture, components, classes, and ERDs are in Section 4; workflow and lifecycle diagrams are in Section 5.
+Table~\ref{tab:uml-artifact-inventory} catalogs the editable sources, rendered figures and traceability inventory. \weak{The diagrams are models, not implementation evidence.} Section 4 is reserved for the architecture, component, class and ERD diagrams; workflow and lifecycle diagrams are in Section 5.
 
 \begin{longtable}{@{}p{0.26\textwidth}p{0.16\textwidth}p{0.42\textwidth}p{0.09\textwidth}@{}}
 \caption{UML source and rendered-figure inventory}\label{tab:uml-artifact-inventory}\\
@@ -144,19 +144,19 @@ The editable sources, rendered figures, and traceability inventory are catalogue
 \endhead
 Section 2 business analysis & Activity 2; domain 1 & Outpatient journey, appointment/check-in exceptions, and clinical domain concepts. & Rendered \\
 Section 3 requirements & Functional 1; overall use case 1; focused use case 9 & Capability groups, system boundary, actors, and detailed actor goals. & Rendered \\
-Section 4 architecture & Reserved for Chapter 4 owner & This contribution restores the original Chapter 4 outline; no Chapter 4 UML is claimed here. & Pending \\
-Section 4 persistence & Reserved for Chapter 4 owner & ERD and schema artifacts remain with the Chapter 4 contributor. & Pending \\
-Section 4 classes & Reserved for Chapter 4 owner & Structural class artifacts remain with the Chapter 4 contributor. & Pending \\
+Section 4 architecture & Reserved for Chapter 4 owner & This contribution restores the original Chapter 4 outline and claims no Chapter 4 UML. & \weak{Pending} \\
+Section 4 persistence & Reserved for Chapter 4 owner & ERD and schema artifacts remain with the Chapter 4 contributor. & \weak{Pending} \\
+Section 4 classes & Reserved for Chapter 4 owner & Structural class artifacts remain with the Chapter 4 contributor. & \weak{Pending} \\
 Section 5 interaction & System sequence 6 & Actor-visible success, alternative, and rejection outcomes for high-risk use cases. & Rendered \\
 Section 5 process/lifecycle & Activity 2; state machine 5 & Service execution, closure/finance separation, and entity transitions. & Rendered \\
-Section 5 UI evidence & WorkStation screen inventory & No UI images are included; capture actual screens after implementation. & Not available \\
+Section 5 UI wireframes & Wireframe 3 & Front desk and queue, clinician encounter, and cashier invoice and payment screens. Captures of a running application come after implementation. & Rendered \\
 \bottomrule
 \end{longtable}
 
-The PlantUML source is stored in the matching \code{uml_code/} folder and the rendered PNG in \code{figure/}. Parsing and rendering validate syntax and support visual review; they do not establish implementation, clinical approval, or user acceptance.
+The PlantUML source is stored in the matching \code{uml_code/} folder and the rendered PNG in \code{figure/}. Rendering checks syntax and supports visual review; \weak{it does not establish implementation, clinical approval or user acceptance.}
 
 \section{API Specifications and Data Schemas}
-API request/response examples and a common error schema are proposed in this appendix and Chapter 5. The examples below provide representative persisted data shapes for implementation planning. All IDs and values are synthetic.
+This appendix and Chapter 5 propose API request and response examples and a common error schema. The examples below show representative persisted data shapes for implementation planning; all IDs and values are synthetic.
 
 \subsection{Representative Appointment Data}
 \begin{lstlisting}[language=json,caption={Proposed Appointment resource shape},label={lst:appointment-resource}]
@@ -201,10 +201,10 @@ API request/response examples and a common error schema are proposed in this app
 }
 \end{lstlisting}
 
-These shapes are illustrative contract baselines. The approved OpenAPI schema, database types, retention rules, field-level access policy, and migration definitions must be authored and reviewed before implementation.
+These shapes are illustrative contract baselines. \weak{The approved OpenAPI schema, database types, retention rules, field-level access policy and migration definitions still have to be written and reviewed before implementation.}
 
 \section{Detailed Test Cases and Execution Results}
-Detailed test procedures and expected outcomes are listed in Table~\ref{tab:detailed-test-procedures}. The actual-result, tester, execution timestamp, build identifier, and evidence fields are intentionally not populated: all 13 cases remain \textbf{Not Run} because no application or test environment exists. No pass/fail result is claimed.
+Detailed test procedures and expected outcomes are listed in Table~\ref{tab:detailed-test-procedures}. The actual-result, tester, timestamp, build and evidence fields are left empty. \weak{All 13 cases remain \textbf{Not Run} because no application or test environment exists, and no pass or fail result is claimed.}
 
 \begingroup
 \scriptsize
@@ -217,21 +217,21 @@ Detailed test procedures and expected outcomes are listed in Table~\ref{tab:deta
 \toprule ID & Setup & Procedure & Expected result / evidence to capture & Status \\
 \midrule
 \endhead
-TC-001 & Synthetic patient; authenticated user without clinical permission. & Call protected patient/clinical read and write endpoints directly, bypassing the UI. & Reject both requests; disclose no protected fields; create no mutation; retain sanitized response and audit-policy evidence. & Not Run \\
-TC-002 & One synthetic patient; registrar and ordinary receptionist accounts. & Register a matching identity, then request merge as receptionist. & Flag possible duplicate; deny unauthorized merge; preserve source records and history. & Not Run \\
-TC-003 & One provider/room/resource slot; two concurrent clients. & Submit conflicting bookings with separate idempotency keys at the same time. & At most one booking commits; losing request receives conflict/alternatives; no orphan resource reservation remains. & Not Run \\
-TC-004 & Patient with no active encounter and an accepted appointment or walk-in. & Check in once; repeat check-in while the first encounter remains active. & First call creates one encounter/queue assignment; second is rejected without duplicate state. & Not Run \\
-TC-005 & Assigned doctor; incomplete draft and then corrected note. & Attempt signing while required content is missing; correct, sign, then append an amendment with reason. & Incomplete signing is blocked; signed source remains immutable; amendment links predecessor and records actor/time/reason. & Not Run \\
-TC-006 & Synthetic, clinician-approved safety-rule fixture; doctor and medicine staff roles. & Issue with a warning; test dismissal and permitted override; inspect medication events. & Apply configured warning behavior; require authorized override reason; prescription issue alone creates no administration event. & Not Run \\
-TC-007 & Valid order and two requests competing for the same resource. & Attempt conflicting allocations; submit incomplete execution result and then a valid result. & Conflict does not commit; incomplete result cannot complete order; valid result records performer/time and releases resources by policy. & Not Run \\
-TC-008 & Issued invoice with known total; cashier in authorized facility. & Post partial payment; retry same key; attempt another payment with a new key. & Same key returns original event; permitted new payment updates balance exactly once; reconciliation matches transaction history. & Not Run \\
-TC-009 & Paid synthetic invoice; cashier and authorized finance role. & Request refund with unauthorized role, invalid amount, missing reason, then valid approval. & Invalid requests have no financial effect; valid refund appends event and preserves original payment. & Not Run \\
-TC-010 & Two facility scopes with synthetic report data. & Query and export through auditor/manager roles across authorized and unauthorized scopes. & Enforce scope; audit actor, time, filter, and target; do not duplicate protected clinical content in logs. & Not Run \\
-TC-011 & Staging-like environment, agreed synthetic dataset, representative concurrent load. & Measure ordinary screens and search; record sample size, p95, build, and configuration. & Compare results with owner-approved targets; retain sanitized measurements; do not infer production capacity. & Not Run \\
-TC-012 & Encrypted synthetic backup and clean recovery environment. & Restore database and private files; verify checksums and measure data loss and recovery time. & Compare measured RPO/RTO with approved objectives; retain restore log and timestamps. & Not Run \\
-TC-013 & Supported browsers and synthetic Vietnamese names, dates, currencies; keyboard-only user. & Complete core workflows using keyboard; review labels, errors, contrast, date/time, and currency formats. & Record browser/version and findings; no blocking accessibility or localization defect remains at acceptance. & Not Run \\
+TC-001 & Synthetic patient; authenticated user without clinical permission. & Call protected patient/clinical read and write endpoints directly, bypassing the UI. & Reject both requests; disclose no protected fields; create no mutation; retain sanitized response and audit-policy evidence. & \weak{Not Run} \\
+TC-002 & One synthetic patient; registrar and ordinary receptionist accounts. & Register a matching identity, then request merge as receptionist. & Flag possible duplicate; deny unauthorized merge; preserve source records and history. & \weak{Not Run} \\
+TC-003 & One provider/room/resource slot; two concurrent clients. & Submit conflicting bookings with separate idempotency keys at the same time. & At most one booking commits; losing request receives conflict/alternatives; no orphan resource reservation remains. & \weak{Not Run} \\
+TC-004 & Patient with no active encounter and an accepted appointment or walk-in. & Check in once; repeat check-in while the first encounter remains active. & First call creates one encounter/queue assignment; second is rejected without duplicate state. & \weak{Not Run} \\
+TC-005 & Assigned doctor; incomplete draft and then corrected note. & Attempt signing while required content is missing; correct, sign, then append an amendment with reason. & Incomplete signing is blocked; signed source remains immutable; amendment links predecessor and records actor/time/reason. & \weak{Not Run} \\
+TC-006 & Synthetic, clinician-approved safety-rule fixture; doctor and medicine staff roles. & Issue with a warning; test dismissal and permitted override; inspect medication events. & Apply configured warning behavior; require authorized override reason; prescription issue alone creates no administration event. & \weak{Not Run} \\
+TC-007 & Valid order and two requests competing for the same resource. & Attempt conflicting allocations; submit incomplete execution result and then a valid result. & Conflict does not commit; incomplete result cannot complete order; valid result records performer/time and releases resources by policy. & \weak{Not Run} \\
+TC-008 & Issued invoice with known total; cashier in authorized facility. & Post partial payment; retry same key; attempt another payment with a new key. & Same key returns original event; permitted new payment updates balance exactly once; reconciliation matches transaction history. & \weak{Not Run} \\
+TC-009 & Paid synthetic invoice; cashier and authorized finance role. & Request refund with unauthorized role, invalid amount, missing reason, then valid approval. & Invalid requests have no financial effect; valid refund appends event and preserves original payment. & \weak{Not Run} \\
+TC-010 & Two facility scopes with synthetic report data. & Query and export through auditor/manager roles across authorized and unauthorized scopes. & Enforce scope; audit actor, time, filter, and target; do not duplicate protected clinical content in logs. & \weak{Not Run} \\
+TC-011 & Staging-like environment, agreed synthetic dataset, representative concurrent load. & Measure ordinary screens and search; record sample size, p95, build, and configuration. & Compare results with owner-approved targets; retain sanitized measurements; do not infer production capacity. & \weak{Not Run} \\
+TC-012 & Encrypted synthetic backup and clean recovery environment. & Restore database and private files; verify checksums and measure data loss and recovery time. & Compare measured RPO/RTO with approved objectives; retain restore log and timestamps. & \weak{Not Run} \\
+TC-013 & Supported browsers and synthetic Vietnamese names, dates, currencies; keyboard-only user. & Complete core workflows using keyboard; review labels, errors, contrast, date/time, and currency formats. & Record browser/version and findings; no blocking accessibility or localization defect remains at acceptance. & \weak{Not Run} \\
 \bottomrule
 \end{longtable}
 \endgroup
 
-For an executed run, add actual result, tester, timestamp, build ID, environment, evidence link, and defect ID if applicable. A test may then be marked Pass, Fail, or Blocked. Until those fields are supported by real execution evidence, the status remains Not Run.
+For an executed run, add the actual result, tester, timestamp, build ID, environment, evidence link and, where relevant, defect ID. The test may then be marked Pass, Fail or Blocked. \weak{Until real execution evidence supports those fields, the status stays Not Run.}

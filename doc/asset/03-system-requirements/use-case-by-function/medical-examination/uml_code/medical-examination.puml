@@ -1,23 +1,13 @@
 @startuml
-title MEDORA -- Screening and Consultation Use Cases
+title MEDORA: Screening and Consultation Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor Nurse as nurse
 actor Doctor as doctor
 
-rectangle "Screening and Consultation Management" {
+rectangle "MEDORA System\nScreening and Consultation Management" {
   usecase "UC-031\nOpen Assigned\nEncounter" as open
   usecase "UC-032\nReview Permitted\nClinical History" as review
   usecase "UC-033\nRecord Vital Signs\nand Screening" as vitals

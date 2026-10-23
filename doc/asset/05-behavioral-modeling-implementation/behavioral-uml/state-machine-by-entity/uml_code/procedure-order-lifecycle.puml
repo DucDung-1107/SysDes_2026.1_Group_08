@@ -1,39 +1,26 @@
 @startuml
-title MEDORA -- Procedure Order Lifecycle
-skinparam shadowing false
+title MEDORA: Procedure Order Lifecycle
+!include ../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
 skinparam defaultFontSize 18
 skinparam titleFontSize 22
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam state {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-  FontSize 18
-  ArrowColor #2563A6
-}
-[*] --> Created : clinician submits order
-Created --> PendingAllocation : order validated
-PendingAllocation --> PendingAllocation : retry [resource unavailable]
-PendingAllocation --> Scheduled : allocate [resources available]
-Scheduled --> InProgress : start [assigned staff]
-InProgress --> Completed : required outcome recorded
-Scheduled --> Delayed : authorized delay recorded
-Delayed --> Scheduled : reallocate [slot available]
-Created --> Cancelled : cancel [authorized]
-PendingAllocation --> Cancelled : cancel [authorized]
-Scheduled --> Cancelled : cancel [release resources]
-InProgress --> NotPerformed : stop [reason recorded]
-Delayed --> Cancelled : cancel [authorized]
+state "Pending Allocation" as PendingAllocation
+state "In Progress" as InProgress
+state "Not Performed" as NotPerformed
+[*] --> Created : create()
+Created --> PendingAllocation : validate()\n[order data valid]
+PendingAllocation --> PendingAllocation : allocate()\n[resource unavailable]
+PendingAllocation --> Scheduled : allocate()\n[staff, room, and resource available]\n/ reserve resources
+Scheduled --> InProgress : start()\n[assigned staff authorized]
+InProgress --> Completed : recordOutcome()\n[required result complete]\n/ release resources
+Scheduled --> Delayed : delay(reason)\n[authorized]\n/ retain or release reservation per policy
+Delayed --> Scheduled : reallocate()\n[slot available]\n/ reserve resources
+Created --> Canceled : cancel(reason)\n[authorized]
+PendingAllocation --> Canceled : cancel(reason)\n[authorized]
+Scheduled --> Canceled : cancel(reason)\n[authorized]\n/ release resources
+InProgress --> NotPerformed : stop(reason)\n[reason recorded]\n/ release resources
+Delayed --> Canceled : cancel(reason)\n[authorized]
 Completed --> [*]
-Cancelled --> [*]
+Canceled --> [*]
 NotPerformed --> [*]
 @enduml

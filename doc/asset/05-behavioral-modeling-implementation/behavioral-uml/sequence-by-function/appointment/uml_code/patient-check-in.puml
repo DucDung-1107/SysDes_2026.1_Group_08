@@ -1,42 +1,24 @@
 @startuml
-title MEDORA -- Check In Patient (System Sequence)
-skinparam shadowing false
+title MEDORA: Check In Patient (System Sequence)
+!include ../../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam sequence {
-  ParticipantBackgroundColor #EAF3FB
-  ParticipantBorderColor #163A5F
-  ParticipantFontColor #183247
-  LifeLineBorderColor #2563A6
-  LifeLineBackgroundColor #F5F9FE
-}
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+hide footbox
+autonumber
 actor Receptionist
 participant "MEDORA System" as System
 
-Receptionist -> System: Check in patient(appointment or walk-in)
-activate System
-alt Request unauthorized or identity unresolved
-  System --> Receptionist: Reject; make no encounter change
-else Request is valid
-  alt Conflicting active encounter
-    System --> Receptionist: Reject duplicate; preserve current state
-  else No conflicting encounter
-    System --> Receptionist: Return encounter and queue status
+Receptionist -> System: checkInPatient(patient, appointmentRefOrWalkIn)
+alt request unauthorized or identity unresolved
+  System -->> Receptionist: CheckInResult(rejected, reason)
+  note right: No encounter or queue state changes.
+else request valid
+  alt conflicting active encounter
+    System -->> Receptionist: CheckInResult(rejected, duplicateEncounter)
+    note right: The existing encounter state is preserved.
+  else no conflicting active encounter
+    System -->> Receptionist: CheckInResult(accepted, encounterRef, queueStatus)
   end
 end
-deactivate System
-note over Receptionist, System
-  Walk-ins follow the facility acceptance policy. An appointment
-  alone is not evidence that an encounter has started.
-end note
 @enduml

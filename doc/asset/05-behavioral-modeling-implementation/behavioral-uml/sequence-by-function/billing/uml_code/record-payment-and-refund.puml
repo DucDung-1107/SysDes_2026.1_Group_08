@@ -1,47 +1,39 @@
 @startuml
-title MEDORA -- Record Payment or Refund (System Sequence)
-skinparam shadowing false
+title MEDORA: Payment and Refund (System Sequence)
+!include ../../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam sequence {
-  ParticipantBackgroundColor #EAF3FB
-  ParticipantBorderColor #163A5F
-  ParticipantFontColor #183247
-  LifeLineBorderColor #2563A6
-  LifeLineBackgroundColor #F5F9FE
-}
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+skinparam maxMessageSize 260
+hide footbox
+autonumber
 actor Cashier
-actor "Authorized Finance Staff" as Finance
 participant "MEDORA System" as System
+actor "Authorized Finance Staff" as Finance
 
-Cashier -> System: Record payment(invoice, amount, method, request key)
-activate System
-alt Invalid amount, invoice state, or duplicate request
-  System --> Cashier: Reject; make no financial change
-else Valid payment
-  System --> Cashier: Return transaction and invoice status
+Cashier -> System: recordPayment(invoiceRef, amount, method, requestKey)
+alt invalid amount, invoice state, or duplicate request
+  System -->> Cashier: PaymentResult(rejected, reason)
+  note right: No financial state change.
+else payment request valid
+  System -->> Cashier: PaymentResult(accepted, transactionRef, invoiceStatus)
 end
-deactivate System
 
-Finance -> System: Request refund(original transaction, amount, reason)
-activate System
-alt Invalid request or approval required but absent
-  System --> Finance: Reject or retain for authorized review
-else Refund permitted
-  System --> Finance: Return refund reference and resulting balance
+Finance -> System: requestRefund(originalTransactionRef, amount, reason)
+alt refund request invalid
+  System -->> Finance: RefundResult(rejected, reason)
+  note right: Original transaction retained.
+else approval required
+  System -->> Finance: RefundPendingApproval(requestRef)
+  note right
+    Refund not completed; no resulting balance is reported.
+    Approval is a separate interaction (UC-066). The approver differs
+    from the requester and is permitted in the access matrix.
+  end note
+else refund authorized and permitted
+  System -->> Finance: RefundResult(completed, refundRef, resultingBalance)
 end
-deactivate System
-note over Cashier, System
+note over Cashier, Finance
   Payment and refund are separate financial events. Neither changes
   clinical content; external payment gateways are out of scope.
 end note

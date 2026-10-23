@@ -1,45 +1,34 @@
 @startuml
-title MEDORA -- Validate and Issue Prescription (System Sequence)
-skinparam shadowing false
+title MEDORA: Validate and Issue Prescription (System Sequence)
+!include ../../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam sequence {
-  ParticipantBackgroundColor #EAF3FB
-  ParticipantBorderColor #163A5F
-  ParticipantFontColor #183247
-  LifeLineBorderColor #2563A6
-  LifeLineBackgroundColor #F5F9FE
-}
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+hide footbox
+autonumber
 actor Doctor
 participant "MEDORA System" as System
 
-Doctor -> System: Submit prescription draft and directions
-activate System
-alt Required data invalid
-  System --> Doctor: Reject issue; keep draft unchanged
-else Safety warning raised
-  System --> Doctor: Show warning and reason
-  alt Doctor does not proceed
-    Doctor -> System: Retain draft
-    System --> Doctor: Confirm not issued
-  else Override is permitted and justified
-    Doctor -> System: Confirm override(reason)
-    System --> Doctor: Return issued prescription reference
+Doctor -> System: issuePrescription(draftRef, requestKey)
+alt required data invalid or actor unauthorized
+  System -->> Doctor: PrescriptionResult(rejected, reason)
+  note right: The prescription draft remains unchanged.
+else blocking safety warning raised
+  System -->> Doctor: PrescriptionWarning(warningDetails)
+  alt doctor does not proceed
+    Doctor -> System: retainDraft(draftRef)
+    System -->> Doctor: PrescriptionResult(notIssued, draftRef)
+  else override not permitted or lacks justification
+    Doctor -> System: requestOverride(draftRef, reason)
+    System -->> Doctor: PrescriptionResult(overrideRejected, reason)
+    note right: The prescription draft remains unchanged.
+  else override permitted and justified
+    Doctor -> System: requestOverride(draftRef, reason)
+    System -->> Doctor: PrescriptionResult(issued, prescriptionRef)
   end
-else No blocking warning
-  System --> Doctor: Return issued prescription reference
+else no blocking warning
+  System -->> Doctor: PrescriptionResult(issued, prescriptionRef)
 end
-deactivate System
 note over Doctor, System
   Issuing a prescription does not create a dispensing or
   medication-administration event.

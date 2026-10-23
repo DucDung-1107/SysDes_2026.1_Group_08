@@ -1,42 +1,24 @@
 @startuml
-title MEDORA -- Book Appointment (System Sequence)
-skinparam shadowing false
+title MEDORA: Book Appointment (System Sequence)
+!include ../../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam sequence {
-  ParticipantBackgroundColor #EAF3FB
-  ParticipantBorderColor #163A5F
-  ParticipantFontColor #183247
-  LifeLineBorderColor #2563A6
-  LifeLineBackgroundColor #F5F9FE
-}
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+hide footbox
+autonumber
 actor Receptionist
 participant "MEDORA System" as System
 
-Receptionist -> System: Book appointment(patient, service, provider, slot)
-activate System
-alt Invalid identity, permission, or scope
-  System --> Receptionist: Reject request; no appointment created
-else Request is valid
-  alt Slot unavailable or conflicting
-    System --> Receptionist: Return alternatives; create no booking
-  else Slot available
-    System --> Receptionist: Return appointment reference and status
+Receptionist -> System: bookAppointment(patient, service, provider, slot)
+alt identity, permission, or facility scope invalid
+  System -->> Receptionist: AppointmentResult(rejected, reason)
+  note right: No appointment or resource booking is created.
+else request valid
+  alt slot unavailable or conflicting
+    System -->> Receptionist: AppointmentResult(unavailable, alternatives)
+    note right: No appointment or resource booking is created.
+  else slot available
+    System -->> Receptionist: AppointmentResult(booked, appointmentRef, status)
   end
 end
-deactivate System
-note over Receptionist, System
-  Patient portal booking is Phase 2. Availability must be rechecked
-  at commit time; rejected requests reserve no resources.
-end note
 @enduml

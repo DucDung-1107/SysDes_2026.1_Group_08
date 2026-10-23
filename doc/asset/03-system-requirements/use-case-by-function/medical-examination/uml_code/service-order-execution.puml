@@ -1,26 +1,16 @@
 @startuml
-title MEDORA -- Service Order and Execution Use Cases
+title MEDORA: Service Order and Execution Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor Doctor as doctor
 actor "Technician /\nService Staff" as technician
 
-rectangle "Service Order and Execution Management" {
+rectangle "MEDORA System\nService Order and Execution Management" {
   usecase "UC-039\nCreate and Schedule\nService / Procedure Order" as order
-  usecase "Validate Required\nResource Availability" as availability
-  usecase "Allocate Room, Staff\nand Resource" as allocation
+  usecase "UC-056\nValidate Required\nResource Availability" as availability
+  usecase "UC-057\nAllocate Room, Staff\nand Resource" as allocation
   usecase "UC-040\nRecord Service Execution\nand Result" as result
 }
 

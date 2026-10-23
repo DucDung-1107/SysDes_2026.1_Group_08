@@ -1,46 +1,38 @@
 @startuml
-title MEDORA -- Sign or Amend Clinical Note (System Sequence)
-skinparam shadowing false
+title MEDORA: Sign or Amend Clinical Note (System Sequence)
+!include ../../../../../shared/templates/medora-style.puml
 skinparam dpi 192
-skinparam backgroundColor #F5F9FE
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam defaultFontSize 16
-skinparam titleFontSize 20
-skinparam note {
-  BackgroundColor #EAF3FB
-  BorderColor #2563A6
-  FontColor #183247
-}
-skinparam ArrowColor #2563A6
-skinparam sequence {
-  ParticipantBackgroundColor #EAF3FB
-  ParticipantBorderColor #163A5F
-  ParticipantFontColor #183247
-  LifeLineBorderColor #2563A6
-  LifeLineBackgroundColor #F5F9FE
-}
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+hide footbox
+autonumber
 actor Doctor
 participant "MEDORA System" as System
 
-Doctor -> System: Save draft(encounter, note content)
-activate System
-System --> Doctor: Return draft status
-Doctor -> System: Sign note(note reference)
-alt Missing required data or stale version
-  System --> Doctor: Reject signing; preserve draft for correction
-else Valid draft
-  System --> Doctor: Return signed version reference
-  opt Correction requested after signing
-    Doctor -> System: Request amendment(reason, corrected content)
-    alt Amendment is unauthorized or invalid
-      System --> Doctor: Reject amendment; preserve signed version
-    else Amendment is permitted
-      System --> Doctor: Return amendment draft; original remains unchanged
-      Doctor -> System: Sign amendment
-      System --> Doctor: Return amended-version reference
+Doctor -> System: saveDraft(encounterRef, noteContent)
+alt draft save invalid or actor unauthorized
+  System -->> Doctor: ClinicalNoteResult(rejected, reason)
+  note right: No draft is created or changed.
+else draft save valid
+  System -->> Doctor: ClinicalNoteResult(draftSaved, draftRef)
+  Doctor -> System: signNote(draftRef)
+  alt required data missing or version stale
+    System -->> Doctor: ClinicalNoteResult(signRejected, reason)
+    note right: The draft is preserved for correction.
+  else draft valid
+    System -->> Doctor: ClinicalNoteResult(signed, versionRef)
+    opt correction requested after signing
+      Doctor -> System: requestAmendment(versionRef, reason, correctedContent)
+      alt amendment unauthorized or invalid
+        System -->> Doctor: ClinicalNoteResult(amendmentRejected, reason)
+        note right: The signed version is preserved.
+      else amendment permitted
+        System -->> Doctor: ClinicalNoteResult(amendmentDraft, amendmentRef)
+        note right: The original signed version remains unchanged.
+        Doctor -> System: signAmendment(amendmentRef)
+        System -->> Doctor: ClinicalNoteResult(amendedVersionSigned, versionRef)
+      end
     end
   end
 end
-deactivate System
 @enduml

@@ -5,15 +5,17 @@
 | Actor | Responsibility | Scope status |
 | --- | --- | --- |
 | Patient | Manages own appointment requests and released documents through a portal. | Phase 2 |
-| Authorized Clinic User (abstract) | Authenticates before the system resolves the assigned internal role and facility scope. | MVP |
+| Authorized Clinic User (abstract) | Authenticates before the system resolves the assigned internal role and facility scope. Not drawn in the overview diagram; UC-001 applies to every staff actor. | MVP |
 | Receptionist | Identifies/registers patients, manages appointments, check-in and queues. | MVP |
 | Nurse | Records screening, vital signs and assigned care activities. | MVP |
 | Doctor | Documents encounter, diagnosis, prescriptions, orders and closure. | MVP |
 | Technician / Service Staff | Executes assigned services and records results. | MVP |
 | Pharmacist / Medicine Staff | Records dispensing or administration when assigned. | MVP / optional by clinic workflow |
 | Cashier | Creates invoices and records payment status. | MVP |
+| Authorized Finance Staff | Requests and executes permitted refunds; approval follows the finance approval rule. | MVP |
+| Authorized Registrar | Reviews flagged duplicates and performs approved record merges. A Receptionist may request a merge but cannot perform it. | MVP (decision D-1) |
 | Clinic Manager | Supervises schedules, operations, dashboards and reports. | MVP |
-| System Administrator | Manages accounts, roles, catalogues and configuration. | MVP |
+| System Administrator | Manages accounts, roles, catalogs and configuration. | MVP |
 | Auditor | Reviews approved audit evidence in read-only scope. | MVP |
 
 ## Use-case traceability
@@ -26,7 +28,7 @@
 | UC-027--UC-030 | Check-in and Queue Management | FR-006 | `check-in-and-queue.puml` |
 | UC-031--UC-035 | Screening and Consultation | FR-007, FR-010 | `medical-examination.puml` |
 | UC-036--UC-038, UC-041--UC-042 | Clinical Note Lifecycle and Encounter Closure | FR-009, FR-020, FR-021, FR-032 | `clinical-note-lifecycle.puml` |
-| UC-039--UC-040 | Service Order, Resource Allocation and Execution | FR-014, FR-015, FR-016, FR-017, FR-018 | `service-order-execution.puml` |
+| UC-039--UC-040, UC-056--UC-057 | Service Order, Resource Allocation and Execution | FR-014, FR-015, FR-016, FR-017, FR-018 | `service-order-execution.puml` |
 | UC-043--UC-052 | Prescription and Medication Safety | FR-011, FR-012, FR-013, FR-028 | `prescription-and-medication-safety.puml` |
 | UC-054 | Send Appointment or Instruction Notification | FR-024 | `appointment-and-queue.puml` |
 | UC-055 | View Released Documents (Phase 2) | FR-025, FR-029 | `patient-management.puml` |
@@ -62,10 +64,34 @@
 | --- | --- | --- |
 | Patient | Person receiving or seeking care. | Owns one conceptual longitudinal MedicalRecord and may have many Appointments and Encounters. |
 | Appointment | Planned time allocation. | May lead to zero or one Encounter; cancellation/no-show does not create an Encounter. |
-| Encounter | Actual clinical visit. | Belongs to one Patient and contextualises clinical notes, diagnoses, prescriptions and procedure orders. |
+| Encounter | Actual clinical visit. | Belongs to one Patient and contextualizes clinical notes, diagnoses, prescriptions and procedure orders. |
 | ClinicalNote | Structured consultation record. | Signed content is preserved; corrections are amendments rather than direct overwrite. |
 | Prescription / PrescriptionItem | Clinical medicine order and its individual directions. | A prescription has one or more items; dispensing/administration remains separate. |
 | ProcedureOrder | Request for a clinic service/procedure. | May require ResourceBooking and execution before a result is recorded. |
 | Invoice / Payment | Charge record and financial transaction. | A payment settles or adjusts an invoice without editing clinical content. |
 | UserAccount / Employee / Role | Account identity, staff member and access policy. | A role assignment does not itself grant unrestricted clinical-data access. |
 | Attachment / AuditLog | Controlled document and accountability evidence. | Access is scoped; audit evidence retains sensitive activity without unnecessary duplication of clinical content. |
+
+## Design decisions (22 October 2026)
+
+The project owner delegated these decisions to the analyst on the basis of `paper.tex`. They are design decisions, not implemented behavior.
+
+| ID | Decision | Basis in the report |
+| --- | --- | --- |
+| D-1 | The Authorized Registrar is a role. Only this role performs a record merge; a Receptionist may request one. | BR-001 and FR-004 (authorized merge evidence); TC-002 uses a registrar account and a receptionist account. |
+| D-2 | Refund is its own entity and refers to one original Payment. An Encounter has at most one Invoice; an Invoice has many Payments. | BR-009 financial separation and history; Invoice--Payment row in the domain table; invoice created from eligible items at closure. |
+| D-3 | The lifecycle states listed below are the canonical statuses. | Section 5 state machines; Appointment, Encounter, ClinicalNote, ProcedureOrder and Invoice distinctions in Section 2. |
+| D-4 | A completed refund returns the Invoice to Partially Paid or Issued according to the net paid amount. A refund pending approval changes no invoice state. | BR-009 and the payment/refund SSD: a resulting balance is reported only after completion. |
+| D-5 | A refund needing approval is approved by a Manager or an Authorized Finance Staff member who is not the requester. | Role tables and RBAC footnote b: approval is a separate step and pending approval is not a completed refund. |
+
+## Status inventory
+
+| Entity | States | Source figure |
+| --- | --- | --- |
+| Appointment | Draft, Booked, Confirmed, CheckedIn, NoShow, Canceled | `appointment-lifecycle.puml` |
+| Encounter | Waiting, In Consultation, Awaiting Service, Awaiting Closure, Completed | `encounter-lifecycle.puml` |
+| ClinicalNote version | Draft, Signed, Amendment Draft, Amended Signed Version | `clinical-note-version-lifecycle.puml` |
+| ProcedureOrder | Created, Pending Allocation, Scheduled, Delayed, In Progress, Completed, Not Performed, Canceled | `procedure-order-lifecycle.puml` |
+| Invoice | Draft, Issued, Partially Paid, Paid | `invoice-lifecycle.puml` |
+
+Refund is modeled as its own accountable event and does not edit the original Payment.

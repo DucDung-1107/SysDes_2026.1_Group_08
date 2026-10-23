@@ -1,23 +1,13 @@
 @startuml
-title MEDORA -- Appointment Management Use Cases
+title MEDORA: Appointment Management Use Cases
+!include ../../../../shared/templates/medora-style.puml
+skinparam dpi 192
 left to right direction
-skinparam shadowing false
-skinparam defaultFontName Arial
-skinparam defaultFontColor #183247
-skinparam backgroundColor #F5F9FE
-skinparam ArrowColor #2563A6
-skinparam UsecaseBackgroundColor #EAF3FB
-skinparam UsecaseBorderColor #2563A6
-skinparam UsecaseFontColor #183247
-skinparam ActorBorderColor #163A5F
-skinparam ActorFontColor #183247
-skinparam RectangleBackgroundColor #F5F9FE
-skinparam RectangleBorderColor #163A5F
 
 actor Patient as patient
 actor Receptionist as reception
 
-rectangle "Appointment Management" {
+rectangle "MEDORA System\nAppointment Management" {
   usecase "UC-020\nView Availability" as availability
   usecase "UC-021\nBook Appointment" as book
   usecase "UC-022\nConfirm Appointment" as confirm
@@ -28,7 +18,7 @@ rectangle "Appointment Management" {
   usecase "UC-054\nSend Appointment\nor Instruction Notification" as notification
 }
 
-patient -- book : phase 2
+patient -- book
 reception -- availability
 reception -- book
 reception -- confirm
@@ -39,5 +29,10 @@ reception -- notification
 
 book .> validate : <<include>>
 reschedule .> validate : <<include>>
+
+note right of patient
+  Proposed Phase 2 portal interaction;
+  not an MVP capability.
+end note
 
 @enduml
