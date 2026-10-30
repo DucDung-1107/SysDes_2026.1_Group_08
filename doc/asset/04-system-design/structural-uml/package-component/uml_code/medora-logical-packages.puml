@@ -1,0 +1,60 @@
+@startuml
+title MEDORA -- Logical Package View
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam package {
+  BackgroundColor #F5F9FE
+  BorderColor #163A5F
+  FontColor #163A5F
+}
+skinparam component {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam nodesep 35
+skinparam ranksep 45
+
+top to bottom direction
+
+package "Identity and Access" as identity {
+  [Patient identity]
+  [User roles and scopes]
+}
+
+package "Scheduling and Reception" as scheduling {
+  [Appointment management]
+  [Check-in and queue]
+}
+
+package "Clinical Care" as clinical {
+  [Encounter documentation]
+  [Diagnosis and follow-up]
+}
+
+package "Orders and Execution" as orders {
+  [Prescriptions]
+  [Service orders and results]
+}
+
+package "Finance and Operations" as finance {
+  [Invoice and payment]
+  [Scoped reporting]
+}
+
+package "Governance" as governance {
+  [Audit trail]
+  [Controlled configuration and export]
+}
+
+identity -[hidden]right- scheduling
+identity -[hidden]down- clinical
+scheduling -[hidden]down- orders
+clinical -[hidden]down- finance
+orders -[hidden]down- governance
+@enduml

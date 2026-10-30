@@ -1,0 +1,50 @@
+@startuml
+title MEDORA -- Logical Encounter Record ERD
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 55
+hide circle
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam classAttributeIconSize 0
+
+top to bottom direction
+
+entity "Encounter" as encounter {
+  * encounter_id : identifier <<PK>>
+  --
+  patient_id : identifier <<FK>>
+  status : status
+}
+
+entity "ClinicalNote" as note {
+  * note_id : identifier <<PK>>
+  --
+  encounter_id : identifier <<FK>>
+  version : integer
+  status : status
+}
+
+entity "Diagnosis" as diagnosis {
+  * diagnosis_id : identifier <<PK>>
+  --
+  encounter_id : identifier <<FK>>
+  code : catalog code
+}
+
+encounter ||--o{ note
+encounter ||--o{ diagnosis
+
+note -[hidden]right- diagnosis
+@enduml

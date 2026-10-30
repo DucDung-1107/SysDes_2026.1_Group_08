@@ -1,0 +1,73 @@
+@startuml
+title MEDORA -- Logical Invoice and Payment ERD
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam classAttributeIconSize 0
+
+left to right direction
+
+entity "Encounter" as encounter {
+  * encounter_id : identifier <<PK>>
+}
+
+entity "Invoice" as invoice {
+  * invoice_id : identifier <<PK>>
+  --
+  encounter_id : identifier <<FK, UQ>>
+  status : status
+}
+
+entity "InvoiceItem" as item {
+  * invoice_item_id : identifier <<PK>>
+  --
+  invoice_id : identifier <<FK>>
+  service_ref : identifier
+  quantity : number
+  unit_amount : money snapshot
+}
+
+entity "Payment" as payment {
+  * payment_id : identifier <<PK>>
+  --
+  invoice_id : identifier <<FK>>
+  recorded_by : identifier <<FK>>
+  amount : money
+  status : status
+}
+
+entity "Refund" as refund {
+  * refund_id : identifier <<PK>>
+  --
+  payment_id : identifier <<FK>>
+  processed_by : identifier <<FK>>
+  amount : money
+  reason : text
+  status : status
+}
+
+encounter ||--o| invoice
+invoice ||--|{ item
+invoice ||--o{ payment
+payment ||--o{ refund
+
+encounter -[hidden]right- invoice
+invoice -[hidden]right- payment
+payment -[hidden]right- refund
+invoice -[hidden]down- item
+@enduml
+

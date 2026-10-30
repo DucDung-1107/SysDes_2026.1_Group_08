@@ -1,0 +1,54 @@
+@startuml
+title MEDORA -- Proposed Deployment View
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 30
+skinparam node {
+  BackgroundColor #EAF3FB
+  BorderColor #163A5F
+  FontColor #183247
+}
+skinparam artifact {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam database {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam note {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+
+top to bottom direction
+
+node "Clinic workstation or tablet\n(physical environment TBD)" as client {
+  artifact "Role-specific browser UI" as browser
+}
+
+node "MEDORA application host\n(proposed; platform TBD)" as appHost {
+  artifact "Web application and API" as application
+}
+
+database "Relational data store\n(proposed; engine TBD)" as dataStore
+
+client -down-> appHost
+appHost -down-> dataStore
+
+legend bottom
+  Client to application: HTTPS / TLS
+  Application to data store: database access
+endlegend
+@enduml

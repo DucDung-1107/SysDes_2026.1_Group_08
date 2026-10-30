@@ -1,0 +1,75 @@
+@startuml
+title MEDORA -- Logical Clinical Orders ERD
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 55
+hide circle
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam classAttributeIconSize 0
+
+top to bottom direction
+
+entity "Encounter" as encounter {
+  * encounter_id : identifier <<PK>>
+}
+
+entity "Prescription" as prescription {
+  * prescription_id : identifier <<PK>>
+  --
+  encounter_id : identifier <<FK>>
+  status : status
+}
+
+entity "ProcedureOrder" as procedureOrder {
+  * order_id : identifier <<PK>>
+  --
+  encounter_id : identifier <<FK>>
+  service_id : identifier <<FK>>
+  status : status
+}
+
+entity "PrescriptionItem" as item {
+  * item_id : identifier <<PK>>
+  --
+  prescription_id : identifier <<FK>>
+  medication_id : identifier <<FK>>
+  dosage : text
+  frequency : text
+}
+
+entity "Medication" as medication {
+  * medication_id : identifier <<PK>>
+  --
+  name : text
+  formulation : text
+}
+
+entity "ClinicService" as service {
+  * service_id : identifier <<PK>>
+  --
+  name : text
+}
+
+encounter ||--o{ prescription
+encounter ||--o{ procedureOrder
+prescription ||--|{ item
+medication ||--o{ item
+service ||--o{ procedureOrder
+
+prescription -[hidden]right- procedureOrder
+prescription -[hidden]down- item
+item -[hidden]right- medication
+procedureOrder -[hidden]down- service
+@enduml

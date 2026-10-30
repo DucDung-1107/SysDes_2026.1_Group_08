@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{11}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -29,6 +29,22 @@ Thi Thanh~Thuy Nguyen et~al.
 \newblock \doi{10.1787/7a7afb35-en}.
 \newblock URL
   \url{https://www.oecd.org/en/publications/health-at-a-glance-2023_7a7afb35-en/full-report/digital-health-at-a-glance_86518984.html}.
+
+\bibitem[Rodina(2024)]{SoftwareIdeas2024HospitalUML}
+Dusan Rodina.
+\newblock Hospital management system ({UML} diagrams).
+\newblock Software Ideas Modeler, 2024.
+\newblock URL
+  \url{https://www.softwareideas.net/uml-diagram-hospital-management-system}.
+\newblock Accessed 14 October 2026.
+
+\bibitem[saipraveen k(2026)]{Saipraveen2026SmartHospital}
+saipraveen k.
+\newblock Smart hospital management system --- {UML}.
+\newblock GitHub repository, 2026.
+\newblock URL
+  \url{https://github.com/saipraveen-k/Smart-Hospital-Management-System---UML}.
+\newblock Accessed 14 October 2026.
 
 \bibitem[{United Nations Population Fund Viet Nam}(2021)]{UNFPA2021Ageing}
 {United Nations Population Fund Viet Nam}.

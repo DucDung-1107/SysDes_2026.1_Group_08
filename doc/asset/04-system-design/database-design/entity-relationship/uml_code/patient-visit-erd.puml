@@ -1,0 +1,55 @@
+@startuml
+title MEDORA -- Logical Patient and Visit ERD
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 55
+skinparam ranksep 65
+hide circle
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam classAttributeIconSize 0
+
+top to bottom direction
+
+entity "Patient" as patient {
+  * patient_id : identifier <<PK>>
+  --
+  mrn : text <<UQ>>
+}
+
+entity "Appointment" as appointment {
+  * appointment_id : identifier <<PK>>
+  --
+  patient_id : identifier <<FK>>
+  provider_id : identifier <<FK>>
+  service_id : identifier <<FK>>
+  starts_at : timestamp
+  status : status
+}
+
+entity "Encounter" as encounter {
+  * encounter_id : identifier <<PK>>
+  --
+  patient_id : identifier <<FK>>
+  appointment_id : identifier <<FK, optional>>
+  provider_id : identifier <<FK>>
+  status : status
+}
+
+patient ||--o{ appointment
+patient ||--o{ encounter
+appointment |o--o| encounter
+
+patient -[hidden]down- appointment
+appointment -[hidden]right- encounter
+@enduml

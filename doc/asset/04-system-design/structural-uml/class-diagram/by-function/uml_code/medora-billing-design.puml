@@ -1,0 +1,63 @@
+@startuml
+title MEDORA -- Billing Design Classes
+skinparam shadowing false
+skinparam dpi 192
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 42
+skinparam ranksep 52
+skinparam package {
+  BackgroundColor #F5F9FE
+  BorderColor #163A5F
+  FontColor #163A5F
+}
+skinparam packageStyle rectangle
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam classAttributeIconSize 0
+
+top to bottom direction
+
+package "Boundary Layer (UI / Views)" as boundary {
+  class BillingUI <<boundary>> {
+    + reviewCharges(encounterId): void
+    + recordPayment(invoiceId, amount): void
+  }
+}
+
+package "Control Layer (Business Controller)" as control {
+  class BillingController <<control>> {
+    - paymentProcessor: PaymentProcessor [optional]
+    + generateInvoice(encounterId): Invoice
+    + recordPayment(invoiceId, amount): Payment
+  }
+}
+
+package "Entity Layer (Domain Models)" as entities {
+  class Invoice <<entity>> {
+    - invoiceId: UUID
+    - encounterId: UUID
+    - status: InvoiceStatus
+  }
+  class Payment <<entity>> {
+    - paymentId: UUID
+    - amount: Decimal
+    - status: PaymentStatus
+  }
+  Invoice -[hidden]right- Payment
+}
+
+BillingUI ..> BillingController : requests
+BillingController ..> Invoice : issues
+BillingController ..> Payment : records
+boundary -[hidden]down- control
+control -[hidden]down- entities
+@enduml

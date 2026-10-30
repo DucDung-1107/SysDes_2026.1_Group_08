@@ -1,0 +1,72 @@
+@startuml
+title MEDORA -- Registration and Encounter Design Classes
+skinparam shadowing false
+skinparam dpi 192
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 14
+skinparam titleFontSize 18
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam linetype ortho
+skinparam nodesep 38
+skinparam ranksep 48
+skinparam package {
+  BackgroundColor #F5F9FE
+  BorderColor #163A5F
+  FontColor #163A5F
+}
+skinparam packageStyle rectangle
+skinparam class {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam classAttributeIconSize 0
+
+top to bottom direction
+
+package "Boundary Layer (UI / Views)" as boundary {
+  class PatientRegistrationUI <<boundary>> {
+    + onFormSubmit(data): void
+  }
+  class ConsultationUI <<boundary>> {
+    + saveConsultationNotes(notes): void
+  }
+  PatientRegistrationUI -[hidden]right- ConsultationUI
+}
+
+package "Control Layer (Business Controllers)" as control {
+  class PatientRegistrationController <<control>> {
+    + registerPatient(data): Patient
+    + validateMRNUniqueness(mrn): Boolean
+  }
+  class ConsultationController <<control>> {
+    + createEncounter(patientId): Encounter
+    + saveNote(encounterId, note): void
+  }
+  PatientRegistrationController -[hidden]right- ConsultationController
+}
+
+package "Entity Layer (Domain Models)" as entities {
+  class Patient <<entity>> {
+    - patientId: UUID
+    - mrn: String
+  }
+  class Encounter <<entity>> {
+    - encounterId: UUID
+    - patientId: UUID
+    - appointmentId: UUID [optional]
+    - status: EncounterStatus
+  }
+  Patient -[hidden]right- Encounter
+}
+
+PatientRegistrationUI ..> PatientRegistrationController : submits
+ConsultationUI ..> ConsultationController : records care
+PatientRegistrationController ..> Patient : creates / validates
+ConsultationController ..> Encounter : opens / updates
+
+boundary -[hidden]down- control
+control -[hidden]down- entities
+@enduml

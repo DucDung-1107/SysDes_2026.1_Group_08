@@ -1,0 +1,79 @@
+@startuml
+title MEDORA: Boundary, Control, and Entity Layers
+skinparam dpi 192
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #183247
+skinparam defaultFontSize 16
+skinparam titleFontSize 20
+skinparam wrapWidth 230
+skinparam maxMessageSize 230
+skinparam backgroundColor #F5F9FE
+skinparam ArrowColor #2563A6
+skinparam packageStyle rectangle
+skinparam package {
+  BackgroundColor #F5F9FE
+  BorderColor #163A5F
+  FontColor #163A5F
+  FontStyle bold
+}
+skinparam component {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam entity {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam rectangle {
+  BackgroundColor #EAF3FB
+  BorderColor #2563A6
+  FontColor #183247
+}
+skinparam arrow {
+  Color #2563A6
+  Thickness 1
+}
+
+top to bottom direction
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 95
+skinparam componentStyle rectangle
+hide stereotype
+
+package "Boundary Layer (UI / Views)" {
+  rectangle "BillingUI" as BillingUI
+  rectangle "PatientRegistrationUI" as PatientRegistrationUI
+  rectangle "ConsultationUI" as ConsultationUI
+  BillingUI -[hidden]right- PatientRegistrationUI
+  PatientRegistrationUI -[hidden]right- ConsultationUI
+}
+
+package "Control Layer (Business Controllers)" {
+  rectangle "BillingController" as BillingController
+  rectangle "PatientRegistrationController" as PatientRegistrationController
+  rectangle "ConsultationController" as ConsultationController
+  BillingController -[hidden]right- PatientRegistrationController
+  PatientRegistrationController -[hidden]right- ConsultationController
+}
+
+package "Entity Layer (Domain Models)" {
+  rectangle "Bill Entity" as BillEntity
+  rectangle "Patient Entity" as PatientEntity
+  rectangle "Consultation Entity" as ConsultationEntity
+  BillEntity -[hidden]right- PatientEntity
+  PatientEntity -[hidden]right- ConsultationEntity
+}
+
+BillingUI --> BillingController
+PatientRegistrationUI --> PatientRegistrationController
+ConsultationUI --> ConsultationController
+
+BillingController --> BillEntity
+PatientRegistrationController --> PatientEntity
+ConsultationController --> ConsultationEntity
+
+@enduml
