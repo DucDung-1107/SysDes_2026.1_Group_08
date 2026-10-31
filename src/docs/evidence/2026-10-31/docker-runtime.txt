@@ -1,0 +1,2 @@
+/medora-stage4-test-api-1 image=sha256:b5a679bf1779d72e882738b7464be25144019067874afb869522cb31f0f3f361 user=10001:10001 status=running
+/medora-stage4-test-db-1 image=sha256:858bb5e98eed02eb8cafbcdc007f9a65d1b613972028944a8ec2133ccaf80d27 user= status=running

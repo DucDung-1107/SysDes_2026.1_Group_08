@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: vn.medora.api.identity.SecurityFlowTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.098 s -- in vn.medora.api.identity.SecurityFlowTest

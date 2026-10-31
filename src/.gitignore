@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+
+backend/target/
+backend/*.log
+scripts/__pycache__/
+backend/data/

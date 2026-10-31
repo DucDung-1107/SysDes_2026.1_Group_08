@@ -1,0 +1,55 @@
+name: medora
+
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:?POSTGRES_DB is required}"
+      POSTGRES_USER: "${POSTGRES_USER:?POSTGRES_USER is required}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - medora
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: "8080"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/${POSTGRES_DB:?POSTGRES_DB is required}"
+      SPRING_DATASOURCE_USERNAME: "${POSTGRES_USER:?POSTGRES_USER is required}"
+      SPRING_DATASOURCE_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}"
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-}"
+      MEDORA_BOOTSTRAP_PASSWORD: "${MEDORA_BOOTSTRAP_PASSWORD:-}"
+      SESSION_COOKIE_SECURE: "${SESSION_COOKIE_SECURE:-false}"
+      MEDORA_FACILITY_ZONE: "${MEDORA_FACILITY_ZONE:-Asia/Ho_Chi_Minh}"
+      MEDORA_WALK_IN_ENABLED: "${MEDORA_WALK_IN_ENABLED:-true}"
+      MEDORA_STORAGE_DRIVER: "${MEDORA_STORAGE_DRIVER:-filesystem}"
+      MEDORA_STORAGE_PATH: /app/data/attachments
+      MEDORA_S3_ENDPOINT: "${MEDORA_S3_ENDPOINT:-}"
+      MEDORA_S3_REGION: "${MEDORA_S3_REGION:-us-east-1}"
+      MEDORA_S3_BUCKET: "${MEDORA_S3_BUCKET:-medora-private}"
+      MEDORA_S3_ACCESS_KEY: "${MEDORA_S3_ACCESS_KEY:-}"
+      MEDORA_S3_SECRET_KEY: "${MEDORA_S3_SECRET_KEY:-}"
+    volumes:
+      - attachment_data:/app/data/attachments
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - medora
+volumes:
+  postgres_data:
+  attachment_data:
+networks:
+  medora:
+    driver: bridge

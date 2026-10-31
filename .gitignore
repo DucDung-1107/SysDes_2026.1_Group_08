@@ -1,0 +1,25 @@
+# Local secrets and generated application files
+.env
+.env.*
+!.env.example
+**/target/
+**/__pycache__/
+*.pyc
+.idea/
+.vscode/
+
+# Regenerable LaTeX build files; keep the report sources and final PDF.
+doc/report/*.aux
+doc/report/*.bbl
+doc/report/*.blg
+doc/report/*.fdb_latexmk
+doc/report/*.fls
+doc/report/*.lof
+doc/report/*.log
+doc/report/*.lot
+doc/report/*.out
+doc/report/*.toc
+doc/report/*.xdv
+doc/report/build/
+texput.log
+tmp/

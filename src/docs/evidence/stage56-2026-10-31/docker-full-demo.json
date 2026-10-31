@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "encounterId": "2cc307d9-76cb-4528-bd80-0b545570dc71",
+  "prescriptionId": "05e102aa-6585-4dfa-a372-8f5746ba1163",
+  "orderId": "cd379838-e6aa-40db-b6fc-d9f18fbebe5d",
+  "attachmentId": "f0ec943b-0aa6-49c4-8485-b9d487490e56",
+  "invoiceId": "15bff376-09b7-4d9c-a73c-da3336d8d920",
+  "refundId": "499fe9ef-6c78-4477-8b6e-83d65c82f8f7",
+  "invoiceBalance": 30000,
+  "netCashIncrease": 110000,
+  "mergeRequestId": "b42dc669-144f-4b91-bfad-724b04f37440"
+}

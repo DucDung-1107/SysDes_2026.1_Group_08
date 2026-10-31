@@ -1,0 +1,10 @@
+{
+  "accounts": 4,
+  "patients": 1,
+  "appointments": 1,
+  "encounters": 1,
+  "completedEncounters": 1,
+  "signedNotes": 2,
+  "auditEvents": 19,
+  "successfulMigrations": 4
+}

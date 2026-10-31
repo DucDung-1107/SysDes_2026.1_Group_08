@@ -1,0 +1,30 @@
+Backed up and removed generated file: texput.log
+Backed up and removed generated file: doc\report\paper.aux
+Backed up and removed generated file: doc\report\paper.bbl
+Backed up and removed generated file: doc\report\paper.blg
+Backed up and removed generated file: doc\report\paper.fdb_latexmk
+Backed up and removed generated file: doc\report\paper.fls
+Backed up and removed generated file: doc\report\paper.lof
+Backed up and removed generated file: doc\report\paper.log
+Backed up and removed generated file: doc\report\paper.lot
+Backed up and removed generated file: doc\report\paper.out
+Backed up and removed generated file: doc\report\paper.toc
+Backed up and removed generated file: doc\report\paper.xdv
+Backed up and removed generated file: doc\report\build\paper.log
+Backed up and removed generated file: src\backend\docker-stage4-build.log
+Backed up and removed generated file: src\backend\docker-stage4-it.log
+Backed up and removed generated file: src\backend\docker-stage4-persistence.log
+Backed up and removed generated file: src\backend\docker-stage56-build.log
+Backed up and removed generated file: src\backend\docker-stage56-it.log
+Backed up and removed generated file: src\backend\docker-stage56-persistence.log
+Backed up and removed generated file: src\backend\stage4-build.log
+Backed up and removed generated file: src\backend\stage56-build.log
+Backed up and removed generated file: src\backend\stage56-test.log
+Backed up and removed generated file: tmp\puml-debug\encounter-closure-and-finance.png
+Removed generated directory: src\backend\target
+Removed generated directory: src\scripts\__pycache__
+Removed generated directory: doc\report\build
+Removed generated directory: tmp
+Kept source report, bibliography, final PDF, UML figures, tools, concise evidence and ignored env files.
+Kept all Docker database and attachment volumes.
+Generated-file backup: C:\Users\chanl\Downloads\tmp\medora-cleanup-20261031

@@ -1,0 +1,6 @@
+{
+  "health": "200 UP",
+  "ready": "200 UP",
+  "unauthenticatedMe": 401,
+  "loginWithoutCsrf": 403
+}

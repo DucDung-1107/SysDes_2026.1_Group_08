@@ -1,0 +1,60 @@
+[
+  {
+    "Command": "\"java -jar app.jar\"",
+    "CreatedAt": "2026-10-31 09:41:03 +0700 +07",
+    "ExitCode": 0,
+    "Health": "",
+    "ID": "9d5f5d777b39",
+    "Image": "medora-stage4-test-api",
+    "Labels": "com.docker.compose.oneoff=False,com.docker.compose.project.environment_file=C:\\Users\\chanl\\Downloads\\PTTK\\SysDes_2026.1_Group_08\\src\\.env.docker-test,com.docker.compose.project.working_dir=C:\\Users\\chanl\\Downloads\\PTTK\\SysDes_2026.1_Group_08\\src,com.docker.compose.config-hash=a13588362d20221324d67c72387a1242143662587b1f6dfd56bfeb9280091434,com.docker.compose.container-number=1,com.docker.compose.image=sha256:b5a679bf1779d72e882738b7464be25144019067874afb869522cb31f0f3f361,com.docker.compose.project=medora-stage4-test,com.docker.compose.replace=api-1,com.docker.compose.version=2.40.3,org.opencontainers.image.version=22.04,com.docker.compose.project.config_files=C:\\Users\\chanl\\Downloads\\PTTK\\SysDes_2026.1_Group_08\\src\\compose.yaml,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8080/tcp=127.0.0.1:8080,com.docker.compose.depends_on=db:service_healthy:false,com.docker.compose.service=api",
+    "LocalVolumes": "0",
+    "Mounts": "",
+    "Name": "medora-stage4-test-api-1",
+    "Names": "medora-stage4-test-api-1",
+    "Networks": "medora-stage4-test_medora",
+    "Ports": "127.0.0.1:8080->8080/tcp",
+    "Project": "medora-stage4-test",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 8080,
+        "PublishedPort": 8080,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "api",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes"
+  },
+  {
+    "Command": "\"docker-entrypoint.s…\"",
+    "CreatedAt": "2026-10-31 09:41:00 +0700 +07",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "a533898a2fd4",
+    "Image": "postgres:17-bookworm",
+    "Labels": "com.docker.compose.image=sha256:858bb5e98eed02eb8cafbcdc007f9a65d1b613972028944a8ec2133ccaf80d27,com.docker.compose.oneoff=False,com.docker.compose.project=medora-stage4-test,com.docker.compose.replace=db-1,com.docker.compose.version=2.40.3,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=af42d3f4f22f43b556cb02c21b4e2c1412fdf281d238d5ca37023a3cbd67205c,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.project.config_files=C:\\Users\\chanl\\Downloads\\PTTK\\SysDes_2026.1_Group_08\\src\\compose.yaml,com.docker.compose.project.environment_file=C:\\Users\\chanl\\Downloads\\PTTK\\SysDes_2026.1_Group_08\\src\\.env.docker-test,com.docker.compose.project.working_dir=C:\\Users\\chanl\\Downloads\\PTTK\\SysDes_2026.1_Group_08\\src,com.docker.compose.service=db",
+    "LocalVolumes": "1",
+    "Mounts": "medora-stage4-…",
+    "Name": "medora-stage4-test-db-1",
+    "Names": "medora-stage4-test-db-1",
+    "Networks": "medora-stage4-test_medora",
+    "Ports": "5432/tcp",
+    "Project": "medora-stage4-test",
+    "Publishers": [
+      {
+        "URL": "",
+        "TargetPort": 5432,
+        "PublishedPort": 0,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "2 minutes ago",
+    "Service": "db",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 2 minutes (healthy)"
+  }
+]
