@@ -1,0 +1,8 @@
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.098 s -- in vn.medora.api.identity.SecurityFlowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 103.8 s -- in vn.medora.api.Stage4IT
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.61 s -- in vn.medora.api.Stage56IT
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  02:49 min
+[INFO] Finished at: 2026-10-31T10:20:00+07:00

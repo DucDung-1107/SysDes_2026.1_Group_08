@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+
+backend/target/
+backend/*.log
+scripts/__pycache__/
+**/__pycache__/
+*.pyc
+**/target/
+.idea/
+.vscode/
+backend/data/
+.demo/
+.test-results/

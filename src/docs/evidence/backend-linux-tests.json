@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-07",
+  "environment": "Docker Linux, JDK21/Maven3.9.11, user10001, isolated PostgreSQL17.6",
+  "tests": 46,
+  "unitTests": 10,
+  "integrationTests": 36,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "successfulRoutes": 128,
+  "routes": 128,
+  "rejectedRequests": 79,
+  "serverErrors": 0
+}

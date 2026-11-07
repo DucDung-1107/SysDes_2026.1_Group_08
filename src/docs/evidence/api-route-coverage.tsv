@@ -1,0 +1,129 @@
+controller	method	path	responses_2xx	responses_4xx	responses_5xx	statuses
+AccountAdminController	GET	/api/admin/facilities/{}/accounts	1	2	0	{200=1, 400=1, 403=1}
+AccountAdminController	GET	/api/admin/facilities/{}/accounts/{}	2	1	0	{200=2, 403=1}
+AccountAdminController	GET	/api/admin/facilities/{}/roles	1	0	0	{200=1}
+AuthController	GET	/api/auth/csrf	885	0	0	{200=885}
+AuthController	GET	/api/auth/me	2	4	0	{200=2, 401=4}
+AuthController	GET	/api/auth/permissions	1	0	0	{200=1}
+SchedulingController	GET	/api/facilities/{}/appointments	1	0	0	{200=1}
+SchedulingController	GET	/api/facilities/{}/appointments/{}/events	1	0	0	{200=1}
+AttachmentController	GET	/api/facilities/{}/attachments/{}/download	1	2	0	{200=1, 403=1, 404=1}
+GovernanceController	GET	/api/facilities/{}/audit-events	1	0	0	{200=1}
+SchedulingController	GET	/api/facilities/{}/availability	1	0	0	{200=1}
+GovernanceController	GET	/api/facilities/{}/clinic-policy	2	0	0	{200=2}
+ReportController	GET	/api/facilities/{}/dashboard	1	0	0	{200=1}
+ClinicalController	GET	/api/facilities/{}/diagnosis-catalog	1	0	0	{200=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}	16	3	0	{200=16, 403=3}
+AttachmentController	GET	/api/facilities/{}/encounters/{}/attachments	1	1	0	{200=1, 403=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}/diagnoses	1	1	0	{200=1, 403=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}/history	1	1	0	{200=1, 403=1}
+MedicationCatalogController	GET	/api/facilities/{}/encounters/{}/medication-profile	1	0	0	{200=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}/notes	2	2	0	{200=2, 403=2}
+ProcedureController	GET	/api/facilities/{}/encounters/{}/orders	1	1	0	{200=1, 403=1}
+PrescriptionController	GET	/api/facilities/{}/encounters/{}/prescriptions	1	1	0	{200=1, 403=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}/record	1	0	0	{200=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}/record/{}	1	0	0	{200=1}
+ClinicalController	GET	/api/facilities/{}/encounters/{}/vitals	1	1	0	{200=1, 403=1}
+NotificationController	GET	/api/facilities/{}/inbox	2	0	0	{200=2}
+BillingController	GET	/api/facilities/{}/invoices	1	0	0	{200=1}
+BillingController	GET	/api/facilities/{}/invoices/{}	1	1	0	{200=1, 403=1}
+MedicationCatalogController	GET	/api/facilities/{}/medication-policy	1	0	0	{200=1}
+MedicationCatalogController	GET	/api/facilities/{}/medication-rules	1	0	0	{200=1}
+MedicationCatalogController	GET	/api/facilities/{}/medications	1	0	0	{200=1}
+GovernanceController	GET	/api/facilities/{}/merge-requests	1	0	0	{200=1}
+NotificationController	GET	/api/facilities/{}/notification-templates	1	0	0	{200=1}
+NotificationController	GET	/api/facilities/{}/notifications	1	0	0	{200=1}
+ProcedureController	GET	/api/facilities/{}/orders/{}	1	1	0	{200=1, 403=1}
+PatientController	GET	/api/facilities/{}/patients	1	1	0	{200=1, 400=1}
+PatientController	GET	/api/facilities/{}/patients/{}	1	2	0	{200=1, 403=2}
+GovernanceController	GET	/api/facilities/{}/patients/{}/audit-events	1	0	0	{200=1}
+BillingController	GET	/api/facilities/{}/payments/{}/receipt	1	1	0	{200=1, 403=1}
+PrescriptionController	GET	/api/facilities/{}/pharmacy-queue	1	0	0	{200=1}
+PrescriptionController	GET	/api/facilities/{}/prescriptions/{}	1	1	0	{200=1, 403=1}
+PrescriptionController	GET	/api/facilities/{}/prescriptions/{}/export	1	0	0	{200=1}
+PrescriptionController	GET	/api/facilities/{}/prescriptions/{}/safety	1	0	0	{200=1}
+ProcedureController	GET	/api/facilities/{}/procedure-queue	2	0	0	{200=2}
+ClinicalController	GET	/api/facilities/{}/queue	2	0	0	{200=2}
+BillingController	GET	/api/facilities/{}/refunds/{}	1	0	0	{200=1}
+ReportController	GET	/api/facilities/{}/reports/invoices.csv	1	0	0	{200=1}
+ReportController	GET	/api/facilities/{}/reports/operations	1	0	0	{200=1}
+ReportController	GET	/api/facilities/{}/reports/revenue	1	1	0	{200=1, 403=1}
+ReportController	GET	/api/facilities/{}/reports/revenue.csv	1	0	0	{200=1}
+SchedulingController	GET	/api/facilities/{}/rooms	1	0	0	{200=1}
+BillingController	GET	/api/facilities/{}/service-prices	1	0	0	{200=1}
+SchedulingController	GET	/api/facilities/{}/services	1	0	0	{200=1}
+SchedulingController	GET	/api/facilities/{}/staff-schedules	1	0	0	{200=1}
+HealthController	GET	/health	1	0	0	{200=1}
+HealthController	GET	/ready	1	0	0	{200=1}
+AccountAdminController	POST	/api/admin/facilities/{}/accounts	2	0	0	{201=2}
+AccountAdminController	POST	/api/admin/facilities/{}/accounts/{}/revoke-sessions	1	1	0	{200=1, 403=1}
+SpringSecurity	POST	/api/auth/login	347	0	0	{204=347}
+SpringSecurity	POST	/api/auth/logout	1	0	0	{204=1}
+SchedulingController	POST	/api/facilities/{}/appointments	9	4	0	{201=9, 409=4}
+SchedulingController	POST	/api/facilities/{}/appointments/{}/transitions	3	1	0	{200=3, 409=1}
+AttachmentController	POST	/api/facilities/{}/attachments/{}/archive	1	0	0	{200=1}
+ClinicalController	POST	/api/facilities/{}/check-ins	25	3	0	{201=25, 409=3}
+GovernanceController	POST	/api/facilities/{}/discharge-requests/{}/decision	1	0	0	{200=1}
+AttachmentController	POST	/api/facilities/{}/encounters/{}/attachments	1	1	0	{200=1, 400=1}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/complete	13	0	0	{200=13}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/diagnoses	14	0	0	{201=14}
+GovernanceController	POST	/api/facilities/{}/encounters/{}/discharge-requests	1	0	0	{200=1}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/history	2	1	0	{201=2, 400=1}
+BillingController	POST	/api/facilities/{}/encounters/{}/invoice	7	0	0	{200=7}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/notes	14	0	0	{201=14}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/notes/{}/abandon	1	0	0	{204=1}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/notes/{}/amendments	2	1	0	{201=2, 409=1}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/notes/{}/sign	15	1	0	{200=15, 409=1}
+ProcedureController	POST	/api/facilities/{}/encounters/{}/orders	4	0	0	{200=4}
+PrescriptionController	POST	/api/facilities/{}/encounters/{}/prescriptions	5	0	0	{200=5}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/return-for-correction	1	0	0	{200=1}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/start	21	1	0	{200=21, 403=1}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/submit-for-closure	14	3	0	{200=14, 409=3}
+ClinicalController	POST	/api/facilities/{}/encounters/{}/vitals	16	1	0	{201=16, 409=1}
+NotificationController	POST	/api/facilities/{}/inbox/{}/read	2	1	0	{200=2, 404=1}
+BillingController	POST	/api/facilities/{}/invoices/{}/discount	1	0	0	{200=1}
+BillingController	POST	/api/facilities/{}/invoices/{}/issue	7	0	0	{200=7}
+BillingController	POST	/api/facilities/{}/invoices/{}/payments	9	3	0	{200=9, 409=3}
+MedicationCatalogController	POST	/api/facilities/{}/medication-rules	2	0	0	{200=2}
+MedicationCatalogController	POST	/api/facilities/{}/medications	6	1	0	{200=6, 403=1}
+GovernanceController	POST	/api/facilities/{}/merge-requests	1	0	0	{200=1}
+GovernanceController	POST	/api/facilities/{}/merge-requests/{}/decision	1	1	0	{200=1, 403=1}
+NotificationController	POST	/api/facilities/{}/notification-templates	2	0	0	{200=2}
+NotificationController	POST	/api/facilities/{}/notifications	2	0	0	{200=2}
+ProcedureController	POST	/api/facilities/{}/orders/{}/actions	3	2	0	{200=3, 400=1, 403=1}
+ProcedureController	POST	/api/facilities/{}/orders/{}/review	1	0	0	{200=1}
+PatientController	POST	/api/facilities/{}/patients	33	1	0	{201=33, 409=1}
+PatientController	POST	/api/facilities/{}/patients/duplicate-check	1	0	0	{200=1}
+PrescriptionController	POST	/api/facilities/{}/prescriptions/{}/amendments	1	0	0	{200=1}
+PrescriptionController	POST	/api/facilities/{}/prescriptions/{}/cancel	1	0	0	{200=1}
+PrescriptionController	POST	/api/facilities/{}/prescriptions/{}/issue	7	4	0	{200=7, 400=1, 409=3}
+PrescriptionController	POST	/api/facilities/{}/prescriptions/{}/medicine-events	2	3	0	{200=2, 403=1, 409=2}
+SchedulingController	POST	/api/facilities/{}/provider-services	20	0	0	{204=20}
+BillingController	POST	/api/facilities/{}/refunds	5	2	0	{200=5, 403=1, 409=1}
+BillingController	POST	/api/facilities/{}/refunds/{}/approval	2	1	0	{200=2, 403=1}
+BillingController	POST	/api/facilities/{}/refunds/{}/execute	2	0	0	{200=2}
+SchedulingController	POST	/api/facilities/{}/rooms	17	0	0	{201=17}
+BillingController	POST	/api/facilities/{}/service-prices	8	0	0	{200=8}
+BillingController	POST	/api/facilities/{}/service-prices/{}/end	1	0	0	{200=1}
+SchedulingController	POST	/api/facilities/{}/services	17	0	0	{201=17}
+SchedulingController	POST	/api/facilities/{}/staff-schedules	21	1	0	{201=21, 409=1}
+AccountAdminController	PUT	/api/admin/facilities/{}/accounts/{}	1	2	0	{200=1, 403=1, 409=1}
+AccountAdminController	PUT	/api/admin/facilities/{}/accounts/{}/password	1	1	0	{200=1, 403=1}
+AccountAdminController	PUT	/api/admin/facilities/{}/accounts/{}/roles	1	1	0	{200=1, 403=1}
+SchedulingController	PUT	/api/facilities/{}/appointments/{}/schedule	1	1	0	{200=1, 409=1}
+GovernanceController	PUT	/api/facilities/{}/clinic-policy	2	0	0	{200=2}
+GovernanceController	PUT	/api/facilities/{}/diagnosis-catalog	1	0	0	{200=1}
+ProcedureController	PUT	/api/facilities/{}/encounters/{}/consultation-service	7	0	0	{200=7}
+MedicationCatalogController	PUT	/api/facilities/{}/encounters/{}/medication-profile	7	0	0	{200=7}
+ClinicalController	PUT	/api/facilities/{}/encounters/{}/notes/{}	2	2	0	{200=2, 409=2}
+ClinicalController	PUT	/api/facilities/{}/encounters/{}/nurse	1	0	0	{200=1}
+MedicationCatalogController	PUT	/api/facilities/{}/medication-policy	5	0	0	{200=5}
+MedicationCatalogController	PUT	/api/facilities/{}/medication-rules/{}	1	1	0	{200=1, 409=1}
+MedicationCatalogController	PUT	/api/facilities/{}/medications/{}	1	1	0	{200=1, 409=1}
+NotificationController	PUT	/api/facilities/{}/notification-templates/{}	2	0	0	{200=2}
+ProcedureController	PUT	/api/facilities/{}/orders/{}/allocation	4	1	0	{200=4, 409=1}
+PatientController	PUT	/api/facilities/{}/patients/{}	1	1	0	{200=1, 409=1}
+PrescriptionController	PUT	/api/facilities/{}/prescriptions/{}	1	1	0	{200=1, 409=1}
+SchedulingController	PUT	/api/facilities/{}/rooms/{}	1	1	0	{200=1, 409=1}
+SchedulingController	PUT	/api/facilities/{}/services/{}	1	0	0	{200=1}
+ProcedureController	PUT	/api/facilities/{}/services/{}/requirements	1	0	0	{200=1}

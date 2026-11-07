@@ -1,0 +1,73 @@
+{
+  "result": "PASS",
+  "base": "http://127.0.0.1:3000",
+  "checks": [
+    {
+      "check": "anonymous_session_is_rejected",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "check": "csrf_bootstrap",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "check": "form_login_returns_empty_success",
+      "status": "PASS",
+      "httpStatus": 204
+    },
+    {
+      "check": "session_cookie_flags_and_rotation",
+      "status": "PASS",
+      "httpStatus": 204
+    },
+    {
+      "check": "refresh_csrf_after_login",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "check": "authorized_facility_bootstrap",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "check": "facility_permissions",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "check": "roles_contract",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "check": "accounts_page_contract",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "check": "administrator_has_no_implied_patient_access",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "check": "invalid_mutation_without_csrf_is_rejected",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "check": "logout_returns_empty_success",
+      "status": "PASS",
+      "httpStatus": 204
+    },
+    {
+      "check": "logged_out_session_is_rejected",
+      "status": "PASS",
+      "httpStatus": 401
+    }
+  ],
+  "applicationRecordsModified": false,
+  "credentialTokenAndRecordValuesIncluded": false
+}

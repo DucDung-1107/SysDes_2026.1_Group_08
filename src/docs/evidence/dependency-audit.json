@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-07",
+  "npmAuditOmitDev": {
+    "total": 0,
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "fullInstall": {
+    "moderate": 10,
+    "scope": "development tooling ESLint/typescript-eslint/minimatch; observed during npm ci"
+  },
+  "forcedDowngradeApplied": false
+}
