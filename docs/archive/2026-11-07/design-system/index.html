@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Mẫu hệ thống thiết kế MEDORA: màu sắc, bảng công việc và phản hồi chuyển động với dữ liệu minh họa.">
+    <title>MEDORA — Mẫu hệ thống thiết kế</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="specimen.css">
+    <script src="specimen.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Đến nội dung chính</a>
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="brand" href="#main" aria-label="MEDORA — mẫu hệ thống thiết kế">
+          <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor"/><path d="M16 9v14M9 16h14" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+          <span>MEDORA<small>Design specimen</small></span>
+        </a>
+        <nav class="nav" aria-label="Các phần trong mẫu thiết kế">
+          <a href="#foundations">01 · Nền tảng</a>
+          <a href="#worklist">02 · Bảng công việc</a>
+          <a href="#components">03 · Nội dung bổ sung</a>
+          <a href="#motion">04 · Phản hồi &amp; chuyển động</a>
+        </nav>
+        <p class="muted sidebar-note">Phase 2.5 → 3<br>Không gian làm việc nội bộ<br>Tiếng Việt · Desktop / tablet</p>
+      </aside>
+
+      <main class="page" id="main" tabindex="-1">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Hệ thống thiết kế · 06/11/2026</p>
+            <h1>Rõ ràng trong từng thao tác.</h1>
+            <p class="muted">Mẫu thiết kế cho công việc tiếp nhận, khám và quản lý phòng khám MEDORA.</p>
+          </div>
+          <span class="badge badge-info">Mẫu thiết kế · Chưa tích hợp</span>
+        </header>
+
+        <div class="notice" role="note">
+          <strong>Chỉ có dữ liệu minh họa.</strong> Trang này không kết nối API, không chứa hồ sơ thật và không lưu thay đổi. Phản hồi bên dưới là mô phỏng để đánh giá thiết kế.
+        </div>
+
+        <section class="section" id="foundations" aria-labelledby="foundations-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">01 · Nền tảng</p><h2 id="foundations-title">Bình tĩnh, chính xác, dễ đọc</h2></div>
+            <p class="muted">Nền sáng · Chữ có thứ bậc · Màu có ý nghĩa</p>
+          </div>
+          <div class="swatches" aria-label="Bảng màu thiết kế">
+            <div class="swatch"><span class="swatch-color swatch-navy" aria-hidden="true"></span><strong>Thương hiệu</strong><code>#163A5F</code></div>
+            <div class="swatch"><span class="swatch-color swatch-action" aria-hidden="true"></span><strong>Thao tác</strong><code>#2563A6</code></div>
+            <div class="swatch"><span class="swatch-color swatch-success" aria-hidden="true"></span><strong>Đã xác nhận</strong><code>#146B5D</code></div>
+            <div class="swatch"><span class="swatch-color swatch-warning" aria-hidden="true"></span><strong>Cần chú ý</strong><code>#8A4B08</code></div>
+            <div class="swatch"><span class="swatch-color swatch-danger" aria-hidden="true"></span><strong>Lỗi</strong><code>#C43D4B</code></div>
+          </div>
+          <p class="muted">Nhãn trạng thái luôn có chữ. Trạng thái khám và thanh toán được hiển thị riêng; màu sắc không thay thế nội dung.</p>
+        </section>
+
+        <section class="section" id="worklist" aria-labelledby="worklist-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">02 · Bảng công việc</p><h2 id="worklist-title">Lịch tiếp nhận minh họa</h2></div>
+            <p class="muted">Cơ sở minh họa · 06/11/2026<br>Giờ cơ sở: Asia/Ho_Chi_Minh</p>
+          </div>
+          <div class="toolbar">
+            <div class="field search-field">
+              <label for="patient-search">Tìm trong dữ liệu minh họa</label>
+              <input class="control" type="search" id="patient-search" autocomplete="off" placeholder="Mã hoặc tên bệnh nhân minh họa" aria-describedby="search-help">
+              <small class="muted" id="search-help">Lọc tại trình duyệt, không tìm kiếm hồ sơ thật.</small>
+            </div>
+            <p class="muted" id="result-count" role="status" aria-live="polite" aria-atomic="true">3 dòng minh họa</p>
+          </div>
+          <div class="table-scroll" role="region" aria-label="Bảng lịch tiếp nhận minh họa, có thể cuộn ngang" tabindex="0">
+            <table class="worklist">
+              <caption class="sr-only">Ba lịch tiếp nhận giả lập; không phải dữ liệu hoạt động của phòng khám</caption>
+              <thead><tr><th scope="col">Bệnh nhân minh họa</th><th scope="col">Giờ hẹn</th><th scope="col">Lịch hẹn</th><th scope="col">Lượt khám</th><th scope="col">Tài chính</th></tr></thead>
+              <tbody id="patient-rows">
+                <tr data-search="DEMO-001 Bệnh nhân minh họa A">
+                  <th scope="row"><strong>Bệnh nhân minh họa A</strong><small>DEMO-001 · Ngày sinh giả lập: 12/03/1990</small></th>
+                  <td><time datetime="2026-11-06T08:00:00+07:00">08:00</time></td><td><span class="badge badge-info">Đã xác nhận</span></td><td><span class="badge badge-warning">Chờ khám</span></td><td>Chưa lập hóa đơn</td>
+                </tr>
+                <tr data-search="DEMO-002 Bệnh nhân minh họa B">
+                  <th scope="row"><strong>Bệnh nhân minh họa B</strong><small>DEMO-002 · Ngày sinh giả lập: 25/08/1985</small></th>
+                  <td><time datetime="2026-11-06T08:15:00+07:00">08:15</time></td><td><span class="badge badge-info">Đã xác nhận</span></td><td><span class="badge badge-info">Đang khám</span></td><td>Chưa lập hóa đơn</td>
+                </tr>
+                <tr data-search="DEMO-003 Bệnh nhân minh họa C">
+                  <th scope="row"><strong>Bệnh nhân minh họa C</strong><small>DEMO-003 · Ngày sinh giả lập: 04/11/1978</small></th>
+                  <td><time datetime="2026-11-06T08:30:00+07:00">08:30</time></td><td><span class="badge badge-info">Đã xác nhận</span></td><td><span class="badge badge-success">Đã kết thúc</span></td><td><span class="badge badge-warning">Chưa thanh toán</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="search-empty" hidden><strong>Không có dòng minh họa phù hợp</strong><p>Thử mã DEMO-001 hoặc xóa từ khóa để xem lại toàn bộ mẫu.</p><button class="button button-secondary" type="button" id="clear-search">Xóa từ khóa</button></div>
+          <noscript><p class="notice">Bộ lọc và mô phỏng cần JavaScript. Bảng màu, bảng dữ liệu và nội dung bổ sung vẫn xem được.</p></noscript>
+        </section>
+
+        <section class="section" id="components" aria-labelledby="components-title">
+          <div class="section-heading"><div><p class="eyebrow">03 · Nội dung bổ sung</p><h2 id="components-title">Thông tin chính luôn hiện diện</h2></div></div>
+          <p>Cảnh báo và định danh bệnh nhân phải luôn nhìn thấy. Chỉ thu gọn thông tin thứ cấp như lịch sử thao tác minh họa.</p>
+          <details class="audit-disclosure">
+            <summary><span>Lịch sử thao tác minh họa</span><svg class="disclosure-chevron" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><path d="m5 7.5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+            <div class="disclosure-content"><p><strong>08:00 · Sự kiện mẫu</strong></p><p class="muted">Người dùng minh họa mở lịch tiếp nhận DEMO-001. Đây là nội dung tĩnh để đánh giá bố cục lịch sử, không phải nhật ký hệ thống.</p></div>
+          </details>
+        </section>
+
+        <section class="section" id="motion" aria-labelledby="motion-title">
+          <div class="section-heading"><div><p class="eyebrow">04 · Phản hồi &amp; chuyển động</p><h2 id="motion-title">Mỗi chuyển động có một lý do</h2></div></div>
+          <div class="demo-grid">
+            <div class="demo-panel">
+              <h3>Thử phản hồi thao tác</h3>
+              <p class="muted" id="simulation-help">Mô phỏng chờ 600 ms rồi trả về kết quả đã chọn. Không gửi yêu cầu, không ký hồ sơ và không ghi dữ liệu.</p>
+              <div class="field"><label for="simulation-outcome">Kết quả mô phỏng</label><select class="control" id="simulation-outcome"><option value="confirmed">Đã xác nhận mô phỏng</option><option value="error">Lỗi mô phỏng</option></select></div>
+              <button class="button button-primary" id="simulate-button" type="button" aria-describedby="simulation-help" aria-busy="false"><span id="simulate-button-label">Chạy mô phỏng</span></button>
+              <div class="feedback" id="simulation-feedback" role="status" aria-live="polite" aria-atomic="true" data-state="idle">
+                <svg class="check-icon" id="confirmation-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" hidden><path d="m5 12 4 4 10-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg>
+                <span id="simulation-message">Sẵn sàng thử. Kết quả sẽ hiện tại đây.</span>
+              </div>
+            </div>
+            <div class="demo-panel">
+              <h3>Ưu tiên giảm chuyển động</h3>
+              <label class="checkbox-field" for="reduced-motion"><input id="reduced-motion" type="checkbox"> <span>Giảm chuyển động trong mẫu này</span></label>
+              <p class="muted">Tùy chọn của hệ điều hành luôn được tôn trọng. Bỏ chọn không ghi đè cài đặt giảm chuyển động của hệ điều hành.</p>
+              <p class="muted">Chỉ chuyển màu 120 ms, xoay chevron 160 ms và vẽ dấu xác nhận một lần 220 ms. Nội dung xuất hiện ngay; không có video hay hiệu ứng nền.</p>
+              <p class="notice"><strong>Chờ kiểm tra trình duyệt.</strong> Mẫu này chưa được xác minh trực quan trong trình duyệt đang chạy.</p>
+            </div>
+          </div>
+        </section>
+        <footer class="page-footer muted">MEDORA · Mẫu thiết kế Phase 3 · Dữ liệu giả lập · Không kết nối backend</footer>
+      </main>
+    </div>
+  </body>
+</html>

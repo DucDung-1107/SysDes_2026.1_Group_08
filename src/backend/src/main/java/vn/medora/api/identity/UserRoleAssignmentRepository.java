@@ -29,7 +29,7 @@ public interface UserRoleAssignmentRepository
         FROM UserRoleAssignment u
         WHERE u.account.id = :accountId
     """)
-    List<UUID> findFacilityIdsByAccountId(
+    Set<UUID> findFacilityIds(
     @Param("accountId") UUID accountId
     );
     @Query("""
@@ -46,4 +46,5 @@ public interface UserRoleAssignmentRepository
         UUID accountId,
         UUID facilityId
     );
+    boolean existsByAccount_IdAndFacility_Id(UUID accountId, UUID facilityId);
 }

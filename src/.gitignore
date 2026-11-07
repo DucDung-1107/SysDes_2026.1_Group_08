@@ -6,3 +6,5 @@ backend/target/
 backend/*.log
 scripts/__pycache__/
 backend/data/
+.demo/
+.test-results/

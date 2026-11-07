@@ -47,6 +47,20 @@ services:
         condition: service_healthy
     networks:
       - medora
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        MEDORA_API_ORIGIN: http://api:8080
+        NEXT_PUBLIC_FACILITY_ZONE: "${MEDORA_FACILITY_ZONE:-Asia/Ho_Chi_Minh}"
+        NEXT_PUBLIC_FACILITY_NAMES: "${NEXT_PUBLIC_FACILITY_NAMES:-}"
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+    depends_on:
+      - api
+    networks:
+      - medora
 volumes:
   postgres_data:
   attachment_data:

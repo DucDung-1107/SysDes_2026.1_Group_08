@@ -67,7 +67,9 @@ abstract class IntegrationSupport {
     static final String PASSWORD = "SyntheticPassword!2026";
     record Result(int status, JsonNode body) { }
     @BeforeEach void setup() throws Exception {
-        mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        ApiCoverageRecorder.register(context);
+        mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity())
+            .alwaysDo(ApiCoverageRecorder::record).build();
         suffix = UUID.randomUUID().toString().substring(0, 8);
         facility = facilities.saveAndFlush(new Facility("TEST-" + suffix, "Synthetic Test Clinic")).getId();
         otherFacility = facilities.saveAndFlush(new Facility("OTHER-" + suffix, "Other Clinic")).getId();
@@ -78,6 +80,7 @@ abstract class IntegrationSupport {
         nurseSession = login("nurse." + suffix); adminSession = login("admin." + suffix);
         otherDoctorSession = login("otherdoc." + suffix);
     }
+    @AfterAll static void routeEvidence() throws java.io.IOException { ApiCoverageRecorder.write(); }
     UUID account(String name, String role) {
         var account = accounts.saveAndFlush(new UserAccount(name + "." + suffix, "Synthetic " + name, encoder.encode(PASSWORD)));
         assignments.saveAndFlush(new UserRoleAssignment(account, roles.findById(role).orElseThrow(), facilities.findById(facility).orElseThrow()));

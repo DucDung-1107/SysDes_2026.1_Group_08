@@ -4,7 +4,7 @@ WORKDIR /build
 COPY pom.xml .
 COPY src ./src
 
-RUN mvn -B package
+RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp package
 FROM eclipse-temurin:21-jre-jammy AS runtime
 
 WORKDIR /app

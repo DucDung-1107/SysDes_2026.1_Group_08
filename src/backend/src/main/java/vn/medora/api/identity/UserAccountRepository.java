@@ -20,22 +20,22 @@ public interface UserAccountRepository
         FROM UserAccount u
         WHERE u.id = :id
     """)
-    Optional<UserAccount> findByIdForUpdate(
+    Optional<UserAccount> findForUpdate(
         @Param("id") UUID id
     );
     @Query(
         value = """
-            SELECT DISTINCT u.account.id
-            FROM UserRoleAssignment u
-            WHERE u.facility.id =:facilityId
+            SELECT a FROM UserAccount a
+            WHERE EXISTS (SELECT 1 FROM UserRoleAssignment u
+                          WHERE u.account = a AND u.facility.id = :facilityId)
         """,
         countQuery = """
-            SELECT COUNT(DISTINCT u.account.id)
-            FROM UserRoleAssignment u
-            WHERE  u.facility.id =:facilityId
+            SELECT COUNT(a.id) FROM UserAccount a
+            WHERE EXISTS (SELECT 1 FROM UserRoleAssignment u
+                          WHERE u.account = a AND u.facility.id = :facilityId)
         """
     )
-    Page<UserAccount> findByFacilityId(
+    Page<UserAccount> findInFacility(
         @Param("facilityId") UUID facilityId,
         Pageable pageable
     );

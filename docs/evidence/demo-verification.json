@@ -1,0 +1,53 @@
+{
+  "result": "PASS",
+  "accounts": 10,
+  "patientRecords": 14,
+  "canonicalPatients": 13,
+  "mergedSourceRetained": true,
+  "unchangedAccountAndFixtureIds": true,
+  "seedRerunCreatedPatients": 0,
+  "checkpointCount": 133,
+  "fixtures": {
+    "Lịch đã đặt": {},
+    "Lịch đã xác nhận": {},
+    "Đang chờ tiếp nhận khám": {
+      "encounterStatus": "WAITING"
+    },
+    "Đã sàng lọc chờ bác sĩ": {
+      "encounterStatus": "WAITING"
+    },
+    "Đang khám có ghi chú nháp": {
+      "encounterStatus": "IN_CONSULTATION"
+    },
+    "Đơn thuốc chờ cấp": {
+      "encounterStatus": "IN_CONSULTATION"
+    },
+    "Dịch vụ đã phân lịch": {
+      "encounterStatus": "AWAITING_SERVICE",
+      "orderStatus": "SCHEDULED"
+    },
+    "Dịch vụ đang thực hiện": {
+      "encounterStatus": "AWAITING_SERVICE",
+      "orderStatus": "IN_PROGRESS"
+    },
+    "Đã kết thúc chưa lập hóa đơn": {
+      "encounterStatus": "COMPLETED"
+    },
+    "Hóa đơn thanh toán một phần": {
+      "encounterStatus": "COMPLETED",
+      "invoiceStatus": "PARTIALLY_PAID",
+      "balance": 60000
+    },
+    "Hóa đơn đã thanh toán": {
+      "encounterStatus": "COMPLETED",
+      "invoiceStatus": "PAID",
+      "balance": 0
+    },
+    "Hóa đơn có lịch sử hoàn": {
+      "encounterStatus": "COMPLETED",
+      "invoiceStatus": "PARTIALLY_PAID",
+      "balance": 20000
+    }
+  },
+  "testedThrough": "http://127.0.0.1:3000"
+}

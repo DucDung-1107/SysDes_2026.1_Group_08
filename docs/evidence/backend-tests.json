@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-07",
+  "environment": "Windows JDK21, Maven3.9.11, isolated PostgreSQL17.6",
+  "suites": [
+    {
+      "name": "vn.medora.api.CsvExportSafetyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "vn.medora.api.identity.SecurityFlowTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "vn.medora.api.AccountAdministrationIT",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "vn.medora.api.Stage4IT",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "vn.medora.api.Stage56IT",
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "routes": 128,
+  "successfulRoutes": 128,
+  "rejectedRequests": 79,
+  "serverErrors": 0
+}

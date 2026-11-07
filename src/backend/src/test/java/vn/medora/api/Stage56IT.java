@@ -289,4 +289,137 @@ class Stage56IT extends IntegrationSupport {
         JsonNode refund=ok(request(financeSession,post(url("/refunds")).header("Idempotency-Key","auto-refund-key-1"),Map.of("paymentId",payment,"amount",5000,"reason","Configured auto limit test")),200);
         assertThat(refund.get("status").asText()).isEqualTo("COMPLETED"); assertThat(refund.get("invoice").get("balance").asInt()).isEqualTo(5000);
     }
+
+    @Test void schedulingCatalogUpdatesAndListsPreserveVersionsAndSavedFields() throws Exception {
+        var r=resources();
+        var room=ok(request(adminSession,put(url("/rooms/"+r.room())),Map.of("code","R1","name","Updated room","roomType","CONSULTATION","equipment","ECG","enabled",true,"version",0)),200);
+        assertThat(room.get("name").asText()).isEqualTo("Updated room");
+        ok(request(adminSession,put(url("/rooms/"+r.room())),Map.of("code","R1","name","Stale","roomType","CONSULTATION","equipment","","enabled",true,"version",0)),409);
+        var service=ok(request(adminSession,put(url("/services/"+r.service())),Map.of("code","S1","name","Updated service","durationMinutes",20,"bufferMinutes",10,"enabled",true,"version",0)),200);
+        ok(request(managerSession,put(url("/services/"+r.service()+"/requirements")),Map.of("requiredRoomType","CONSULTATION","requiredEquipment","ECG","version",service.get("version").asLong())),200);
+        assertThat(ok(request(doctorSession,get(url("/rooms")),null),200).get(0).get("equipment").asText()).isEqualTo("ECG");
+        assertThat(ok(request(doctorSession,get(url("/services")),null),200).get(0).get("requiredRoomType").asText()).isEqualTo("CONSULTATION");
+        assertThat(ok(request(adminSession,get(url("/staff-schedules")).param("from",Instant.now().minusSeconds(60).toString()).param("to",Instant.now().plusSeconds(86400).toString()),null),200).isArray()).isTrue();
+        UUID p=patient("Booking list "+suffix);
+        UUID appt=id(ok(request(receptionistSession,post(url("/appointments")).header("Idempotency-Key","list-book-key"),booking(p,r.room(),r.service(),r.at())),201));
+        assertThat(ok(request(receptionistSession,get(url("/appointments")).param("from",r.at().minusSeconds(3600).toString()).param("to",r.at().plusSeconds(3600).toString()),null),200).toString()).contains(appt.toString());
+        assertThat(ok(request(receptionistSession,get(url("/patients")).param("q","Booking list"),null),200).get("items").toString()).contains(p.toString());
+        assertThat(ok(request(receptionistSession,get(url("/patients/"+p)),null),200).get("fullName").asText()).isEqualTo("Booking list "+suffix);
+    }
+
+    @Test void assignedClinicalReadViewsAndReportsRejectUnassignedReaders() throws Exception {
+        UUID encounter=visit("Read views "+suffix);noteAndVitals(encounter);
+        ok(request(nurseSession,post(url("/encounters/"+encounter+"/history")),Map.of("kind","HISTORY","content","Synthetic history read test")),201);
+        for(String part:List.of("history","vitals","diagnoses","notes","orders","prescriptions","attachments")) {
+            assertThat(ok(request(doctorSession,get(url("/encounters/"+encounter+"/"+part)),null),200).isArray()).as(part).isTrue();
+            ok(request(otherDoctorSession,get(url("/encounters/"+encounter+"/"+part)),null),403);
+        }
+        assertThat(ok(request(doctorSession,get(url("/diagnosis-catalog")),null),200).isArray()).isTrue();
+        var from=Instant.now().minusSeconds(3600).toString();var to=Instant.now().plusSeconds(3600).toString();
+        assertThat(ok(request(doctorSession,get(url("/dashboard")).param("from",from).param("to",to),null),200).get("encounters").asInt()).isEqualTo(1);
+        assertThat(ok(request(doctorSession,get(url("/reports/operations")).param("from",from).param("to",to),null),200).get("scope").asText()).isEqualTo("ASSIGNED_ENCOUNTERS");
+        UUID p=UUID.fromString(ok(request(doctorSession,get(url("/encounters/"+encounter)),null),200).get("patientId").asText());
+        assertThat(ok(request(auditorSession,get(url("/patients/"+p+"/audit-events")),null),200).isArray()).isTrue();
+        assertThat(ok(request(receptionistSession,get(url("/merge-requests")),null),200).isArray()).isTrue();
+        ok(request(auditorSession,get(url("/encounters/"+encounter+"/notes")),null),403);
+    }
+
+    @Test void catalogEditsAndWarningsRequireCurrentVersionAndExplicitAcknowledgement() throws Exception {
+        UUID encounter=visit("Warnings "+suffix),one=medicine("WARN1","ING-W1"),two=medicine("WARN2","ING-W2");
+        var medBody=Map.of("code","WARN1","name","Updated synthetic medicine","ingredientCode","ING-W1","unit","tablet","enabled",true,"version",0);
+        assertThat(ok(request(managerSession,put(url("/medications/"+one)),medBody),200).get("version").asLong()).isEqualTo(1);
+        ok(request(managerSession,put(url("/medications/"+one)),medBody),409);
+        policyAndProfile(encounter,"KNOWN_NONE",List.of());
+        ok(request(nurseSession,put(url("/encounters/"+encounter+"/medication-profile")),Map.of("allergyStatus","KNOWN_NONE","allergyCodes",List.of(),"conditionCodes",List.of(),"currentMedicationIds",List.of(two),"version",0)),200);
+        var body=new LinkedHashMap<String,Object>(Map.of("medicationId",one,"otherMedicationId",two,"kind","INTERACTION","severity","WARN","overridable",false,"message","Synthetic warning","source","Synthetic source","enabled",true));
+        var rule=ok(request(managerSession,post(url("/medication-rules")),body),200);body.put("version",0);body.put("message","Updated warning");
+        ok(request(managerSession,put(url("/medication-rules/"+id(rule))),body),200);
+        ok(request(managerSession,put(url("/medication-rules/"+id(rule))),body),409);
+        assertThat(ok(request(doctorSession,get(url("/medications")).param("q","WARN1"),null),200).get(0).get("id").asText()).isEqualTo(one.toString());
+        assertThat(ok(request(managerSession,get(url("/medication-rules")),null),200).size()).isEqualTo(1);
+        assertThat(ok(request(managerSession,get(url("/medication-policy")),null),200).get("enabled").asBoolean()).isTrue();
+        assertThat(ok(request(nurseSession,get(url("/encounters/"+encounter+"/medication-profile")),null),200).get("version").asInt()).isEqualTo(1);
+        UUID rx=prescription(encounter,one);var safety=ok(request(doctorSession,get(url("/prescriptions/"+rx+"/safety")),null),200);
+        assertThat(safety.get("warnings").size()).isEqualTo(1);
+        ok(request(doctorSession,post(url("/prescriptions/"+rx+"/issue")).header("Idempotency-Key","warn-no-ack-key"),issueInput(0,List.of())),409);
+        ok(request(doctorSession,post(url("/prescriptions/"+rx+"/issue")).header("Idempotency-Key","warn-ack-key"),issueInput(0,List.of(safety.get("warnings").get(0).get("id").asText()))),200);
+        assertThat(ok(request(pharmacySession,get(url("/pharmacy-queue")),null),200).toString()).contains(rx.toString());
+        assertThat(ok(request(pharmacySession,get(url("/prescriptions/"+rx)),null),200).get("items").size()).isEqualTo(1);
+        assertThat(ok(request(doctorSession,get(url("/prescriptions/"+rx+"/export")),null),200).get("id").asText()).isEqualTo(rx.toString());
+    }
+
+    @Test void prescriptionDraftEditAndCancellationRetainItemsAndPreventDispensing() throws Exception {
+        UUID encounter=visit("Rx lifecycle "+suffix),med=medicine("LIFE1","ING-L1"),rx=prescription(encounter,med);
+        policyAndProfile(encounter,"KNOWN_NONE",List.of());
+        var changed=ok(request(doctorSession,put(url("/prescriptions/"+rx)),Map.of("version",0,"items",List.of(rxItem(med)))),200);
+        ok(request(doctorSession,put(url("/prescriptions/"+rx)),Map.of("version",0,"items",List.of(rxItem(med)))),409);
+        var issued=ok(request(doctorSession,post(url("/prescriptions/"+rx+"/issue")).header("Idempotency-Key","cancel-issue-key"),issueInput(changed.get("version").asLong(),List.of())),200);
+        var canceled=ok(request(doctorSession,post(url("/prescriptions/"+rx+"/cancel")),Map.of("version",issued.get("version").asLong(),"reason","Synthetic cancellation")),200);
+        assertThat(canceled.get("status").asText()).isEqualTo("CANCELED");assertThat(canceled.get("items").size()).isEqualTo(1);
+        ok(request(pharmacySession,post(url("/prescriptions/"+rx+"/medicine-events")).header("Idempotency-Key","cancel-no-dispense"),Map.of("itemId",issued.get("items").get(0).get("id").asText(),"kind","DISPENSED","quantity",1,"performedAt",issued.get("issuedAt").asText())),409);
+    }
+
+    @Test void procedureQueueAndDetailRequireTheCorrectStaffAssignment() throws Exception {
+        UUID encounter=visit("Procedure reads "+suffix);var r=resources();
+        ok(request(adminSession,post(url("/provider-services")),Map.of("providerId",technician,"serviceId",r.service())),204);
+        ok(request(adminSession,post(url("/staff-schedules")),Map.of("providerId",technician,"kind","WORK","startsAt",Instant.now().minusSeconds(3600).toString(),"endsAt",Instant.now().plusSeconds(28800).toString())),201);
+        UUID order=id(ok(request(doctorSession,post(url("/encounters/"+encounter+"/orders")),Map.of("serviceId",r.service(),"reason","Synthetic lab","priority","ROUTINE","preparation","","required",true,"kind","LAB")),200));
+        assertThat(ok(request(technicianSession,get(url("/procedure-queue")),null),200).size()).isZero();
+        ok(request(doctorSession,put(url("/orders/"+order+"/allocation")),Map.of("staffId",technician,"roomId",r.room(),"startsAt",Instant.now().minusSeconds(1).toString(),"version",0,"reason","Synthetic scheduling")),200);
+        assertThat(ok(request(technicianSession,get(url("/procedure-queue")),null),200).get(0).get("id").asText()).isEqualTo(order.toString());
+        assertThat(ok(request(technicianSession,get(url("/orders/"+order)),null),200).get("staffId").asText()).isEqualTo(technician.toString());
+        ok(request(otherDoctorSession,get(url("/orders/"+order)),null),403);
+    }
+
+    @Test void discountedInvoiceReadReceiptRefundAndCsvMatchTheLedger() throws Exception {
+        UUID encounter=visit("Finance reads "+suffix);var r=resources();
+        ok(request(doctorSession,put(url("/encounters/"+encounter+"/consultation-service")),Map.of("serviceId",r.service())),200);
+        ok(request(managerSession,post(url("/service-prices")),Map.of("serviceId",r.service(),"amount",100000,"currency","VND","effectiveFrom",Instant.now().minusSeconds(86400).toString())),200);
+        assertThat(ok(request(managerSession,get(url("/service-prices")).param("serviceId",r.service().toString()),null),200).get(0).get("amount").asInt()).isEqualTo(100000);
+        noteAndVitals(encounter);complete(encounter);
+        UUID invoice=id(ok(request(cashierSession,post(url("/encounters/"+encounter+"/invoice")).header("Idempotency-Key","read-invoice-key"),null),200));
+        var discounted=ok(request(financeSession,post(url("/invoices/"+invoice+"/discount")),Map.of("amount",10000,"reason","Synthetic discount","version",0)),200);
+        assertThat(discounted.get("total").asInt()).isEqualTo(90000);
+        ok(request(cashierSession,post(url("/invoices/"+invoice+"/issue")),Map.of("version",discounted.get("version").asLong())),200);
+        UUID pay=id(ok(request(cashierSession,post(url("/invoices/"+invoice+"/payments")).header("Idempotency-Key","read-payment-key"),payment(90000)),200));
+        assertThat(ok(request(cashierSession,get(url("/invoices")),null),200).get(0).get("id").asText()).isEqualTo(invoice.toString());
+        var details=ok(request(cashierSession,get(url("/invoices/"+invoice)),null),200);
+        assertThat(details.get("balance").asInt()).isZero();assertThat(details.get("payments").size()).isEqualTo(1);
+        assertThat(ok(request(cashierSession,get(url("/payments/"+pay+"/receipt")),null),200).get("amount").asInt()).isEqualTo(90000);
+        var refund=ok(request(financeSession,post(url("/refunds")).header("Idempotency-Key","read-refund-key"),Map.of("paymentId",pay,"amount",10000,"reason","Synthetic refund")),200);
+        var pending=ok(request(financeSession,get(url("/refunds/"+id(refund))),null),200);
+        assertThat(pending.get("status").asText()).isEqualTo("PENDING_APPROVAL");assertThat(pending.has("invoice")).isFalse();
+        var csv=mvc.perform(get(url("/reports/invoices.csv")).session(managerSession).param("from",Instant.now().minusSeconds(3600).toString()).param("to",Instant.now().plusSeconds(3600).toString())).andReturn().getResponse();
+        assertThat(csv.getStatus()).isEqualTo(200);assertThat(csv.getContentType()).contains("text/csv");assertThat(csv.getContentAsString()).contains(invoice.toString());
+        ok(request(doctorSession,get(url("/payments/"+pay+"/receipt")),null),403);
+    }
+
+    @Test void deliveredInboxReadIsPrivateAndDoesNotChangeItsFirstReadTime() throws Exception {
+        UUID p=patient("Inbox "+suffix);var r=resources();
+        UUID appt=id(ok(request(receptionistSession,post(url("/appointments")).header("Idempotency-Key","inbox-book-key"),booking(p,r.room(),r.service(),r.at())),201));
+        var template=ok(request(managerSession,post(url("/notification-templates")),Map.of("code","INBOX_TEST","body","Synthetic {{appointmentId}}","enabled",true)),200);
+        assertThat(ok(request(receptionistSession,get(url("/notification-templates")),null),200).size()).isEqualTo(1);
+        UUID notification=id(ok(request(receptionistSession,post(url("/notifications")).header("Idempotency-Key","inbox-send-key"),Map.of("templateId",id(template),"appointmentId",appt,"recipientId",doctor)),200));
+        dispatcher.dispatch();
+        assertThat(ok(request(receptionistSession,get(url("/notifications")),null),200).get(0).get("status").asText()).isEqualTo("DELIVERED");
+        var read=ok(request(doctorSession,post(url("/inbox/"+notification+"/read")),null),200);
+        assertThat(read.get("readAt").isNull()).isFalse();
+        assertThat(ok(request(doctorSession,post(url("/inbox/"+notification+"/read")),null),200).get("readAt")).isEqualTo(read.get("readAt"));
+        ok(request(otherDoctorSession,post(url("/inbox/"+notification+"/read")),null),404);
+    }
+
+    @Test void abandonedAmendmentAndReturnedClosurePreserveOriginalSignedText() throws Exception {
+        UUID encounter=visit("Return closure "+suffix);noteAndVitals(encounter);
+        var signed=ok(request(doctorSession,get(url("/encounters/"+encounter+"/notes")),null),200).get(0);
+        var amendment=ok(request(doctorSession,post(url("/encounters/"+encounter+"/notes/"+id(signed)+"/amendments")),Map.of("version",signed.get("version").asLong(),"reason","Synthetic draft")),201);
+        ok(request(doctorSession,post(url("/encounters/"+encounter+"/notes/"+id(amendment)+"/abandon")),Map.of("version",0)),204);
+        var current=ok(request(doctorSession,get(url("/encounters/"+encounter)),null),200);
+        var assigned=ok(request(receptionistSession,put(url("/encounters/"+encounter+"/nurse")),Map.of("nurseId",nurse,"version",current.get("version").asLong())),200);
+        var awaiting=ok(request(doctorSession,post(url("/encounters/"+encounter+"/submit-for-closure")),Map.of("version",assigned.get("version").asLong())),200);
+        assertThat(ok(request(doctorSession,post(url("/encounters/"+encounter+"/return-for-correction")),Map.of("version",awaiting.get("version").asLong())),200).get("status").asText()).isEqualTo("IN_CONSULTATION");
+        assertThat(complete(encounter).get("status").asText()).isEqualTo("COMPLETED");
+        assertThat(jdbc.queryForObject("select subjective from medora.clinical_note where id=?",String.class,id(signed))).isEqualTo(signed.get("subjective").asText());
+        ok(request(managerSession,put(url("/diagnosis-catalog")),Map.of("code","UAT.01","name","Synthetic custom diagnosis","enabled",true)),200);
+    }
+
 }

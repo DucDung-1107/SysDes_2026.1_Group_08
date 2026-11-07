@@ -1,0 +1,11 @@
+FROM maven:3.9.11-eclipse-temurin-21
+RUN useradd --create-home --uid 10001 medoratest
+WORKDIR /workspace
+RUN chown 10001:10001 /workspace
+COPY --chown=10001:10001 pom.xml ./
+COPY --chown=10001:10001 src ./src
+USER 10001:10001
+ENV MAVEN_CONFIG=/home/medoratest/.m2
+# initdb refuses root; embedded PostgreSQL runs only in this disposable build.
+RUN --mount=type=cache,target=/home/medoratest/.m2,uid=10001,gid=10001 \
+    mvn -B -ntp -Ppostgres-it verify
